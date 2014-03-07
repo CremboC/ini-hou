@@ -11,8 +11,6 @@ import seprini.screens.AbstractScreen;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,6 +18,12 @@ public final class Aircraft extends Entity {
 
 	private static final float SPEED_CHANGE = 6f;
 	private static final int ALTITUDE_CHANGE = 5000;
+
+	private static final Color LINE_COLOR = new Color(1, 0, 0, 0);
+	private static final Color BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
+	private static final Color LANDING_CIRCLE_COLOR = new Color(0, 0, 1, 0);
+
+	private static final Vector2 TEXT_OFFSET = new Vector2(30, 20);
 
 	private final int id;
 
@@ -115,8 +119,6 @@ public final class Aircraft extends Entity {
 	@Override
 	protected void additionalDraw(SpriteBatch batch) {
 
-		ShapeRenderer drawer = AbstractScreen.shapeRenderer;
-
 		// if the user takes control of the aircraft,
 		// show full flight plan.
 		if (selected) {
@@ -130,10 +132,8 @@ public final class Aircraft extends Entity {
 			for (Waypoint waypoint : waypoints) {
 				Vector2 coords = waypoint.getCoords();
 
-				drawer.begin(ShapeType.Line);
-				drawer.setColor(1, 0, 0, 0);
-				drawer.line(previous.x, previous.y, coords.x, coords.y);
-				drawer.end();
+				AbstractScreen.drawLine(LINE_COLOR, previous.x, previous.y,
+						coords.x, coords.y, null);
 
 				previous = coords;
 			}
@@ -144,27 +144,19 @@ public final class Aircraft extends Entity {
 		// if the aircraft is either selected or is breaching, draw a circle
 		// around it
 		if (selected || breaching) {
-			batch.end();
 
-			drawer.begin(ShapeType.Line);
-			drawer.setColor(1, 0, 0, 0);
-			drawer.circle(getX(), getY(), getSeparationRadius() * 0.5f);
-			drawer.end();
+			AbstractScreen.drawCircle(BREACHING_CIRCLE_COLOR, getX(), getY(),
+					getSeparationRadius() * 0.5f, batch);
 
-			batch.begin();
 		}
 
 		// if the aircraft should land, draw a small blue circle
 		// around it
 		if (mustLand) {
-			batch.end();
 
-			drawer.begin(ShapeType.Line);
-			drawer.setColor(0, 0, 1, 0);
-			drawer.circle(getX(), getY(), getSeparationRadius() * 0.25f);
-			drawer.end();
+			AbstractScreen.drawCircle(LANDING_CIRCLE_COLOR, getX(), getY(),
+					getSeparationRadius() * 0.25f, batch);
 
-			batch.begin();
 		}
 
 		// draw the altitude for each aircraft
@@ -180,21 +172,18 @@ public final class Aircraft extends Entity {
 			color = Color.BLACK;
 		}
 
-		AbstractScreen.drawString("alt: " + getAltitude(), getX() - 30,
-				getY() - 20, color, batch, true, 1);
+		AbstractScreen.drawString("alt: " + getAltitude(), getX()
+				- TEXT_OFFSET.x, getY() - TEXT_OFFSET.y, color, batch, true, 1);
 
 		// debug line from aircraft centre to waypoint centre
-		if (Config.DEBUG_UI && waypoints.size() > 0) {
-			Vector2 nextWaypoint = vectorToWaypoint();
+		if (Config.DEBUG_UI) {
+			if (waypoints.size() > 0) {
+				Vector2 nextWaypoint = vectorToWaypoint();
 
-			batch.end();
+				AbstractScreen.drawLine(LINE_COLOR, getX(), getY(),
+						nextWaypoint.x, nextWaypoint.y, batch);
 
-			drawer.begin(ShapeType.Line);
-			drawer.setColor(1, 0, 0, 0);
-			drawer.line(getX(), getY(), nextWaypoint.x, nextWaypoint.y);
-			drawer.end();
-
-			batch.begin();
+			}
 		}
 
 	}

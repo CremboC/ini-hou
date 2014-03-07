@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class AbstractScreen implements ScreenBase {
@@ -147,5 +148,50 @@ public class AbstractScreen implements ScreenBase {
 
 		if (!isNative)
 			batch.end();
+	}
+	
+	/**
+	 * Convenience method to draw circles
+	 * 
+	 * @param color
+	 * @param x
+	 * @param y
+	 * @param radius
+	 * @param batch
+	 */
+	public static void drawCircle(Color color, float x, float y, float radius,
+			SpriteBatch batch) {
+		batch.end();
+
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(color);
+		shapeRenderer.circle(x, y, radius);
+		shapeRenderer.end();
+
+		batch.begin();
+	}
+	
+	/**
+	 * Convenience method to draw lines
+	 * 
+	 * @param color
+	 * @param x
+	 * @param y
+	 * @param xTo
+	 * @param yTo
+	 * @param batch
+	 */
+	public static void drawLine(Color color, float x, float y, float xTo,
+			float yTo, SpriteBatch batch) {
+		if (batch != null)
+			batch.end();
+		
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(color);
+		shapeRenderer.line(x, y, xTo, yTo);
+		shapeRenderer.end();
+
+		if (batch != null)
+			batch.begin();
 	}
 }
