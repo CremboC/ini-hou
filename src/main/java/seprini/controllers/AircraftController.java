@@ -50,13 +50,12 @@ public final class AircraftController extends InputListener {
 
 	// game timer
 	private float timer = 0;
-	
+
 	// game score
 	public static float score = 0;
-	
-	//landing
-	private static boolean landing = false;
 
+	// landing
+	private static boolean landing = false;
 
 	/**
 	 * 
@@ -68,7 +67,8 @@ public final class AircraftController extends InputListener {
 	 *            added
 	 * @param screen
 	 */
-	public AircraftController(GameDifficulty diff, Airspace airspace, ScreenBase screen) {
+	public AircraftController(GameDifficulty diff, Airspace airspace,
+			ScreenBase screen) {
 		this.difficulty = diff;
 		this.airspace = airspace;
 		this.screen = screen;
@@ -87,13 +87,9 @@ public final class AircraftController extends InputListener {
 		this.flightplan = new FlightPlanComponent(waypoints);
 
 		// initialise aircraft types.
-		aircraftTypeList.add(new AircraftType()
-				.setMaxClimbRate(600)
-				.setMinSpeed(30f)
-				.setMaxSpeed(90f)
-				.setMaxTurningSpeed(48f)
-				.setRadius(15)
-				.setSeparationRadius(diff.getSeparationRadius())
+		aircraftTypeList.add(new AircraftType().setMaxClimbRate(600)
+				.setMinSpeed(30f).setMaxSpeed(90f).setMaxTurningSpeed(48f)
+				.setRadius(15).setSeparationRadius(diff.getSeparationRadius())
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(30f));
 	}
@@ -105,7 +101,7 @@ public final class AircraftController extends InputListener {
 	public void update(float delta) {
 		// Update timer
 		timer += delta;
-		
+
 		// Update score
 		score += difficulty.getScoreMultiplier() * delta;
 
@@ -128,7 +124,8 @@ public final class AircraftController extends InputListener {
 			for (Aircraft planeJ : aircraftList) {
 
 				// Quite simply checks if distance between the centres of both
-				// the aircraft <= the radius of aircraft i + radius of aircraft j
+				// the aircraft <= the radius of aircraft i + radius of aircraft
+				// j
 
 				if (!planeI.equals(planeJ)
 						// Check difference in altitude.
@@ -161,8 +158,6 @@ public final class AircraftController extends InputListener {
 			if (planeI.getAltitude() < 0) {
 				screen.getGame().showEndScreen(timer, score);
 			}
-			
-			
 
 		}
 
@@ -264,15 +259,18 @@ public final class AircraftController extends InputListener {
 
 		// time difference between aircraft generated - depends on difficulty
 		// selected
-		if (timer - lastGenerated < difficulty.getTimeBetweenGenerations() + rand.nextInt(100))
+		if (timer - lastGenerated < difficulty.getTimeBetweenGenerations()
+				+ rand.nextInt(100))
 			return null;
 
 		int landChoice = rand.nextInt(6);
+
 		boolean shouldLand = false;
-		if (landChoice == 5){
+
+		if (landChoice == 5) {
 			shouldLand = true;
 		}
-		
+
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
 				flightplan.generate(), aircraftId++, shouldLand);
 
@@ -304,8 +302,8 @@ public final class AircraftController extends InputListener {
 
 		if (aircraft.equals(selectedAircraft))
 			selectedAircraft = null;
-		
-		if (aircraft.isMustLand()){
+
+		if (aircraft.isMustLand()) {
 			score -= 1000;
 		}
 		// removes the aircraft from the list of aircrafts on screen
@@ -348,17 +346,17 @@ public final class AircraftController extends InputListener {
 	public void redirectAircraft(Waypoint waypoint) {
 		Debug.msg("Redirecting aircraft " + 0 + " to " + waypoint);
 
-		if (getSelectedAircraft() == null || getSelectedAircraft().isLanded() == true)
+		if (getSelectedAircraft() == null
+				|| getSelectedAircraft().isLanded() == true)
 			return;
 
 		getSelectedAircraft().insertWaypoint(waypoint);
 	}
-	
 
 	public float getTimer() {
 		return timer;
 	}
-	
+
 	public float getScore() {
 		return score;
 	}
@@ -383,9 +381,13 @@ public final class AircraftController extends InputListener {
 		return airspace;
 	}
 
-	public boolean allowRedirection() { return allowRedirection; }
+	public boolean allowRedirection() {
+		return allowRedirection;
+	}
 
-	public void setAllowRedirection(boolean value) { allowRedirection = value; }
+	public void setAllowRedirection(boolean value) {
+		allowRedirection = value;
+	}
 
 	@Override
 	/**
@@ -411,24 +413,25 @@ public final class AircraftController extends InputListener {
 
 			if (keycode == Keys.Q)
 				selectedAircraft.decreaseSpeed();
-			
+
 			if (keycode == Keys.R)
 				selectedAircraft.returnToPath();
-			
+
 			if (keycode == Keys.G)
 				selectedAircraft.landAircraft();
-			
+
 			if (keycode == Keys.T)
 				selectedAircraft.takeOff();
 
 		}
+
 		if (keycode == Keys.SPACE)
 			screen.setPaused(!screen.isPaused());
 
-		if (keycode == Keys.ESCAPE){
+		if (keycode == Keys.ESCAPE) {
 			Art.getSound("ambience").stop();
 			screen.getGame().showMenuScreen();
-			}
+		}
 
 		return false;
 	}

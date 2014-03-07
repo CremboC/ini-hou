@@ -8,11 +8,11 @@ import seprini.data.Config;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 /**
  * Menu Screen, displays the menu with buttons to start and exit the game
  */
-public class MenuScreen extends AbstractScreen
-{
+public class MenuScreen extends AbstractScreen {
 	private final Table ui;
 
 	/**
@@ -47,13 +47,11 @@ public class MenuScreen extends AbstractScreen
 		draw(Art.getTextureRegion("menuAircraft"), 300, 390,
 				root.getSpriteBatch());
 
-		draw(Art.getTextureRegion("libgdx"), 1228, 0,
-				root.getSpriteBatch());
+		draw(Art.getTextureRegion("libgdx"), 1228, 0, root.getSpriteBatch());
 	}
 
 	@Override
-	public void show()
-	{
+	public void show() {
 		super.show();
 		Art.getSound("comeflywithme").play(1f);
 	}

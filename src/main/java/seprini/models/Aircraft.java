@@ -39,8 +39,8 @@ public final class Aircraft extends Entity {
 
 	// whether the aircraft is selected by the player
 	private boolean selected;
-	
-	//landed
+
+	// landed
 	private boolean landed = false;
 
 	private boolean turnRight, turnLeft;
@@ -51,7 +51,7 @@ public final class Aircraft extends Entity {
 
 	// if is increasing, switch rotation sides so it uses the 'smaller' angle
 	private boolean rotateRight = false;
-	
+
 	private boolean mustLand;
 
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
@@ -107,7 +107,8 @@ public final class Aircraft extends Entity {
 	}
 
 	/**
-	 * Additional drawing for if the aircraft is breaching or is required to land
+	 * Additional drawing for if the aircraft is breaching or is required to
+	 * land
 	 * 
 	 * @param batch
 	 */
@@ -116,17 +117,17 @@ public final class Aircraft extends Entity {
 
 		ShapeRenderer drawer = AbstractScreen.shapeRenderer;
 
-		// if the user takes control of the aircraft, 
+		// if the user takes control of the aircraft,
 		// show full flight plan.
 		if (selected) {
-			//Initialises previous to plane's current position.
+			// Initialises previous to plane's current position.
 			Vector2 previous = coords;
 
 			batch.end();
 
-			//Loops through waypoints in flight plan drawing a line between them
-			for (Waypoint waypoint : waypoints)
-			{
+			// Loops through waypoints in flight plan drawing a line between
+			// them
+			for (Waypoint waypoint : waypoints) {
 				Vector2 coords = waypoint.getCoords();
 
 				drawer.begin(ShapeType.Line);
@@ -152,7 +153,7 @@ public final class Aircraft extends Entity {
 
 			batch.begin();
 		}
-		
+
 		// if the aircraft should land, draw a small blue circle
 		// around it
 		if (mustLand) {
@@ -179,9 +180,8 @@ public final class Aircraft extends Entity {
 			color = Color.BLACK;
 		}
 
-		AbstractScreen.drawString("alt: " + getAltitude(), getX() - 30, getY() - 20,
-				color, batch, true, 1);
-
+		AbstractScreen.drawString("alt: " + getAltitude(), getX() - 30,
+				getY() - 20, color, batch, true, 1);
 
 		// debug line from aircraft centre to waypoint centre
 		if (Config.DEBUG_UI && waypoints.size() > 0) {
@@ -201,8 +201,10 @@ public final class Aircraft extends Entity {
 
 	/**
 	 * Update the aircraft rotation & position
-	 * @param  
+	 * 
+	 * @param
 	 */
+	@Override
 	public void act(float delta) {
 
 		if (!isActive || landed)
@@ -221,39 +223,41 @@ public final class Aircraft extends Entity {
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
 				getWidth(), getHeight());
 
-		//Reduce speed and altitude between landing waypoints to simulate a smooth landing.
+		// Reduce speed and altitude between landing waypoints to simulate a
+		// smooth landing.
 		Waypoint approach1 = new Waypoint(230, 275, false);
 		Waypoint approach2 = new Waypoint(310, 195, false);
-		if (this.getNextWaypoint().getCoords().equals(approach1.getCoords()) || this.getNextWaypoint().getCoords().equals(approach2.getCoords())){
+		if (this.getNextWaypoint().getCoords().equals(approach1.getCoords())
+				|| this.getNextWaypoint().getCoords()
+						.equals(approach2.getCoords())) {
 			this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 			this.desiredAltitude = 2500;
 		}
-		
+
 		Waypoint runwayStart = new Waypoint(310, 275, false);
-		if (this.getNextWaypoint().getCoords().equals(runwayStart.getCoords())){
+		if (this.getNextWaypoint().getCoords().equals(runwayStart.getCoords())) {
 			this.setSpeed(250 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 			this.desiredAltitude = 1250;
 		}
-		
+
 		Waypoint runwayMid = new Waypoint(387, 335, false);
-		if (this.getNextWaypoint().getCoords().equals(runwayMid.getCoords())){
+		if (this.getNextWaypoint().getCoords().equals(runwayMid.getCoords())) {
 			this.setSpeed(150 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 			this.desiredAltitude = 0;
 		}
-		
+
 		// finally, test waypoint collisions using new coordinates
 		testWaypointCollisions();
 
 		// test screen boundary
-		if (isActive)
-		{
-			if (getX() < -10 ||
-				getY() < -10 ||
-				getX() > Config.SCREEN_WIDTH - 190 ||
-				getY() > Config.SCREEN_HEIGHT + 105) {
+		if (isActive) {
+			if (getX() < -10 || getY() < -10
+					|| getX() > Config.SCREEN_WIDTH - 190
+					|| getY() > Config.SCREEN_HEIGHT + 105) {
 
 				isActive = false;
-				Debug.msg("Aircraft id " + id + ": Out of bounds, last coordinates: " + coords);
+				Debug.msg("Aircraft id " + id
+						+ ": Out of bounds, last coordinates: " + coords);
 			}
 		}
 	}
@@ -273,7 +277,7 @@ public final class Aircraft extends Entity {
 		float angle = (float) Math.acos(way.dot(coord) / way.len()
 				* coord.len())
 				* MathUtils.radiansToDegrees;
-		
+
 		return angle;
 	}
 
@@ -316,26 +320,22 @@ public final class Aircraft extends Entity {
 
 	/**
 	 * Handles aircraft rotation during the act method call
-	 * @param delta time step
+	 * 
+	 * @param delta
+	 *            time step
 	 */
-	private void rotateAircraft(float delta)
-	{
+	private void rotateAircraft(float delta) {
 		float baseRate = aircraftType.getMaxTurningSpeed() * delta;
 		float rate = 0;
 
 		// Calculate turning rate and give manual control to user
-		if (turnRight)
-		{
+		if (turnRight) {
 			ignorePath = true;
 			rate = -baseRate;
-		}
-		else if (turnLeft)
-		{
+		} else if (turnLeft) {
 			ignorePath = true;
 			rate = baseRate;
-		}
-		else if (!ignorePath && waypoints.size() > 0)
-		{
+		} else if (!ignorePath && waypoints.size() > 0) {
 			// Vector to next waypoint
 			Vector2 nextWaypoint = vectorToWaypoint();
 
@@ -369,15 +369,11 @@ public final class Aircraft extends Entity {
 		}
 
 		// Do the turning (while handling wraparound)
-		if (rate != 0)
-		{
+		if (rate != 0) {
 			float newRotation = getRotation() + rate;
-			if (newRotation < 0)
-			{
+			if (newRotation < 0) {
 				newRotation += 360;
-			}
-			else if (newRotation > 360)
-			{
+			} else if (newRotation > 360) {
 				newRotation -= 360;
 			}
 
@@ -389,19 +385,15 @@ public final class Aircraft extends Entity {
 	/**
 	 * Updates the altitude according to the current desiredAltitude value
 	 */
-	private void updateAltitude(float delta)
-	{
+	private void updateAltitude(float delta) {
 		float maxAmount = aircraftType.getMaxClimbRate() * delta;
 
 		// Move altititude value at most maxAmount units
-		if (desiredAltitude > altitude)
-		{
+		if (desiredAltitude > altitude) {
 			altitude += maxAmount;
 			if (altitude > desiredAltitude)
 				altitude = desiredAltitude;
-		}
-		else if (desiredAltitude < altitude)
-		{
+		} else if (desiredAltitude < altitude) {
 			altitude -= maxAmount;
 			if (altitude < desiredAltitude)
 				altitude = desiredAltitude;
@@ -411,18 +403,15 @@ public final class Aircraft extends Entity {
 	/**
 	 * Tests whether this aircraft has collided with any waypoints
 	 */
-	private void testWaypointCollisions()
-	{
+	private void testWaypointCollisions() {
 		int numWaypoints = waypoints.size();
 
-		if (numWaypoints > 0)
-		{
-			float distanceToWaypoint = coords.cpy().sub(waypoints.get(0).getCoords()).len();
+		if (numWaypoints > 0) {
+			float distanceToWaypoint = coords.cpy()
+					.sub(waypoints.get(0).getCoords()).len();
 
-			if (numWaypoints == 1)
-			{
-				if (distanceToWaypoint < Config.EXIT_WAYPOINT_SIZE.x / 2)
-				{
+			if (numWaypoints == 1) {
+				if (distanceToWaypoint < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 					// Collided with exit point
 					AircraftController.score += 77;
 					Debug.msg("Aircraft id " + id + ": Reached exit WP");
@@ -430,18 +419,18 @@ public final class Aircraft extends Entity {
 					waypoints.clear();
 					isActive = false;
 				}
-			}
-			else
-			{
-				if (distanceToWaypoint < Config.WAYPOINT_SIZE.x / 2)
-				{
+			} else {
+				if (distanceToWaypoint < Config.WAYPOINT_SIZE.x / 2) {
 					// Collided with normal waypoint
 					AircraftController.score += 111;
 					Debug.msg("Aircraft id " + id + ": Hit waypoint");
-					// Sets aircraft speed to 0 if it has reached the middle of runway.
-					// Only occurs when landing as runwayMid can only be part of a landing flight plan.
+					// Sets aircraft speed to 0 if it has reached the middle of
+					// runway.
+					// Only occurs when landing as runwayMid can only be part of
+					// a landing flight plan.
 					Waypoint runwayMid = new Waypoint(387, 335, false);
-					if (waypoints.get(0).getCoords().equals(runwayMid.getCoords())){
+					if (waypoints.get(0).getCoords()
+							.equals(runwayMid.getCoords())) {
 						this.setSpeed(0.00000000001f);
 						this.altitude = 0;
 						this.landed = true;
@@ -460,11 +449,11 @@ public final class Aircraft extends Entity {
 	public void insertWaypoint(Waypoint newWaypoint) {
 		waypoints.add(0, newWaypoint);
 	}
-	
+
 	public Waypoint getNextWaypoint() {
 		return waypoints.get(0);
 	}
-	
+
 	/**
 	 * Increase speed of the aircraft <br>
 	 * Actually changes a scalar which is later multiplied by the velocity
@@ -488,7 +477,6 @@ public final class Aircraft extends Entity {
 	 * vector
 	 */
 	public void decreaseSpeed() {
-
 
 		float prevSpeed = getSpeed();
 		float newSpeed = prevSpeed - SPEED_CHANGE;
@@ -527,7 +515,7 @@ public final class Aircraft extends Entity {
 	public boolean isTurningLeft() {
 		return turnLeft;
 	}
-	
+
 	public void turnRight(boolean set) {
 		if (set)
 			turnLeft = false;
@@ -541,10 +529,10 @@ public final class Aircraft extends Entity {
 	}
 
 	/**
-	 * Causes the aircraft to return to its flightplan after being manually controlled
+	 * Causes the aircraft to return to its flightplan after being manually
+	 * controlled
 	 */
-	public void returnToPath()
-	{
+	public void returnToPath() {
 		turnLeft = false;
 		turnRight = false;
 		ignorePath = false;
@@ -553,14 +541,14 @@ public final class Aircraft extends Entity {
 	/**
 	 * Creates and inserts landing flightplan
 	 * 
-	 * - Creates waypoints at start and end of waypoints invisible to user
-	 * - Calculates position of aircraft relative to runway and selects appropriate approach waypoint position
-	 * - Creates appropriate invisible approach waypoint
-	 * - Adds route to start of flightplan
+	 * - Creates waypoints at start and end of waypoints invisible to user -
+	 * Calculates position of aircraft relative to runway and selects
+	 * appropriate approach waypoint position - Creates appropriate invisible
+	 * approach waypoint - Adds route to start of flightplan
 	 * 
 	 * - Changes in altitude and speed are handled in act.
 	 */
-	public void landAircraft(){
+	public void landAircraft() {
 		if (!selected || AircraftController.isLanding() || mustLand == false)
 			return;
 		AircraftController.setLanding(true);
@@ -569,42 +557,42 @@ public final class Aircraft extends Entity {
 		Waypoint runwayStart = new Waypoint(310, 275, false);
 		Waypoint approach;
 		int choice = 0;
-		//Calculates if aircraft is in Pos A or B to decide which approach waypoint to use.
+		// Calculates if aircraft is in Pos A or B to decide which approach
+		// waypoint to use.
 		//
-		//--------------
-		//|          _/|
-		//| A      _/  |
-		//|      _/    |
-		//|    _/      |
-		//|  _/     B  |
-		//|_/          |
-		//--------------
+		// --------------
+		// | _/|
+		// | A _/ |
+		// | _/ |
+		// | _/ |
+		// | _/ B |
+		// |_/ |
+		// --------------
 		//
-		//Adds 1 to avoid 0 error
-		if (((this.getX() + 1) / (this.getY() + 1)) > 1.8){
+		// Adds 1 to avoid 0 error
+		if (((this.getX() + 1) / (this.getY() + 1)) > 1.8) {
 			choice = 1;
 		}
-		if (choice == 0){
+		if (choice == 0) {
 			approach = new Waypoint(230, 275, false);
 		} else {
 			approach = new Waypoint(310, 195, false);
 		}
-		
+
 		this.insertWaypoint(runwayEnd);
 		this.insertWaypoint(runwayMid);
 		this.insertWaypoint(runwayStart);
 		this.insertWaypoint(approach);
 		returnToPath();
 	}
-	
+
 	/**
 	 * Makes an Aircraft take off
 	 * 
-	 * - Checks aircraft is landed
-	 * - Increases speed + altitude
+	 * - Checks aircraft is landed - Increases speed + altitude
 	 * 
 	 */
-	public void takeOff(){
+	public void takeOff() {
 		if (!landed)
 			return;
 		AircraftController.setLanding(false);
@@ -613,20 +601,20 @@ public final class Aircraft extends Entity {
 		this.mustLand = false;
 		this.desiredAltitude = 5000;
 	}
-	
+
 	public boolean isLanded() {
 		return landed;
 	}
 
 	/**
-	 *  Returns whether or not the aircraft is required to land.
+	 * Returns whether or not the aircraft is required to land.
 	 * 
 	 * @return boolean mustLand
 	 */
 	public boolean isMustLand() {
 		return mustLand;
 	}
-	
+
 	/**
 	 * Get the whole flightplan for this aircraft
 	 * 
@@ -649,7 +637,9 @@ public final class Aircraft extends Entity {
 		return aircraftType.getSeparationRadius();
 	}
 
-	public boolean isBreaching() { return breaching; }
+	public boolean isBreaching() {
+		return breaching;
+	}
 
 	public void setBreaching(boolean is) {
 		this.breaching = is;
@@ -659,14 +649,13 @@ public final class Aircraft extends Entity {
 		return altitude;
 	}
 
-
 	/**
 	 * Sets the speed of the aircraft (ignoring minimum and maximum speeds)
-	 *
-	 * @param speed new speed
+	 * 
+	 * @param speed
+	 *            new speed
 	 */
-	private void setSpeed(float speed)
-	{
+	private void setSpeed(float speed) {
 		if (speed == 0)
 			throw new IllegalArgumentException("speed cannot be 0");
 
@@ -683,7 +672,8 @@ public final class Aircraft extends Entity {
 	}
 
 	/**
-	 * Returns false if aircraft has hit the exit point or if it is off the screen
+	 * Returns false if aircraft has hit the exit point or if it is off the
+	 * screen
 	 * 
 	 * @return whether is active
 	 */
@@ -700,12 +690,11 @@ public final class Aircraft extends Entity {
 	public boolean selected(boolean newSelected) {
 		return this.selected = newSelected;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Aircraft - x: " + getX() + " y: " + getY()
 				+ "\n\r flight plan: " + waypoints.toString();
 	}
-	
 
 }

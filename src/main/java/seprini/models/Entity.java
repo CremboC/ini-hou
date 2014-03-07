@@ -48,8 +48,8 @@ public abstract class Entity extends Actor {
 
 		AbstractScreen.shapeRenderer.begin(ShapeType.Line);
 		AbstractScreen.shapeRenderer.setColor(1, 0, 0, 0);
-		AbstractScreen.shapeRenderer.box(getX() - getWidth() / 2, getY() - getHeight()
-				/ 2, 0, getWidth(), getHeight(), 0);
+		AbstractScreen.shapeRenderer.box(getX() - getWidth() / 2, getY()
+				- getHeight() / 2, 0, getWidth(), getHeight(), 0);
 		AbstractScreen.shapeRenderer.end();
 
 		batch.begin();

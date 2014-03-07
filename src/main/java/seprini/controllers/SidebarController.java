@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.esotericsoftware.tablelayout.Cell;
 
 /**
- * Controls the sidebar in the GameScreen 
+ * Controls the sidebar in the GameScreen
  */
 public final class SidebarController extends ChangeListener {
 
@@ -45,7 +45,8 @@ public final class SidebarController extends ChangeListener {
 	 * @param screen
 	 *            for changing screens once Menu or Pause have been clicked
 	 */
-	public SidebarController(Table sidebar, AircraftController aircrafts, ScreenBase screen) {
+	public SidebarController(Table sidebar, AircraftController aircrafts,
+			ScreenBase screen) {
 		this.sidebar = sidebar;
 		this.aircrafts = aircrafts;
 		this.screen = screen;
@@ -96,25 +97,26 @@ public final class SidebarController extends ChangeListener {
 
 		aircraftControls.row();
 
-		createButton("returnToPath", " Return to Path (R)", aircraftControls, false)
-				.width(200).colspan(2);
+		createButton("returnToPath", " Return to Path (R)", aircraftControls,
+				false).width(200).colspan(2);
 
 		aircraftControls.row();
 
 		createButton("accelerate", " Accelerate (E)", aircraftControls, false)
 				.width(200).colspan(2);
-		
+
 		aircraftControls.row().colspan(2);
 
 		createButton("decelerate", " Decelerate (Q)", aircraftControls, false)
 				.width(200);
-		
-		aircraftControls.row().colspan(2);
-		
-		createButton("takeOff", "Take Off (T)", aircraftControls, false).width(200);
 
 		aircraftControls.row().colspan(2);
-		
+
+		createButton("takeOff", "Take Off (T)", aircraftControls, false).width(
+				200);
+
+		aircraftControls.row().colspan(2);
+
 		createButton("land", "Land (G)", aircraftControls, false).width(200);
 
 		aircraftControls.row().spaceTop(100);
@@ -136,12 +138,12 @@ public final class SidebarController extends ChangeListener {
 
 		createLabel("", " Time:", bottomButtons).width(100);
 		createLabel("timer", "..", bottomButtons).width(100);
-		
+
 		bottomButtons.row();
-		
+
 		createLabel("", " Score:", bottomButtons).width(100);
 		createLabel("score", "..", bottomButtons).width(100);
-		
+
 		bottomButtons.row();
 
 		// adding buttons to bottom
@@ -158,7 +160,7 @@ public final class SidebarController extends ChangeListener {
 
 		// update timer
 		labels.get("timer").setText("" + Math.round(aircrafts.getTimer()));
-		
+
 		// update score
 		labels.get("score").setText("" + Math.round(aircrafts.getScore()));
 
@@ -170,13 +172,16 @@ public final class SidebarController extends ChangeListener {
 			speedText = " Speed: ";
 		} else {
 			altitudeText = " Altitude: " + selectedAircraft.getAltitude() + "m";
-			speedText = " Speed: " + Math.round(selectedAircraft.getSpeed()
+			speedText = " Speed: "
+					+ Math.round(selectedAircraft.getSpeed()
 							* Config.AIRCRAFT_SPEED_MULTIPLIER) + "km/h";
 		}
 
 		// force left + right buttons to be checked correctly
-		buttons.get("left").setChecked (selectedAircraft != null && selectedAircraft.isTurningLeft());
-		buttons.get("right").setChecked(selectedAircraft != null && selectedAircraft.isTurningRight());
+		buttons.get("left").setChecked(
+				selectedAircraft != null && selectedAircraft.isTurningLeft());
+		buttons.get("right").setChecked(
+				selectedAircraft != null && selectedAircraft.isTurningRight());
 
 		// update aircraft altitude text
 		labels.get("altitude").setText(altitudeText);
@@ -194,9 +199,8 @@ public final class SidebarController extends ChangeListener {
 	 */
 	private Cell<?> createButton(String name, String text, Table parent,
 			boolean toggle) {
-		TextButton button = new TextButton(text, Art.getSkin(), (toggle)
-				? "toggle"
-				: "default");
+		TextButton button = new TextButton(text, Art.getSkin(),
+				(toggle) ? "toggle" : "default");
 		button.pad(3);
 		button.addListener(this);
 
@@ -254,10 +258,10 @@ public final class SidebarController extends ChangeListener {
 
 				if (actor.equals(buttons.get("land")))
 					selectedAircraft.landAircraft();
-				
+
 				if (actor.equals(buttons.get("takeOff")))
 					selectedAircraft.takeOff();
-				
+
 				if (actor.equals(buttons.get("up")))
 					selectedAircraft.increaseAltitude();
 

@@ -13,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-public class EndScreen extends AbstractScreen
-{
+public class EndScreen extends AbstractScreen {
 	public EndScreen(ATC game, float time, float score) {
 
 		super(game);
@@ -46,10 +45,9 @@ public class EndScreen extends AbstractScreen
 						+ Math.round(time)
 						+ " seconds, which is respectable (at least by some standards).\n"
 						+ "In addition you achieved a score of "
-						+ Math.round(score)
-						+ ".\n"
-						+ "\nPRESS ESC TO RETURN TO THE MENU ",
-				Art.getSkin(), "textStyle");
+						+ Math.round(score) + ".\n"
+						+ "\nPRESS ESC TO RETURN TO THE MENU ", Art.getSkin(),
+				"textStyle");
 
 		ui.add(text).center();
 

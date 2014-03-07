@@ -49,10 +49,13 @@ public class Art {
 
 	/**
 	 * Enables / disables fake art objects
-	 *
-	 * @param value if true, getters return fake artwork objects
+	 * 
+	 * @param value
+	 *            if true, getters return fake artwork objects
 	 */
-	static void setUseFakeArt(boolean value) { useFakeArt = value; }
+	static void setUseFakeArt(boolean value) {
+		useFakeArt = value;
+	}
 
 	/**
 	 * Initialises loading of texture, should be called once
@@ -66,7 +69,7 @@ public class Art {
 
 		// splits up the sprite into parts and loads them into the table
 		textures.put("airspace", split(combined, 0, 0, 1079, 720));
-		textures.put("sidebar", split(combined, 1080, 0, 200,720));
+		textures.put("sidebar", split(combined, 1080, 0, 200, 720));
 		textures.put("aircraft", split(combined, 1281, 0, 72, 63));
 		textures.put("waypoint", split(combined, 0, 720, 20, 20));
 		textures.put("menuAircraft", split(combined, 1280, 64, 727, 249));
@@ -113,7 +116,8 @@ public class Art {
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 
-		// Toggle style is the same as default, except it has a checked colour as well
+		// Toggle style is the same as default, except it has a checked colour
+		// as well
 		TextButtonStyle toggleStyle = new TextButtonStyle(textButtonStyle);
 		toggleStyle.checked = skin.newDrawable("white", Color.BLUE);
 		skin.add("toggle", toggleStyle);
@@ -134,10 +138,11 @@ public class Art {
 
 	/**
 	 * Splits a texture from given position with size and width
-	 *
+	 * 
 	 * @return The requested TextureRegion
 	 */
-	private static TextureRegion split(Texture texture, int x, int y, int width, int height) {
+	private static TextureRegion split(Texture texture, int x, int y,
+			int width, int height) {
 		return new TextureRegion(texture, x, y, width, height);
 	}
 
@@ -153,8 +158,9 @@ public class Art {
 
 	/**
 	 * Loads a sound effects file
-	 *
-	 * @param soundName filename of the sound file
+	 * 
+	 * @param soundName
+	 *            filename of the sound file
 	 * @return the new sound
 	 */
 	private static Playable loadSound(String soundName, boolean music) {
@@ -202,79 +208,109 @@ public class Art {
 		return skin;
 	}
 
-	private static class SoundImpl implements Playable
-	{
+	private static class SoundImpl implements Playable {
 		private final Sound sound;
 
-		private SoundImpl(Sound sound)
-		{
+		private SoundImpl(Sound sound) {
 			this.sound = sound;
 		}
 
 		@Override
-		public void play() { sound.play(); }
+		public void play() {
+			sound.play();
+		}
 
 		@Override
-		public void playLooping() { sound.setLooping(sound.play(), true); }
+		public void playLooping() {
+			sound.setLooping(sound.play(), true);
+		}
 
 		@Override
-		public void play(float volume) { sound.play(volume); }
+		public void play(float volume) {
+			sound.play(volume);
+		}
 
 		@Override
-		public void playLooping(float volume) { sound.setLooping(sound.play(volume), true); }
+		public void playLooping(float volume) {
+			sound.setLooping(sound.play(volume), true);
+		}
 
 		@Override
-		public void stop() { sound.stop(); }
+		public void stop() {
+			sound.stop();
+		}
 
 		@Override
-		public void dispose() { sound.dispose();}
+		public void dispose() {
+			sound.dispose();
+		}
 	}
 
-	private static class MusicImpl implements Playable
-	{
+	private static class MusicImpl implements Playable {
 		private final Music music;
 
-		private MusicImpl(Music music)
-		{
+		private MusicImpl(Music music) {
 			this.music = music;
 		}
 
 		@Override
-		public void play() { play(1); }
+		public void play() {
+			play(1);
+		}
 
 		@Override
-		public void playLooping() { playLooping(1); }
+		public void playLooping() {
+			playLooping(1);
+		}
 
 		@Override
-		public void play(float volume)
-		{
+		public void play(float volume) {
 			music.setLooping(false);
 			music.setVolume(volume);
 			music.play();
 		}
 
 		@Override
-		public void playLooping(float volume)
-		{
+		public void playLooping(float volume) {
 			music.setLooping(true);
 			music.setVolume(volume);
 			music.play();
 		}
 
 		@Override
-		public void stop() { music.stop(); }
+		public void stop() {
+			music.stop();
+		}
 
 		@Override
-		public void dispose() { music.dispose();}
+		public void dispose() {
+			music.dispose();
+		}
 	}
 
-	private static class FakeSoundImpl implements Playable
-	{
-		@Override public void play() {}
-		@Override public void playLooping() {}
-		@Override public void play(float volume) {}
-		@Override public void playLooping(float volume) {}
-		@Override public void stop() {}
-		@Override public void dispose() {}
+	private static class FakeSoundImpl implements Playable {
+		@Override
+		public void play() {
+		}
+
+		@Override
+		public void playLooping() {
+		}
+
+		@Override
+		public void play(float volume) {
+		}
+
+		@Override
+		public void playLooping(float volume) {
+		}
+
+		@Override
+		public void stop() {
+		}
+
+		@Override
+		public void dispose() {
+		}
 	}
 }

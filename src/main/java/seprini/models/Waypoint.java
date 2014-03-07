@@ -29,7 +29,8 @@ public class Waypoint extends Entity {
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
 				getWidth(), getHeight());
 	}
-	
+
+	@Override
 	public boolean isVisible() {
 		return visible;
 	}
@@ -42,13 +43,13 @@ public class Waypoint extends Entity {
 	public Waypoint cpy() {
 		return new Waypoint(getX(), getY(), this.visible);
 	}
-	
+
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
-		if (visible){
+		if (visible) {
 			super.draw(batch, parentAlpha);
 		}
-			
+
 	}
 
 }

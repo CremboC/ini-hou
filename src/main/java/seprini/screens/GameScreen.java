@@ -1,6 +1,5 @@
 package seprini.screens;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import seprini.ATC;
 import seprini.controllers.AircraftController;
 import seprini.controllers.SidebarController;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -22,12 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 /**
  * The game screen - all game logic starts here
  */
-public class GameScreen extends AbstractScreen
-{
+public class GameScreen extends AbstractScreen {
 	private final AircraftController controller;
-
-	// Paused state
-	//private boolean paused;
 
 	public GameScreen(ATC game, GameDifficulty diff) {
 
