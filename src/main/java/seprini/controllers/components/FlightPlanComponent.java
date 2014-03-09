@@ -152,10 +152,10 @@ public class FlightPlanComponent {
 	 * @param minDistance
 	 *            - desired minimum distance between aircraft's entryWaypoint and
 	 *            its exitWaypoint.
-	 * @return Exitpoint
+	 * @return Waypoint
 	 */
-	private Exitpoint setEndpoint(Waypoint entryWaypoint, int minDistance) {
-		Exitpoint chosenExitPoint = waypoints.getExitList().get(rand
+	private Waypoint setEndpoint(Waypoint entryWaypoint, int minDistance) {
+		Waypoint chosenExitPoint = waypoints.getExitList().get(rand
 				.nextInt(waypoints.getExitList().size()));
 		if (chosenExitPoint.getCoords().dst(entryWaypoint.getCoords()) < minDistance) {
 			chosenExitPoint = setEndpoint(entryWaypoint, minDistance);
