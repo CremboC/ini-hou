@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.Random;
 
 import seprini.controllers.AircraftController;
+import seprini.models.*;
 import seprini.data.Debug;
+import seprini.models.Airport;
 import seprini.models.Entrypoint;
 import seprini.models.Exitpoint;
 import seprini.models.Waypoint;
@@ -19,7 +21,7 @@ public class WaypointComponent {
 	
 	private ArrayList<Waypoint> permanentList = new ArrayList<Waypoint>();
 	private ArrayList<Entrypoint> entryList = new ArrayList<Entrypoint>();
-	private ArrayList<Exitpoint> exitList = new ArrayList<Exitpoint>();
+	private ArrayList<Waypoint> exitList = new ArrayList<Waypoint>();
 
 	private final AircraftController controller;
 	
@@ -39,16 +41,19 @@ public class WaypointComponent {
 		createExitpoint(0, 420);
 		createExitpoint(540, 720);
 
-		// add some waypoints
+		// add visible waypoints
 		
-		createWaypoint(150, 360);
-		createWaypoint(300, 500);
-		createWaypoint(600, 650);
-		createWaypoint(700, 200);
-		createWaypoint(850, 360);
-		createWaypoint(700, 500);
-		createWaypoint(450, 100);
+		createWaypoint(150, 360, true);
+		createWaypoint(300, 500, true);
+		createWaypoint(600, 650, true);
+		createWaypoint(700, 200, true);
+		createWaypoint(850, 360, true);
+		createWaypoint(700, 500, true);
+		createWaypoint(450, 100, true);
 		
+		// add airports;
+		
+		exitList.add(new Airport(387, 335, true));
 		
 		Collections.shuffle(permanentList, new Random());
 	}
@@ -65,10 +70,10 @@ public class WaypointComponent {
 	 * @param x
 	 * @param y
 	 */
-	public boolean createWaypoint(float x, float y) {
+	public boolean createWaypoint(float x, float y, boolean visible) {
 		Debug.msg("Creating waypoint at: " + x + ":" + y);
 
-		final Waypoint waypoint = new Waypoint(x, y, true);
+		final Waypoint waypoint = new Waypoint(x, y, visible);
 
 		// add it to the correct list according to whether it is user created or
 		// not
@@ -135,7 +140,7 @@ public class WaypointComponent {
 		return entryList;
 	}
 
-	public ArrayList<Exitpoint> getExitList() {
+	public ArrayList<Waypoint> getExitList() {
 		return exitList;
 	}
 }
