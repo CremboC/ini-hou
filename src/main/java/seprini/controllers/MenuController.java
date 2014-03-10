@@ -47,8 +47,7 @@ public final class MenuController extends ChangeListener {
 	 */
 	private void addButtons() {
 		// Create a label for difficulty and add it
-		Label difficultylabel = new Label("Difficulty:", Art.getSkin());
-		ui.add(difficultylabel).width(100).center();
+		ui.add(new Label("Singleplayer:", Art.getSkin())).width(100).center();
 
 		// create a button to start the game in easy mode
 		addButton("startEasy", "Easy", this).width(100);
@@ -58,6 +57,21 @@ public final class MenuController extends ChangeListener {
 
 		// create a button to start the game in hard mode
 		addButton("startHard", "Hard", this).width(100);
+
+		// create a new row
+		ui.row();
+
+		// Create a label for difficulty and add it
+		ui.add(new Label("Multiplayer:", Art.getSkin())).width(100).center();
+
+		// create a button to start the game in easy mode
+		addButton("multiEasy", "Easy", this).width(100);
+
+		// create a button to start the game in medium mode
+		addButton("multiMedium", "Medium", this).width(100);
+
+		// create a button to start the game in hard mode
+		addButton("multiHard", "Hard", this).width(100);
 
 		// create a new row
 		ui.row();
@@ -103,6 +117,16 @@ public final class MenuController extends ChangeListener {
 
 		if (actor.equals(buttons.get("startHard")))
 			screen.getGame().showGameScreen(GameDifficulty.HARD);
+
+		// multiplayer buttons
+		if (actor.equals(buttons.get("multiEasy")))
+			screen.getGame().showMultiplayerScreen(GameDifficulty.EASY);
+
+		if (actor.equals(buttons.get("multiMedium")))
+			screen.getGame().showMultiplayerScreen(GameDifficulty.MEDIUM);
+
+		if (actor.equals(buttons.get("multiHard")))
+			screen.getGame().showMultiplayerScreen(GameDifficulty.HARD);
 
 		if (actor.equals(buttons.get("exit")))
 			Gdx.app.exit();

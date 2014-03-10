@@ -9,6 +9,7 @@ import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.data.GameDifficulty;
+import seprini.data.GameMode;
 import seprini.models.Aircraft;
 import seprini.models.Airspace;
 import seprini.models.Map;
@@ -68,7 +69,7 @@ public final class AircraftController extends InputListener {
 	 * @param screen
 	 */
 	public AircraftController(GameDifficulty diff, Airspace airspace,
-			ScreenBase screen) {
+			ScreenBase screen, GameMode single) {
 		this.difficulty = diff;
 		this.airspace = airspace;
 		this.screen = screen;
@@ -196,7 +197,7 @@ public final class AircraftController extends InputListener {
 			// upon calling root.draw()
 			airspace.addActor(generatedAircraft);
 
-			// play a sound to audibly inform the player that an aircraft as
+			// play a sound to audibly inform the player that an aircraft has
 			// spawned
 			Art.getSound("ding").play(0.5f);
 		}

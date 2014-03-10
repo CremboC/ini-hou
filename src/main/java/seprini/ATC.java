@@ -5,6 +5,7 @@ import seprini.data.GameDifficulty;
 import seprini.screens.EndScreen;
 import seprini.screens.GameScreen;
 import seprini.screens.MenuScreen;
+import seprini.screens.MultiplayerScreen;
 
 import com.badlogic.gdx.Game;
 
@@ -31,6 +32,15 @@ public class ATC extends Game {
 	 */
 	public void showGameScreen(GameDifficulty difficulty) {
 		setScreen(new GameScreen(this, difficulty));
+	}
+
+	/**
+	 * Show the multiplayer screen
+	 * 
+	 * @param difficulty
+	 */
+	public void showMultiplayerScreen(GameDifficulty difficulty) {
+		setScreen(new MultiplayerScreen(this, difficulty));
 	}
 
 	/**
