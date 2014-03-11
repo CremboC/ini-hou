@@ -21,8 +21,8 @@ public final class Config {
 	public final static Vector2 EXIT_WAYPOINT_SIZE = new Vector2(50, 50);
 	
 	// Multiplayer config
-	public final static Vector2 MULTIPLAYER_SIZE = new Vector2(SCREEN_HEIGHT,
-			SCREEN_WIDTH);
+	public final static Vector2 MULTIPLAYER_SIZE = new Vector2(SCREEN_WIDTH,
+			SCREEN_HEIGHT);
 
 	// UI related
 	public final static Vector2 SIDEBAR_SIZE = new Vector2(200, SCREEN_HEIGHT);

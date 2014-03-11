@@ -23,17 +23,15 @@ public class MultiplayerScreen extends AbstractScreen {
 		Stage root = getStage();
 		Table ui = new Table();
 
-		// create a separate layout for sidebar with all the buttons and
-		// required info
-		Table sidebar = new Table();
-
 		if (Config.DEBUG_UI)
-			sidebar.debug();
+			ui.debug();
 
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
+
 		controller = new AircraftController(diff, airspace, this,
 				GameMode.MULTI);
+
 		root.setKeyboardFocus(airspace);
 
 		// set controller update as first actor
@@ -58,6 +56,12 @@ public class MultiplayerScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+
+		if (Config.DEBUG_UI) {
+			Stage root = getStage();
+
+			Table.drawDebug(root);
+		}
 	}
 
 }

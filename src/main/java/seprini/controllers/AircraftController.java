@@ -58,6 +58,9 @@ public final class AircraftController extends InputListener {
 	// landing
 	private static boolean landing = false;
 
+	// game mode
+	private final GameMode mode;
+
 	/**
 	 * 
 	 * @param diff
@@ -69,17 +72,18 @@ public final class AircraftController extends InputListener {
 	 * @param screen
 	 */
 	public AircraftController(GameDifficulty diff, Airspace airspace,
-			ScreenBase screen, GameMode single) {
+			ScreenBase screen, GameMode mode) {
 		this.difficulty = diff;
 		this.airspace = airspace;
 		this.screen = screen;
+		this.mode = mode;
 
 		// TODO: jcowgill - this is a massive hack but it will do at the moment
 		score = 0;
 		landing = false;
 
 		// add the background
-		airspace.addActor(new Map());
+		airspace.addActor(new Map(mode));
 
 		// manages the waypoints
 		this.waypoints = new WaypointComponent(this);

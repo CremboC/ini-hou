@@ -69,6 +69,7 @@ public class Art {
 
 		// splits up the sprite into parts and loads them into the table
 		textures.put("airspace", split(combined, 0, 0, 1079, 720));
+		textures.put("mp-airspace", split(combined, 0, 740, 1280, 720));
 		textures.put("sidebar", split(combined, 1080, 0, 200, 720));
 		textures.put("aircraft", split(combined, 1281, 0, 72, 63));
 		textures.put("waypoint", split(combined, 0, 720, 20, 20));
