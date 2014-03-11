@@ -264,16 +264,9 @@ public final class AircraftController extends InputListener {
 				+ rand.nextInt(100))
 			return null;
 
-		int landChoice = rand.nextInt(6);
-
-		boolean shouldLand = false;
-
-		if (landChoice == 5) {
-			shouldLand = true;
-		}
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++, shouldLand);
+				flightplan.generate(), aircraftId++);
 
 		aircraftList.add(newAircraft);
 
@@ -304,9 +297,6 @@ public final class AircraftController extends InputListener {
 		if (aircraft.equals(selectedAircraft))
 			selectedAircraft = null;
 
-		if (aircraft.isMustLand()) {
-			score -= 1000;
-		}
 		// removes the aircraft from the list of aircrafts on screen
 		aircraftList.remove(i);
 
@@ -347,8 +337,7 @@ public final class AircraftController extends InputListener {
 	public void redirectAircraft(Waypoint waypoint) {
 		Debug.msg("Redirecting aircraft " + 0 + " to " + waypoint);
 
-		if (getSelectedAircraft() == null
-				|| getSelectedAircraft().isLanded() == true)
+		if (getSelectedAircraft() == null)
 			return;
 
 		getSelectedAircraft().insertWaypoint(waypoint);
@@ -410,11 +399,13 @@ public final class AircraftController extends InputListener {
 			if (keycode == Keys.R)
 				selectedAircraft.returnToPath();
 
-			if (keycode == Keys.G)
-				selectedAircraft.landAircraft();
+			if (keycode == Keys.G) {
+			}
+			// selectedAircraft.landAircraft();
 
-			if (keycode == Keys.T)
-				selectedAircraft.takeOff();
+			if (keycode == Keys.T) {
+			}
+			// selectedAircraft.takeOff();
 
 		}
 

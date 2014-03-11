@@ -35,10 +35,10 @@ public class WaypointComponent {
 		createEntrypoint(540, 0);
 
 		// add exit waypoints to exitList
-		/*
-		 * createExitpoint(1080, 720); createExitpoint(1080, 0);
-		 * createExitpoint(0, 420); createExitpoint(540, 720);
-		 */
+		createExitpoint(1080, 720);
+		createExitpoint(1080, 0);
+		createExitpoint(0, 420);
+		createExitpoint(540, 720);
 
 		// add visible waypoints
 		

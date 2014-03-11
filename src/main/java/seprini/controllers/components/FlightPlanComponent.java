@@ -29,7 +29,7 @@ public class FlightPlanComponent {
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
 		Waypoint entryWaypoint = setStartpoint();
-		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 100);
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 500);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
 		return flightPlanWaypointGenerator(flightPlan, entryWaypoint,
@@ -47,7 +47,7 @@ public class FlightPlanComponent {
 
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
-		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 100);
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 500);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
 
