@@ -538,9 +538,8 @@ public final class Aircraft extends Entity {
 	 * - Changes in altitude and speed are handled in act.
 	 */
 	public void landAircraft() {
-		if (!selected || AircraftController.isLanding() || mustLand == false)
+		if (!selected || mustLand == false)
 			return;
-		AircraftController.setLanding(true);
 		Waypoint runwayEnd = new Waypoint(464, 395, false);
 		Waypoint runwayMid = new Waypoint(387, 335, false);
 		Waypoint runwayStart = new Waypoint(310, 275, false);
@@ -584,7 +583,6 @@ public final class Aircraft extends Entity {
 	public void takeOff() {
 		if (!landed)
 			return;
-		AircraftController.setLanding(false);
 		this.landed = false;
 		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 		this.mustLand = false;

@@ -55,9 +55,6 @@ public final class AircraftController extends InputListener {
 	// game score
 	public static float score = 0;
 
-	// landing
-	private static boolean landing = false;
-
 	// game mode
 	private final GameMode mode;
 
@@ -80,7 +77,6 @@ public final class AircraftController extends InputListener {
 
 		// TODO: jcowgill - this is a massive hack but it will do at the moment
 		score = 0;
-		landing = false;
 
 		// add the background
 		airspace.addActor(new Map(mode));
@@ -364,14 +360,6 @@ public final class AircraftController extends InputListener {
 
 	public float getScore() {
 		return score;
-	}
-
-	public static boolean isLanding() {
-		return landing;
-	}
-
-	public static void setLanding(boolean landing) {
-		AircraftController.landing = landing;
 	}
 
 	public Aircraft getSelectedAircraft() {
