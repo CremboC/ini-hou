@@ -3,7 +3,7 @@ package seprini.controllers.components;
 import java.util.ArrayList;
 import java.util.Random;
 
-import seprini.models.Exitpoint;
+import seprini.models.Airport;
 import seprini.models.Waypoint;
 
 import com.badlogic.gdx.math.Vector2;
@@ -11,12 +11,10 @@ import com.badlogic.gdx.math.Vector2;
 public class FlightPlanComponent {
 
 	static Random rand = new Random();
-
 	private WaypointComponent waypoints;
 
 	public FlightPlanComponent(WaypointComponent waypoints) {
 		this.waypoints = waypoints;
-		
 
 	}
 
@@ -31,10 +29,28 @@ public class FlightPlanComponent {
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
 		Waypoint entryWaypoint = setStartpoint();
-		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 600);
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 100);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
-		
+		return flightPlanWaypointGenerator(flightPlan, entryWaypoint,
+				lastWaypoint);
+	}
+	
+	/**
+	 * Overload to use when aircraft is taking off from the airport, allowing
+	 * entry waypoint to be specified.
+	 * 
+	 * @param entryWaypoint
+	 * @return
+	 */
+	public ArrayList<Waypoint> generate(Waypoint entryWaypoint){
+
+		// Initialisation of parameters required by flightPlanWaypointGenerator.
+		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 100);
+		// entryWaypoint immediately added to aircrafts flightPlan.
+		flightPlan.add(entryWaypoint);
+
 		return flightPlanWaypointGenerator(flightPlan, entryWaypoint,
 				lastWaypoint);
 	}
@@ -53,6 +69,12 @@ public class FlightPlanComponent {
 
 		// Base Case; self explanatory.
 		if (currentWaypoint.equals(lastWaypoint)) {
+			// create an exception here for if lastWaypoint is an airport.
+			if (lastWaypoint instanceof Airport) {
+				// In both single and multi-player check which airport it is.
+				
+				
+			}
 			return flightPlan;
 		}
 
@@ -71,7 +93,7 @@ public class FlightPlanComponent {
 			// Call selectNextWaypoint.
 			Waypoint nextWaypoint = selectNextWaypoint(currentWaypoint,
 					lastWaypoint, flightPlan, normalVectorFromCurrentToLast,
-					waypointSelectionList, 30, 150);
+					waypointSelectionList, 30, 100);
 			
 			waypointSelectionList.clear();
 			
@@ -117,7 +139,12 @@ public class FlightPlanComponent {
 					&& (Math.acos(normalVectorFromCurrentToPotential
 							.dot(normalVectorFromCurrentToLast)) * 180 / Math.PI) < maxAngle
 					&& waypoint.getCoords().dst(currentWaypoint.getCoords()) > minDistance
-					&& waypoint.getCoords().dst(lastWaypoint.getCoords()) > minDistance) {
+					&& waypoint.getCoords().dst(lastWaypoint.getCoords()) > minDistance
+					&& waypoint.getCoords().dst(
+							flightPlan.get(flightPlan.size() - 1).getCoords()) <= lastWaypoint
+							.getCoords().dst(
+									flightPlan.get(flightPlan.size() - 1)
+											.getCoords())) {
 				// If all conditions are met, choose this waypoint as the
 				// nextWaypoint.
 				nextWaypoint = waypoint;
