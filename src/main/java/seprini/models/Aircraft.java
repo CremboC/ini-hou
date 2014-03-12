@@ -35,6 +35,7 @@ public final class Aircraft extends Entity {
 	private Vector2 velocity = new Vector2(0, 0);
 
 	private boolean breaching;
+	private boolean breachingLastFrame;
 
 	private boolean isActive = true;
 	private boolean ignorePath = false; // When user has taken control of the
@@ -57,6 +58,8 @@ public final class Aircraft extends Entity {
 
 	private boolean mustLand;
 
+	private int score;
+
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
 			int id) {
 
@@ -65,6 +68,8 @@ public final class Aircraft extends Entity {
 
 		this.id = id;
 		this.aircraftType = aircraftType;
+
+		score = 50;
 
 		// initialize entity
 		texture = aircraftType.getTexture();
@@ -253,6 +258,8 @@ public final class Aircraft extends Entity {
 						+ ": Out of bounds, last coordinates: " + coords);
 			}
 		}
+
+		checkBreaching();
 	}
 
 	/**
@@ -406,7 +413,7 @@ public final class Aircraft extends Entity {
 			if (numWaypoints == 1) {
 				if (distanceToWaypoint < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 					// Collided with exit point
-					AircraftController.score += 77;
+					AircraftController.score += score;
 					Debug.msg("Aircraft id " + id + ": Reached exit WP");
 
 					// Test if exit point is an airport, and add aircraft into
@@ -421,7 +428,7 @@ public final class Aircraft extends Entity {
 			} else {
 				if (distanceToWaypoint < Config.WAYPOINT_SIZE.x / 2) {
 					// Collided with normal waypoint
-					AircraftController.score += 111;
+					// AircraftController.score += 10;
 					Debug.msg("Aircraft id " + id + ": Hit waypoint");
 					// Sets aircraft speed to 0 if it has reached the middle of
 					// runway.
@@ -663,6 +670,19 @@ public final class Aircraft extends Entity {
 	public String toString() {
 		return "Aircraft - x: " + getX() + " y: " + getY()
 				+ "\n\r flight plan: " + waypoints.toString();
+	}
+
+	public void checkBreaching() {
+		if (isBreaching()) {
+			if (!breachingLastFrame) {
+				score -= 5;
+			}
+		}
+		breachingLastFrame = isBreaching();
+	}
+
+	public int getScore() {
+		return score;
 	}
 
 }

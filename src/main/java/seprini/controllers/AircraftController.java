@@ -104,7 +104,7 @@ public final class AircraftController extends InputListener {
 		timer += delta;
 
 		// Update score
-		score += difficulty.getScoreMultiplier() * delta;
+		// score += difficulty.getScoreMultiplier() * delta;
 
 		breachingSound = false;
 
@@ -156,6 +156,9 @@ public final class AircraftController extends InputListener {
 								.getSeparationRadius()) {
 
 					separationRulesBreached(planeI, planeJ);
+				} else {
+					planeI.setBreaching(false);
+					planeJ.setBreaching(false);
 				}
 			}
 
