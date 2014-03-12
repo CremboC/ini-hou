@@ -17,13 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class WaypointComponent {
-	
+
 	private ArrayList<Waypoint> permanentList = new ArrayList<Waypoint>();
 	private ArrayList<Entrypoint> entryList = new ArrayList<Entrypoint>();
 	private ArrayList<Waypoint> exitList = new ArrayList<Waypoint>();
 
 	private final AircraftController controller;
-	
+
 	public WaypointComponent(AircraftController controller) {
 
 		this.controller = controller;
@@ -41,7 +41,7 @@ public class WaypointComponent {
 		createExitpoint(540, 720);
 
 		// add visible waypoints
-		
+
 		createWaypoint(150, 360, true);
 		createWaypoint(300, 500, true);
 		createWaypoint(600, 650, true);
@@ -49,17 +49,18 @@ public class WaypointComponent {
 		createWaypoint(850, 360, true);
 		createWaypoint(700, 500, true);
 		createWaypoint(450, 100, true);
-		
+
 		// add airports;
-		
+
 		exitList.add(new Airport(387, 335, true));
-		
+		exitList.add(new Airport(750, 350, true));
+
 		Collections.shuffle(permanentList, new Random());
 	}
 
 	/**
 	 * Creates a new waypoint.
-	 *
+	 * 
 	 * <p>
 	 * Creates a new user waypoint when the user left-clicks within the airspace
 	 * window.
@@ -97,14 +98,13 @@ public class WaypointComponent {
 					return true;
 				}
 
-
 				return true;
 			}
 		});
 
 		return true;
 	}
-	
+
 	/**
 	 * Creates an exitpoint, adds it to the list of exitpoints and adds it to
 	 * the airspace

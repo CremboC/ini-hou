@@ -204,6 +204,7 @@ public final class AircraftController extends InputListener {
 
 		// sort aircraft so they appear in the right order
 		airspace.sortAircraft();
+
 	}
 
 	/**
@@ -263,7 +264,6 @@ public final class AircraftController extends InputListener {
 		if (timer - lastGenerated < difficulty.getTimeBetweenGenerations()
 				+ rand.nextInt(100))
 			return null;
-
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
 				flightplan.generate(), aircraftId++);

@@ -24,7 +24,9 @@ public class Airport extends Waypoint {
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
+
 		// TODO Auto-generated constructor stub
+
 	}
 
 	/**
@@ -64,4 +66,5 @@ public class Airport extends Waypoint {
 
 		return aircraft;
 	}
+
 }

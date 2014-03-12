@@ -233,6 +233,12 @@ public final class Aircraft extends Entity {
 			this.desiredAltitude = 0;
 		}
 
+		Waypoint runwayMid2 = new Waypoint(750, 350, false);
+		if (this.getNextWaypoint().getCoords().equals(runwayMid2.getCoords())) {
+			this.setSpeed(150 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+			this.desiredAltitude = 0;
+		}
+
 		// finally, test waypoint collisions using new coordinates
 		testWaypointCollisions();
 
