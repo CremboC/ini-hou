@@ -409,6 +409,12 @@ public final class Aircraft extends Entity {
 					AircraftController.score += 77;
 					Debug.msg("Aircraft id " + id + ": Reached exit WP");
 
+					// Test if exit point is an airport, and add aircraft into
+					// airport
+					if (getNextWaypoint() instanceof Airport) {
+						((Airport) getNextWaypoint()).insertAircraft(this);
+					}
+
 					waypoints.clear();
 					isActive = false;
 				}

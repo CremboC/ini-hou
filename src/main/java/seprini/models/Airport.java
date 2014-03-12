@@ -8,7 +8,7 @@ public class Airport extends Waypoint {
 	private Random rand = new Random();
 	// Maximum number of aircraft that can be in the airport at once. If
 	// exceeded, game ends.
-	private final static int MAX_AIRCRAFT_NUMBER = 5;
+	private final static int MAX_AIRCRAFT_NUMBER = 0;
 	// Required altitude for an aircraft to land
 	public final static int MIN_ALTITUDE = 5000;
 	// Time remaining before an aircraft can take off.

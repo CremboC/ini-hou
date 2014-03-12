@@ -118,7 +118,15 @@ public final class AircraftController extends InputListener {
 			Aircraft planeI = aircraftList.get(i);
 
 			// Update aircraft.
-			planeI.act(delta);
+			// planeI.act(delta);
+
+			try {
+				planeI.act(delta);
+			} catch (IllegalStateException e) {
+				// simple way to end the game if the airport is full
+				collisionHasOccured(planeI, planeI);
+			}
+
 			planeI.setBreaching(false);
 
 			// Collision Detection + Separation breach detection.
