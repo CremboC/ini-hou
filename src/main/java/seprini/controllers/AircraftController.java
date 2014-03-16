@@ -120,12 +120,7 @@ public final class AircraftController extends InputListener {
 			// Update aircraft.
 			// planeI.act(delta);
 
-			try {
-				planeI.act(delta);
-			} catch (IllegalStateException e) {
-				// simple way to end the game if the airport is full
-				collisionHasOccured(planeI, planeI);
-			}
+			planeI.act(delta, this);
 
 			planeI.setBreaching(false);
 
@@ -226,7 +221,7 @@ public final class AircraftController extends InputListener {
 	 * @param b
 	 *            second aircraft that collided
 	 */
-	private void collisionHasOccured(Aircraft a, Aircraft b) {
+	public void collisionHasOccured(Aircraft a, Aircraft b) {
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();
 		Art.getSound("crash").play(0.6f);

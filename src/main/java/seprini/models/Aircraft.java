@@ -196,8 +196,7 @@ public final class Aircraft extends Entity {
 	 * 
 	 * @param
 	 */
-	@Override
-	public void act(float delta) {
+	public void act(float delta, AircraftController controller) {
 
 		if (!isActive || landed)
 			return;
@@ -245,7 +244,7 @@ public final class Aircraft extends Entity {
 		}
 
 		// finally, test waypoint collisions using new coordinates
-		testWaypointCollisions();
+		testWaypointCollisions(controller);
 
 		// test screen boundary
 		if (isActive) {
@@ -403,7 +402,7 @@ public final class Aircraft extends Entity {
 	/**
 	 * Tests whether this aircraft has collided with any waypoints
 	 */
-	private void testWaypointCollisions() {
+	private void testWaypointCollisions(AircraftController controller) {
 		int numWaypoints = waypoints.size();
 
 		if (numWaypoints > 0) {
@@ -419,7 +418,11 @@ public final class Aircraft extends Entity {
 					// Test if exit point is an airport, and add aircraft into
 					// airport
 					if (getNextWaypoint() instanceof Airport) {
-						((Airport) getNextWaypoint()).insertAircraft(this);
+						try {
+							((Airport) getNextWaypoint()).insertAircraft(this);
+						} catch (IllegalStateException e) {
+							controller.collisionHasOccured(this, this);
+						}
 					}
 
 					waypoints.clear();
