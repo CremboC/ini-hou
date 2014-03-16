@@ -39,7 +39,7 @@ public final class AircraftController extends InputListener {
 
 	// helpers for this class
 	private final WaypointComponent waypoints;
-	private final FlightPlanComponent flightplan;
+	public final FlightPlanComponent flightplan;
 
 	// ui related
 	private final Airspace airspace;

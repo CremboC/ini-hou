@@ -26,7 +26,7 @@ public final class Aircraft extends Entity {
 
 	private final int id;
 
-	private final ArrayList<Waypoint> waypoints;
+	public ArrayList<Waypoint> waypoints;
 	private final AircraftType aircraftType;
 
 	private int desiredAltitude;
@@ -57,6 +57,7 @@ public final class Aircraft extends Entity {
 	private boolean rotateRight = false;
 
 	private boolean mustLand;
+	private boolean needsNewFlightPlan;
 
 	private int score;
 
@@ -423,9 +424,13 @@ public final class Aircraft extends Entity {
 						} catch (IllegalStateException e) {
 							controller.collisionHasOccured(this, this);
 						}
+						Waypoint airport = getNextWaypoint();
+						ArrayList<Waypoint> newFlightPlan = controller.flightplan
+								.generate(airport);
+						waypoints.clear();
+						waypoints = newFlightPlan;
 					}
 
-					waypoints.clear();
 					isActive = false;
 				}
 			} else {
