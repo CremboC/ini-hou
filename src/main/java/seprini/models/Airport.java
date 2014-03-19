@@ -5,6 +5,12 @@ import java.util.Random;
 
 public class Airport extends Waypoint {
 
+	// Waypoints designating the end of the runway
+	public Waypoint runwayStart;
+	public Waypoint runwayEnd;
+	public Waypoint runwayLeft;
+	public Waypoint runwayRight;
+
 	private Random rand = new Random();
 	// Maximum number of aircraft that can be in the airport at once. If
 	// exceeded, game ends.
@@ -15,18 +21,21 @@ public class Airport extends Waypoint {
 	private int timeLeft = 0;
 	private ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 
+	public Airport(float x, float y, boolean visible) {
+		super(x, y, visible);
+		// Position waypoints relative to airport position.
+		runwayStart = new Waypoint(x - 77, y - 60, true);
+		runwayEnd = new Waypoint(x + 77, y + 60, true);
+		runwayLeft = new Waypoint(x - 157, y - 60, true);
+		runwayRight = new Waypoint(x - 77, y - 140, true);
+
+	}
+
 	public void setTimeLeft(int timeLeft) {
 		// avoid the timer becoming lower than 0 i.e. negative
 		if (timeLeft >= 0) {
 			this.timeLeft = 0;
 		}
-	}
-
-	public Airport(float x, float y, boolean visible) {
-		super(x, y, visible);
-
-		// TODO Auto-generated constructor stub
-
 	}
 
 	/**
