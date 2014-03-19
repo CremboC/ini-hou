@@ -74,7 +74,8 @@ public class FlightPlanComponent {
 			// create an exception here for if lastWaypoint is an airport.
 			if (lastWaypoint instanceof Airport) {
 				// In both single and multi-player check which airport it is.
-
+				flightPlan.add(flightPlan.size() - 1,
+						((Airport) lastWaypoint).runwayStart);
 			}
 			return flightPlan;
 		}
