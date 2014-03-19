@@ -29,7 +29,7 @@ public final class SidebarController extends ChangeListener {
 	private final ScreenBase screen;
 
 	// UI wrappers for the controls and the buttons at the bottom
-	private Table sidebar, aircraftControls, bottomButtons;
+	private Table sidebar, aircraftControls, bottomButtons, landedAircraft;
 
 	// stores state of the turn left/right buttons
 	private boolean turningLeft, turningRight;
@@ -67,6 +67,11 @@ public final class SidebarController extends ChangeListener {
 
 		aircraftControls.top();
 		sidebar.addActor(aircraftControls);
+
+		landedAircraft = new Table();
+		landedAircraft.setFillParent(true);
+
+		landedAircraft.center();
 
 		// wrapper for bottom buttons
 		bottomButtons = new Table();
