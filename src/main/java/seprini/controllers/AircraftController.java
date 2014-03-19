@@ -377,6 +377,10 @@ public final class AircraftController extends InputListener {
 		allowRedirection = value;
 	}
 
+	public GameMode getGameMode() {
+		return mode;
+	}
+
 	@Override
 	/**
 	 * Enables Keyboard Shortcuts as alternatives to the on screen buttons

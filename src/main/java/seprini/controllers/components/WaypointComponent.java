@@ -28,6 +28,22 @@ public class WaypointComponent {
 
 		this.controller = controller;
 
+		switch (controller.getGameMode()) {
+		case SINGLE:
+			singleplayerWaypoints();
+			break;
+		case MULTI:
+			multiplayerWaypoints();
+			break;
+		}
+
+		Collections.shuffle(permanentList, new Random());
+	}
+
+	/**
+	 * Creates all the predefined waypoints for singleplayer
+	 */
+	public void singleplayerWaypoints() {
 		// add entry waypoints to entryList
 		createEntrypoint(0, 0);
 		createEntrypoint(0, 720);
@@ -41,7 +57,6 @@ public class WaypointComponent {
 		createExitpoint(540, 720);
 
 		// add visible waypoints
-
 		createWaypoint(150, 360, true);
 		createWaypoint(300, 500, true);
 		createWaypoint(600, 650, true);
@@ -51,11 +66,25 @@ public class WaypointComponent {
 		createWaypoint(450, 100, true);
 
 		// add airports;
-
 		exitList.add(new Airport(387, 335, true));
 		exitList.add(new Airport(750, 350, true));
+	}
 
-		Collections.shuffle(permanentList, new Random());
+	/**
+	 * Creates all the predefined waypoints for multiplayer
+	 */
+	public void multiplayerWaypoints() {
+		// add entry waypoints to entryList
+		createEntrypoint(0, 0);
+		createEntrypoint(0, 720);
+		createEntrypoint(1280, 360);
+		createEntrypoint(640, 0);
+
+		// add exit waypoints to exitList
+		createExitpoint(1280, 720);
+		createExitpoint(1280, 0);
+		createExitpoint(0, 420);
+		createExitpoint(640, 720);
 	}
 
 	/**
