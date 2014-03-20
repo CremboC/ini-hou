@@ -57,7 +57,6 @@ public final class Aircraft extends Entity {
 	private boolean rotateRight = false;
 
 	private boolean mustLand;
-	private boolean needsNewFlightPlan;
 
 	private int score;
 

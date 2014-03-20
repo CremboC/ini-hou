@@ -3,6 +3,11 @@ package seprini.models;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seprini.screens.AbstractScreen;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 public class Airport extends Waypoint {
 
 	// Waypoints designating the end of the runway
@@ -20,6 +25,9 @@ public class Airport extends Waypoint {
 	// Time remaining before an aircraft can take off.
 	private int timeLeft = 0;
 	private ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
+
+	private boolean selected;
+	private static final Color COLOR = new Color(1, 0, 0, 0);
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -76,4 +84,17 @@ public class Airport extends Waypoint {
 		return aircraft;
 	}
 
+	public void setSelected(boolean value) {
+		this.selected = value;
+	}
+
+	protected void additionalDraw(SpriteBatch batch) {
+
+		if (selected) {
+
+			AbstractScreen.drawCircle(COLOR, getX(), getY(), 25, batch);
+
+		}
+
+	}
 }

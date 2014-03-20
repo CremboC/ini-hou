@@ -21,6 +21,7 @@ public class WaypointComponent {
 	private ArrayList<Waypoint> permanentList = new ArrayList<Waypoint>();
 	private ArrayList<Entrypoint> entryList = new ArrayList<Entrypoint>();
 	private ArrayList<Waypoint> exitList = new ArrayList<Waypoint>();
+	private ArrayList<Airport> airportList = new ArrayList<Airport>();
 
 	private final AircraftController controller;
 
@@ -66,8 +67,8 @@ public class WaypointComponent {
 		createWaypoint(450, 100, true);
 
 		// add airports;
-		exitList.add(new Airport(387, 335, true));
-		exitList.add(new Airport(750, 350, true));
+		createAirport(387, 335);
+		createAirport(750, 350);
 	}
 
 	/**
@@ -126,7 +127,6 @@ public class WaypointComponent {
 					controller.redirectAircraft(waypoint);
 					return true;
 				}
-
 				return true;
 			}
 		});
@@ -158,6 +158,29 @@ public class WaypointComponent {
 		Entrypoint point = new Entrypoint(new Vector2(x, y));
 		getEntryList().add(point);
 		controller.getAirspace().addActor(point);
+	}
+
+	private void createAirport(float x, float y) {
+		final Airport airport = new Airport(x, y, true);
+		exitList.add(airport);
+		airportList.add(airport);
+		controller.getAirspace().addActor(airport);
+
+		airport.addListener(new ClickListener() {
+
+			@Override
+			public boolean touchDown(InputEvent event, float tX, float tY,
+					int pointer, int button) {
+
+				for (Airport airportI : airportList) {
+					airportI.setSelected(false);
+				}
+
+				airport.setSelected(true);
+
+				return true;
+			}
+		});
 	}
 
 	public ArrayList<Waypoint> getPermanentList() {
