@@ -38,7 +38,7 @@ public final class AircraftController extends InputListener {
 	private final GameDifficulty difficulty;
 
 	// helpers for this class
-	private final WaypointComponent waypoints;
+	public final WaypointComponent waypoints;
 	public final FlightPlanComponent flightplan;
 
 	// ui related
@@ -118,7 +118,6 @@ public final class AircraftController extends InputListener {
 			Aircraft planeI = aircraftList.get(i);
 
 			// Update aircraft.
-			// planeI.act(delta);
 
 			planeI.act(delta, this);
 
@@ -277,7 +276,7 @@ public final class AircraftController extends InputListener {
 		aircraftList.add(newAircraft);
 
 		// store the time when an aircraft was last generated to know when to
-		// generate the next aicraft
+		// generate the next aircraft
 		lastGenerated = timer;
 
 		return newAircraft;
@@ -447,6 +446,32 @@ public final class AircraftController extends InputListener {
 		}
 
 		return false;
+	}
+
+	public void takeoff(final Aircraft aircraft) {
+		aircraft.addListener(new ClickListener() {
+
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				selectAircraft(aircraft);
+			}
+
+		});
+
+		// push the aircraft to the top so it's infront of the user created
+		// waypoints
+		aircraft.toFront();
+
+		// add it to the airspace (stage group) so its automatically drawn
+		// upon calling root.draw()
+		airspace.addActor(aircraft);
+
+		// play a sound to audibly inform the player that an aircraft has
+		// spawned
+		Art.getSound("ding").play(0.5f);
+
+		aircraft.takingOff();
+		aircraftList.add(aircraft);
 	}
 
 }

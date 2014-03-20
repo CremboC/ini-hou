@@ -24,7 +24,7 @@ public class Airport extends Waypoint {
 	public final static int MIN_ALTITUDE = 5000;
 	// Time remaining before an aircraft can take off.
 	private int timeLeft = 0;
-	private ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
+	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
@@ -72,11 +72,9 @@ public class Airport extends Waypoint {
 	 * @throws IllegalStateException
 	 *             if there are no aircraft in the airport
 	 */
-	public Aircraft takeoff() throws IllegalStateException {
+	public Aircraft takeoff(int i) throws IllegalStateException {
 		if (aircraftList.size() == 0)
 			throw new IllegalStateException("No aircraft in airport");
-
-		int i = rand.nextInt(aircraftList.size());
 
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);

@@ -25,6 +25,8 @@ public class WaypointComponent {
 
 	private final AircraftController controller;
 
+	private Airport selectedAirport;
+
 	public WaypointComponent(AircraftController controller) {
 
 		this.controller = controller;
@@ -177,6 +179,7 @@ public class WaypointComponent {
 				}
 
 				airport.setSelected(true);
+				selectedAirport = airport;
 
 				return true;
 			}
@@ -193,5 +196,9 @@ public class WaypointComponent {
 
 	public ArrayList<Waypoint> getExitList() {
 		return exitList;
+	}
+
+	public Airport getSelectedAirport() {
+		return selectedAirport;
 	}
 }

@@ -387,7 +387,7 @@ public final class Aircraft extends Entity {
 	private void updateAltitude(float delta) {
 		float maxAmount = aircraftType.getMaxClimbRate() * delta;
 
-		// Move altititude value at most maxAmount units
+		// Move altitude value at most maxAmount units
 		if (desiredAltitude > altitude) {
 			altitude += maxAmount;
 			if (altitude > desiredAltitude)
@@ -441,13 +441,15 @@ public final class Aircraft extends Entity {
 					// runway.
 					// Only occurs when landing as runwayMid can only be part of
 					// a landing flight plan.
-					Waypoint runwayMid = new Waypoint(387, 335, false);
-					if (waypoints.get(0).getCoords()
-							.equals(runwayMid.getCoords())) {
-						this.setSpeed(0.00000000001f);
-						this.altitude = 0;
-						this.landed = true;
-					}
+
+					// Waypoint runwayMid = new Waypoint(387, 335, false);
+					// if (waypoints.get(0).getCoords()
+					// .equals(runwayMid.getCoords())) {
+					// this.setSpeed(0.00000000001f);
+					// this.altitude = 0;
+					// this.landed = true;
+					// }
+
 					waypoints.remove(0);
 				}
 			}
@@ -690,6 +692,13 @@ public final class Aircraft extends Entity {
 
 	public int getScore() {
 		return score;
+	}
+
+	public void takingOff() {
+		this.isActive = true;
+		this.landed = false;
+		this.increaseSpeed();
+		this.increaseAltitude();
 	}
 
 }

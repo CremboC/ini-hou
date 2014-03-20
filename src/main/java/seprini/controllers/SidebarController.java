@@ -5,6 +5,7 @@ import java.util.HashMap;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.models.Aircraft;
+import seprini.models.Airport;
 import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -22,6 +23,7 @@ public final class SidebarController extends ChangeListener {
 	private final AircraftController aircrafts;
 
 	private Aircraft selectedAircraft;
+	private Airport selectedAirport;
 
 	private final HashMap<String, TextButton> buttons = new HashMap<String, TextButton>();
 	private final HashMap<String, Label> labels = new HashMap<String, Label>();
@@ -29,7 +31,8 @@ public final class SidebarController extends ChangeListener {
 	private final ScreenBase screen;
 
 	// UI wrappers for the controls and the buttons at the bottom
-	private Table sidebar, aircraftControls, bottomButtons, landedAircraft;
+	private Table sidebar, aircraftControls, bottomButtons, landedAircraft,
+			airportListings;
 
 	// stores state of the turn left/right buttons
 	private boolean turningLeft, turningRight;
@@ -72,6 +75,19 @@ public final class SidebarController extends ChangeListener {
 		landedAircraft.setFillParent(true);
 
 		landedAircraft.center();
+
+		// wrapper for airport listings
+		airportListings = new Table();
+		airportListings.setFillParent(true);
+
+		if (Config.DEBUG_UI)
+			airportListings.debug();
+
+		airportListings.center();
+
+		// offset the airport listings so the don't overlap the controls
+		airportListings.padTop(350);
+		sidebar.addActor(airportListings);
 
 		// wrapper for bottom buttons
 		bottomButtons = new Table();
@@ -151,6 +167,22 @@ public final class SidebarController extends ChangeListener {
 
 		bottomButtons.row();
 
+		// adding buttons for airport listings
+
+		createButton("aircraft0", " ", airportListings, false).width(200);
+		airportListings.row();
+
+		createButton("aircraft1", " ", airportListings, false).width(200);
+		airportListings.row();
+
+		createButton("aircraft2", " ", airportListings, false).width(200);
+		airportListings.row();
+
+		createButton("aircraft3", " ", airportListings, false).width(200);
+		airportListings.row();
+
+		createButton("aircraft4", " ", airportListings, false).width(200);
+
 		// adding buttons to bottom
 		createButton("menu", " Menu", bottomButtons, false).width(100);
 		createButton("pause", " Pause", bottomButtons, false).width(100);
@@ -193,6 +225,32 @@ public final class SidebarController extends ChangeListener {
 
 		// update aircraft speed text
 		labels.get("speed").setText(speedText);
+
+		// if there is no selected airport, return immediately to avoid errors
+		// otherwise set it to the local selectedAirport variable and update
+		// the text
+		if ((selectedAirport = aircrafts.waypoints.getSelectedAirport()) == null) {
+
+		} else {
+			// update the list of airport's aircraft
+
+			buttons.get("aircraft0").setText(" ");
+			buttons.get("aircraft1").setText(" ");
+			buttons.get("aircraft2").setText(" ");
+			buttons.get("aircraft3").setText(" ");
+			buttons.get("aircraft4").setText(" ");
+
+			if (selectedAirport.aircraftList.size() >= 1)
+				buttons.get("aircraft0").setText("AIRCRAFT");
+			if (selectedAirport.aircraftList.size() >= 2)
+				buttons.get("aircraft1").setText("AIRCRAFT");
+			if (selectedAirport.aircraftList.size() >= 3)
+				buttons.get("aircraft2").setText("AIRCRAFT");
+			if (selectedAirport.aircraftList.size() >= 4)
+				buttons.get("aircraft3").setText("AIRCRAFT");
+			if (selectedAirport.aircraftList.size() >= 5)
+				buttons.get("aircraft4").setText("AIRCRAFT");
+		}
 	}
 
 	/**
@@ -279,6 +337,19 @@ public final class SidebarController extends ChangeListener {
 				if (actor.equals(buttons.get("decelerate")))
 					selectedAircraft.decreaseSpeed();
 
+			}
+
+			if (selectedAirport != null) {
+				if (actor.equals(buttons.get("aircraft0")))
+					aircrafts.takeoff(selectedAirport.takeoff(0));
+				if (actor.equals(buttons.get("aircraft1")))
+					aircrafts.takeoff(selectedAirport.takeoff(1));
+				if (actor.equals(buttons.get("aircraft2")))
+					aircrafts.takeoff(selectedAirport.takeoff(2));
+				if (actor.equals(buttons.get("aircraft3")))
+					aircrafts.takeoff(selectedAirport.takeoff(3));
+				if (actor.equals(buttons.get("aircraft4")))
+					aircrafts.takeoff(selectedAirport.takeoff(4));
 			}
 		}
 
