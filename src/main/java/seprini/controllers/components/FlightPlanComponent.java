@@ -12,6 +12,7 @@ public class FlightPlanComponent {
 
 	static Random rand = new Random();
 	private WaypointComponent waypoints;
+	private final static double airportGradient = 1.3;
 
 	public FlightPlanComponent(WaypointComponent waypoints) {
 		this.waypoints = waypoints;
@@ -81,7 +82,8 @@ public class FlightPlanComponent {
 						((Airport) lastWaypoint).runwayStart);
 				// Now decide which landing waypoint aircraft is to use,
 				// dependent on the previous waypoint's position.
-				if ((previousWaypoint.getX() > 1.3 * previousWaypoint.getY()
+				if ((previousWaypoint.getX() > airportGradient
+						* previousWaypoint.getY()
 						- lastWaypoint.getY() + lastWaypoint.getX())) {
 					flightPlan.add(flightPlan.size() - 2,
 							((Airport) lastWaypoint).runwayRight);
