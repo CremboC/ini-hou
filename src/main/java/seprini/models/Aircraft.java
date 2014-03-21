@@ -22,6 +22,7 @@ public final class Aircraft extends Entity {
 	private static final Color BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 	private static final Vector2 TEXT_OFFSET = new Vector2(30, 20);
 	private final int id;
+	private AircraftController controller;
 	public ArrayList<Waypoint> waypoints;
 	private final AircraftType aircraftType;
 	private int desiredAltitude;
@@ -43,19 +44,23 @@ public final class Aircraft extends Entity {
 	// if the above is increasing, switch rotation sides so it uses the
 	// 'smaller' angle
 	private boolean rotateRight = false;
-	// Store player score.
-	private int score;
+	// Set and store aircrafts points.
+	private int points = 10;
+
+	public int getPoints() {
+		return this.points;
+	}
 
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
-			int id) {
+			int id, AircraftController controller) {
 
 		// allows drawing debug shape of this entity
 		debugShape = true;
-
+		this.controller = controller;
 		this.id = id;
 		this.aircraftType = aircraftType;
 
-		score = 50;
+		points = 50;
 
 		// initialize entity
 		texture = aircraftType.getTexture();
@@ -182,7 +187,7 @@ public final class Aircraft extends Entity {
 	 * 
 	 * @param
 	 */
-	public void act(float delta, AircraftController controller) {
+	public void act(float delta) {
 
 		if (!isActive || landed)
 			return;
@@ -386,7 +391,6 @@ public final class Aircraft extends Entity {
 			if (numWaypoints == 1) {
 				if (distanceToWaypoint < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 					// Collided with exit point
-					AircraftController.score += score;
 					Debug.msg("Aircraft id " + id + ": Reached exit WP");
 
 					// Test if exit point is an airport, and add aircraft into
@@ -658,14 +662,10 @@ public final class Aircraft extends Entity {
 	public void checkBreaching() {
 		if (isBreaching()) {
 			if (!breachingLastFrame) {
-				score -= 5;
+				points -= 5;
 			}
 		}
 		breachingLastFrame = isBreaching();
-	}
-
-	public int getScore() {
-		return score;
 	}
 
 	public void takingOff() {
@@ -675,5 +675,4 @@ public final class Aircraft extends Entity {
 		this.desiredAltitude = Config.ALTITUDES[1];
 		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 	}
-
 }

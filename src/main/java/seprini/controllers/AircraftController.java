@@ -119,7 +119,7 @@ public final class AircraftController extends InputListener {
 
 			// Update aircraft.
 
-			planeI.act(delta, this);
+			planeI.act(delta);
 
 			planeI.setBreaching(false);
 
@@ -271,7 +271,7 @@ public final class AircraftController extends InputListener {
 			return null;
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++);
+				flightplan.generate(), aircraftId++, this);
 
 		aircraftList.add(newAircraft);
 
