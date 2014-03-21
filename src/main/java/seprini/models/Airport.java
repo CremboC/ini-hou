@@ -1,13 +1,7 @@
 package seprini.models;
 
-
-
-
 import java.util.ArrayList;
 import java.util.Random;
-
-
-
 
 import seprini.screens.AbstractScreen;
 
@@ -15,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+
 public class Airport extends Waypoint {
 
 	// Waypoints designating the end of the runway
@@ -32,6 +27,7 @@ public class Airport extends Waypoint {
 	// Time remaining before an aircraft can take off.
 	private int timeLeft = 15;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
+	public int aircraftsLanding = 0;
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
@@ -51,7 +47,7 @@ public class Airport extends Waypoint {
 		if (timeLeft >= 0) {
 			this.timeLeft = 0;
 		}
-		
+
 	}
 
 	/**
@@ -62,21 +58,22 @@ public class Airport extends Waypoint {
 	 * @throws IllegalStateException
 	 *             if insertion will overflow airport
 	 */
-	public void insertAircraft(final Aircraft aircraft) throws IllegalStateException {
+	public void insertAircraft(final Aircraft aircraft)
+			throws IllegalStateException {
 		if (aircraftList.size() + 1 > MAX_AIRCRAFT_NUMBER) {
 			throw new IllegalStateException(
 					"Tried landing an aircraft into a full airport.");
 		}
-		float delay = 15; // seconds
-		Timer.schedule(new Task(){
-		    @Override
-		    public void run() {
-		    	aircraftList.add(aircraft);
-		    }
-		    }, delay);
-		    	
-		    }
-		
+		aircraftsLanding += 1;
+		float delay = 5; // seconds
+		Timer.schedule(new Task() {
+			@Override
+			public void run() {
+				aircraftList.add(aircraft);
+			}
+		}, delay);
+
+	}
 
 	/**
 	 * Forces an aircraft to take off. Selects one from the list randomly.
@@ -87,13 +84,14 @@ public class Airport extends Waypoint {
 	 * @throws IllegalStateException
 	 *             if there are no aircraft in the airport
 	 */
-	
+
 	public Aircraft takeoff(int i) throws IllegalStateException {
 		if (aircraftList.size() == 0)
 			throw new IllegalStateException("No aircraft in airport");
 
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);
+		aircraftsLanding -= 1;
 
 		return aircraft;
 	}

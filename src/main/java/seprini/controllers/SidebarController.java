@@ -234,16 +234,29 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("aircraft3").setText(" ");
 			buttons.get("aircraft4").setText(" ");
 
+			if (selectedAirport.aircraftsLanding >= 1)
+				buttons.get("aircraft0").setText("Aircraft is landing");
+			if (selectedAirport.aircraftsLanding >= 2)
+				buttons.get("aircraft1").setText("Aircraft is landing");
+			if (selectedAirport.aircraftsLanding >= 3)
+				buttons.get("aircraft2").setText("Aircraft is landing");
+			if (selectedAirport.aircraftsLanding >= 4)
+				buttons.get("aircraft3").setText("Aircraft is landing");
+			if (selectedAirport.aircraftsLanding >= 5)
+				buttons.get("aircraft4").setText("Aircraft is landing");
+			if (selectedAirport.aircraftsLanding >= 6)
+				buttons.get("aircraft5").setText("Aircraft is landing");
+
 			if (selectedAirport.aircraftList.size() >= 1)
-				buttons.get("aircraft0").setText("AIRCRAFT");
+				buttons.get("aircraft0").setText("Ready for take off");
 			if (selectedAirport.aircraftList.size() >= 2)
-				buttons.get("aircraft1").setText("AIRCRAFT");
+				buttons.get("aircraft1").setText("Ready for take off");
 			if (selectedAirport.aircraftList.size() >= 3)
-				buttons.get("aircraft2").setText("AIRCRAFT");
+				buttons.get("aircraft2").setText("Ready for take off");
 			if (selectedAirport.aircraftList.size() >= 4)
-				buttons.get("aircraft3").setText("AIRCRAFT");
+				buttons.get("aircraft3").setText("Ready for take off");
 			if (selectedAirport.aircraftList.size() >= 5)
-				buttons.get("aircraft4").setText("AIRCRAFT");
+				buttons.get("aircraft4").setText("Ready for take off");
 		}
 	}
 
