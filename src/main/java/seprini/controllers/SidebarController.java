@@ -125,15 +125,6 @@ public final class SidebarController extends ChangeListener {
 		createButton("decelerate", " Decelerate (Q)", aircraftControls, false)
 				.width(200);
 
-		aircraftControls.row().colspan(2);
-
-		createButton("takeOff", "Take Off (T)", aircraftControls, false).width(
-				200);
-
-		aircraftControls.row().colspan(2);
-
-		createButton("land", "Land (G)", aircraftControls, false).width(200);
-
 		aircraftControls.row().spaceTop(100);
 
 		createButton("up", " Up (W)", aircraftControls, false).width(100)
@@ -325,12 +316,6 @@ public final class SidebarController extends ChangeListener {
 
 				if (actor.equals(buttons.get("right")))
 					selectedAircraft.turnRight(turningRight = (!turningRight));
-
-				// if (actor.equals(buttons.get("land")))
-				// selectedAircraft.landAircraft();
-				//
-				// if (actor.equals(buttons.get("takeOff")))
-				// selectedAircraft.takeOff();
 
 				if (actor.equals(buttons.get("up")))
 					selectedAircraft.increaseAltitude();
