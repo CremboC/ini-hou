@@ -146,15 +146,6 @@ public final class Aircraft extends Entity {
 
 		}
 
-		// if the aircraft should land, draw a small blue circle
-		// around it
-		// if (mustLand) {
-		//
-		// AbstractScreen.drawCircle(LANDING_CIRCLE_COLOR, getX(), getY(),
-		// getSeparationRadius() * 0.25f, batch);
-		//
-		// }
-
 		// draw the altitude for each aircraft
 		Color color;
 
@@ -206,23 +197,6 @@ public final class Aircraft extends Entity {
 		// updating bounds to make sure the aircraft is clickable
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
 				getWidth(), getHeight());
-
-		// Reduce speed and altitude between landing waypoints to simulate a
-		// smooth landing.
-		Waypoint approach1 = new Waypoint(230, 275, false);
-		Waypoint approach2 = new Waypoint(310, 195, false);
-		if (this.getNextWaypoint().getCoords().equals(approach1.getCoords())
-				|| this.getNextWaypoint().getCoords()
-						.equals(approach2.getCoords())) {
-			this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
-			this.desiredAltitude = 2500;
-		}
-
-		Waypoint runwayStart = new Waypoint(310, 275, false);
-		if (this.getNextWaypoint().getCoords().equals(runwayStart.getCoords())) {
-			this.setSpeed(250 / Config.AIRCRAFT_SPEED_MULTIPLIER);
-			this.desiredAltitude = 1250;
-		}
 
 		// finally, test waypoint collisions using new coordinates
 		testWaypointCollisions(controller);
@@ -534,57 +508,6 @@ public final class Aircraft extends Entity {
 		ignorePath = false;
 	}
 
-	/*	*//**
-	 * Creates and inserts landing flightplan
-	 * 
-	 * - Creates waypoints at start and end of waypoints invisible to user -
-	 * Calculates position of aircraft relative to runway and selects
-	 * appropriate approach waypoint position - Creates appropriate invisible
-	 * approach waypoint - Adds route to start of flightplan
-	 * 
-	 * - Changes in altitude and speed are handled in act.
-	 */
-	/*
-	 * public void landAircraft() { if (!selected || mustLand == false) return;
-	 * Waypoint runwayEnd = new Waypoint(464, 395, false); Waypoint runwayMid =
-	 * new Waypoint(387, 335, false); Waypoint runwayStart = new Waypoint(310,
-	 * 275, false); Waypoint approach; int choice = 0; // Calculates if aircraft
-	 * is in Pos A or B to decide which approach // waypoint to use. // //
-	 * -------------- // | _/| // | A _/ | // | _/ | // | _/ | // | _/ B | //
-	 * |_/ | // -------------- // // Adds 1 to avoid 0 error if (((this.getX() +
-	 * 1) / (this.getY() + 1)) > 1.8) { choice = 1; } if (choice == 0) {
-	 * approach = new Waypoint(230, 275, false); } else { approach = new
-	 * Waypoint(310, 195, false); }
-	 * 
-	 * this.insertWaypoint(runwayEnd); this.insertWaypoint(runwayMid);
-	 * this.insertWaypoint(runwayStart); this.insertWaypoint(approach);
-	 * returnToPath(); }
-	 *//**
-	 * Makes an Aircraft take off
-	 * 
-	 * - Checks aircraft is landed - Increases speed + altitude
-	 * 
-	 */
-	/*
-	 * public void takeOff() { if (!landed) return; this.landed = false;
-	 * this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER); this.mustLand =
-	 * false; this.desiredAltitude = 5000; }
-	 * 
-	 * public boolean isLanded() { return landed; }
-	 *//**
-	 * Returns whether or not the aircraft is required to land.
-	 * 
-	 * @return boolean mustLand
-	 */
-	/*
-	 * public boolean isMustLand() { return mustLand; }
-	 */
-
-	/**
-	 * Get the whole flightplan for this aircraft
-	 * 
-	 * @return flightplan
-	 */
 	public ArrayList<Waypoint> getFlightPlan() {
 		return waypoints;
 	}

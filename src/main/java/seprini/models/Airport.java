@@ -39,10 +39,10 @@ public class Airport extends Waypoint {
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
 		// Position waypoints relative to airport position.
-		runwayStart = new Waypoint(x - 77, y - 60, true);
-		runwayEnd = new Waypoint(x + 77, y + 60, true);
-		runwayLeft = new Waypoint(x - 157, y - 60, true);
-		runwayRight = new Waypoint(x - 77, y - 140, true);
+		runwayStart = new Waypoint(x - 77, y - 60, false);
+		runwayEnd = new Waypoint(x + 77, y + 60, false);
+		runwayLeft = new Waypoint(x - 157, y - 60, false);
+		runwayRight = new Waypoint(x - 77, y - 140, false);
 
 	}
 

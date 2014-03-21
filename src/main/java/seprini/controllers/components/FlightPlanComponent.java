@@ -41,7 +41,7 @@ public class FlightPlanComponent {
 	 * entry waypoint to be specified.
 	 * 
 	 * @param entryWaypoint
-	 * @return
+	 * @return completeFlightPlan
 	 */
 	public ArrayList<Waypoint> generate(Waypoint entryWaypoint) {
 
@@ -73,9 +73,21 @@ public class FlightPlanComponent {
 		if (currentWaypoint.equals(lastWaypoint)) {
 			// create an exception here for if lastWaypoint is an airport.
 			if (lastWaypoint instanceof Airport) {
-				// In both single and multi-player check which airport it is.
+				// Check which airport it is and insert the start of the runway
+				// to flightplan.
+				Waypoint previousWaypoint = flightPlan
+						.get(flightPlan.size() - 2);
 				flightPlan.add(flightPlan.size() - 1,
 						((Airport) lastWaypoint).runwayStart);
+				// Now decide which landing waypoint aircraft is to use,
+				// dependent on the previous waypoint's position.
+				if ((previousWaypoint.getX() > lastWaypoint.getX())) {
+					flightPlan.add(flightPlan.size() - 2,
+							((Airport) lastWaypoint).runwayRight);
+				} else {
+					flightPlan.add(flightPlan.size() - 2,
+							((Airport) lastWaypoint).runwayLeft);
+				}
 			}
 			return flightPlan;
 		}
