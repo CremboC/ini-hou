@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public final class Aircraft extends Entity {
 
@@ -398,6 +400,7 @@ public final class Aircraft extends Entity {
 					if (getNextWaypoint() instanceof Airport) {
 						try {
 							((Airport) getNextWaypoint()).insertAircraft(this);
+							
 						} catch (IllegalStateException e) {
 							controller.collisionHasOccured(this, this);
 						}
