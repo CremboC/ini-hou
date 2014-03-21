@@ -466,12 +466,12 @@ public final class AircraftController extends InputListener {
 		// upon calling root.draw()
 		airspace.addActor(aircraft);
 
-		// play a sound to audibly inform the player that an aircraft has
+		// play a sound to inform the player that an aircraft has
 		// spawned
 		Art.getSound("ding").play(0.5f);
 
-		aircraft.takingOff();
 		aircraftList.add(aircraft);
+		aircraft.takingOff();
 	}
 
 }
