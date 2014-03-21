@@ -31,8 +31,7 @@ public final class SidebarController extends ChangeListener {
 	private final ScreenBase screen;
 
 	// UI wrappers for the controls and the buttons at the bottom
-	private Table sidebar, aircraftControls, bottomButtons, landedAircraft,
-			airportListings;
+	private Table sidebar, aircraftControls, bottomButtons, landedAircraft;
 
 	// stores state of the turn left/right buttons
 	private boolean turningLeft, turningRight;
@@ -71,23 +70,18 @@ public final class SidebarController extends ChangeListener {
 		aircraftControls.top();
 		sidebar.addActor(aircraftControls);
 
+		// wrapper for airport listings
 		landedAircraft = new Table();
 		landedAircraft.setFillParent(true);
 
+		if (Config.DEBUG_UI)
+			landedAircraft.debug();
+
 		landedAircraft.center();
 
-		// wrapper for airport listings
-		airportListings = new Table();
-		airportListings.setFillParent(true);
-
-		if (Config.DEBUG_UI)
-			airportListings.debug();
-
-		airportListings.center();
-
 		// offset the airport listings so the don't overlap the controls
-		airportListings.padTop(350);
-		sidebar.addActor(airportListings);
+		landedAircraft.padTop(350);
+		sidebar.addActor(landedAircraft);
 
 		// wrapper for bottom buttons
 		bottomButtons = new Table();
@@ -169,19 +163,19 @@ public final class SidebarController extends ChangeListener {
 
 		// adding buttons for airport listings
 
-		createButton("aircraft0", " ", airportListings, false).width(200);
-		airportListings.row();
+		createButton("aircraft0", " ", landedAircraft, false).width(200);
+		landedAircraft.row();
 
-		createButton("aircraft1", " ", airportListings, false).width(200);
-		airportListings.row();
+		createButton("aircraft1", " ", landedAircraft, false).width(200);
+		landedAircraft.row();
 
-		createButton("aircraft2", " ", airportListings, false).width(200);
-		airportListings.row();
+		createButton("aircraft2", " ", landedAircraft, false).width(200);
+		landedAircraft.row();
 
-		createButton("aircraft3", " ", airportListings, false).width(200);
-		airportListings.row();
+		createButton("aircraft3", " ", landedAircraft, false).width(200);
+		landedAircraft.row();
 
-		createButton("aircraft4", " ", airportListings, false).width(200);
+		createButton("aircraft4", " ", landedAircraft, false).width(200);
 
 		// adding buttons to bottom
 		createButton("menu", " Menu", bottomButtons, false).width(100);
