@@ -3,6 +3,7 @@ package seprini.models;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seprini.data.Config;
 import seprini.screens.AbstractScreen;
 
 import com.badlogic.gdx.graphics.Color;
@@ -27,7 +28,7 @@ public class Airport extends Waypoint {
 	// Time remaining before an aircraft can take off.
 	private int timeLeft = 15;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
-	public int aircraftsLanding = 0;
+	public int landedAircraft = 0;
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
@@ -43,7 +44,7 @@ public class Airport extends Waypoint {
 	}
 
 	public void setTimeLeft(int timeLeft) {
-		// avoid the timer becoming lower than 0 i.e. negative
+		// avoid the timer becoming negative.
 		if (timeLeft >= 0) {
 			this.timeLeft = 0;
 		}
@@ -64,8 +65,8 @@ public class Airport extends Waypoint {
 			throw new IllegalStateException(
 					"Tried landing an aircraft into a full airport.");
 		}
-		aircraftsLanding += 1;
-		float delay = 5; // seconds
+		landedAircraft += 1;
+		float delay = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
@@ -91,7 +92,7 @@ public class Airport extends Waypoint {
 
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);
-		aircraftsLanding -= 1;
+		landedAircraft -= 1;
 
 		return aircraft;
 	}

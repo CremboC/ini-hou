@@ -20,7 +20,7 @@ import com.esotericsoftware.tablelayout.Cell;
  */
 public final class SidebarController extends ChangeListener {
 
-	private final AircraftController aircrafts;
+	private final AircraftController controller;
 
 	private Aircraft selectedAircraft;
 	private Airport selectedAirport;
@@ -42,15 +42,15 @@ public final class SidebarController extends ChangeListener {
 	 * @param sidebar
 	 *            the sidebar layout, so the controller can add all of the
 	 *            buttons
-	 * @param aircrafts
-	 *            so this can get the selected aircraft
+	 * @param controller
+	 *            AircraftController instance to get the selected aircraft
 	 * @param screen
 	 *            for changing screens once Menu or Pause have been clicked
 	 */
-	public SidebarController(Table sidebar, AircraftController aircrafts,
+	public SidebarController(Table sidebar, AircraftController controller,
 			ScreenBase screen) {
 		this.sidebar = sidebar;
-		this.aircrafts = aircrafts;
+		this.controller = controller;
 		this.screen = screen;
 		this.init();
 	}
@@ -181,15 +181,15 @@ public final class SidebarController extends ChangeListener {
 		String speedText;
 
 		// update timer
-		labels.get("timer").setText("" + Math.round(aircrafts.getTimer()));
+		labels.get("timer").setText("" + Math.round(controller.getTimer()));
 
 		// update score
-		labels.get("score").setText("" + Math.round(aircrafts.getScore()));
+		labels.get("score").setText("" + Math.round(controller.getScore()));
 
 		// if there is no selected aircraft, return immediately to avoid errors
 		// otherwise set it to the local selectedAircraft variable and update
 		// the text
-		if ((selectedAircraft = aircrafts.getSelectedAircraft()) == null) {
+		if ((selectedAircraft = controller.getSelectedAircraft()) == null) {
 			altitudeText = " Altitude: ";
 			speedText = " Speed: ";
 		} else {
@@ -214,7 +214,7 @@ public final class SidebarController extends ChangeListener {
 		// if there is no selected airport, return immediately to avoid errors
 		// otherwise set it to the local selectedAirport variable and update
 		// the text
-		if ((selectedAirport = aircrafts.waypoints.getSelectedAirport()) == null) {
+		if ((selectedAirport = controller.waypoints.getSelectedAirport()) == null) {
 
 		} else {
 			// update the list of airport's aircraft
@@ -225,18 +225,16 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("aircraft3").setText(" ");
 			buttons.get("aircraft4").setText(" ");
 
-			if (selectedAirport.aircraftsLanding >= 1)
+			if (selectedAirport.landedAircraft >= 1)
 				buttons.get("aircraft0").setText("Aircraft is landing");
-			if (selectedAirport.aircraftsLanding >= 2)
+			if (selectedAirport.landedAircraft >= 2)
 				buttons.get("aircraft1").setText("Aircraft is landing");
-			if (selectedAirport.aircraftsLanding >= 3)
+			if (selectedAirport.landedAircraft >= 3)
 				buttons.get("aircraft2").setText("Aircraft is landing");
-			if (selectedAirport.aircraftsLanding >= 4)
+			if (selectedAirport.landedAircraft >= 4)
 				buttons.get("aircraft3").setText("Aircraft is landing");
-			if (selectedAirport.aircraftsLanding >= 5)
+			if (selectedAirport.landedAircraft >= 5)
 				buttons.get("aircraft4").setText("Aircraft is landing");
-			if (selectedAirport.aircraftsLanding >= 6)
-				buttons.get("aircraft5").setText("Aircraft is landing");
 
 			if (selectedAirport.aircraftList.size() >= 1)
 				buttons.get("aircraft0").setText("Ready for take off");
@@ -305,7 +303,7 @@ public final class SidebarController extends ChangeListener {
 		if (!screen.isPaused()) {
 
 			if (actor.equals(buttons.get("assignWaypoint")))
-				aircrafts.setAllowRedirection(!aircrafts.allowRedirection());
+				controller.setAllowRedirection(!controller.allowRedirection());
 
 			if (selectedAircraft != null) {
 				if (actor.equals(buttons.get("returnToPath")))
@@ -333,15 +331,15 @@ public final class SidebarController extends ChangeListener {
 
 			if (selectedAirport != null) {
 				if (actor.equals(buttons.get("aircraft0")))
-					aircrafts.takeoff(selectedAirport.takeoff(0));
+					controller.takeoff(selectedAirport.takeoff(0));
 				if (actor.equals(buttons.get("aircraft1")))
-					aircrafts.takeoff(selectedAirport.takeoff(1));
+					controller.takeoff(selectedAirport.takeoff(1));
 				if (actor.equals(buttons.get("aircraft2")))
-					aircrafts.takeoff(selectedAirport.takeoff(2));
+					controller.takeoff(selectedAirport.takeoff(2));
 				if (actor.equals(buttons.get("aircraft3")))
-					aircrafts.takeoff(selectedAirport.takeoff(3));
+					controller.takeoff(selectedAirport.takeoff(3));
 				if (actor.equals(buttons.get("aircraft4")))
-					aircrafts.takeoff(selectedAirport.takeoff(4));
+					controller.takeoff(selectedAirport.takeoff(4));
 			}
 		}
 
