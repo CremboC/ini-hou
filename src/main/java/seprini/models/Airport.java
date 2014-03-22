@@ -26,16 +26,16 @@ public class Airport extends Waypoint {
 	// Required altitude for an aircraft to land
 	public final static int MIN_ALTITUDE = 5000;
 	// Time remaining before an aircraft can take off.
-	private int timeLeft = 15;
+	private int timeTillFreeRunway = 5;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
-	public int landedAircraft = 0;
+	public int boardingAircraft = 0;
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
-		// Position waypoints relative to airport position.
+		// Position takeoff and landing waypoints relative to airport position.
 		runwayStart = new Waypoint(x - 77, y - 60, false);
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
@@ -43,10 +43,10 @@ public class Airport extends Waypoint {
 
 	}
 
-	public void setTimeLeft(int timeLeft) {
+	public void setTimeLeft(int timeTillFreeRunway) {
 		// avoid the timer becoming negative.
-		if (timeLeft >= 0) {
-			this.timeLeft = 0;
+		if (timeTillFreeRunway >= 0) {
+			this.timeTillFreeRunway = 0;
 		}
 
 	}
@@ -65,14 +65,13 @@ public class Airport extends Waypoint {
 			throw new IllegalStateException(
 					"Tried landing an aircraft into a full airport.");
 		}
-		landedAircraft += 1;
-		float delay = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+		boardingAircraft += 1;
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
 				aircraftList.add(aircraft);
 			}
-		}, delay);
+		}, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
 
 	}
 
@@ -92,7 +91,7 @@ public class Airport extends Waypoint {
 
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);
-		landedAircraft -= 1;
+		boardingAircraft -= 1;
 
 		return aircraft;
 	}
