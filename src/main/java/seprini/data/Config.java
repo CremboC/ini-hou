@@ -19,6 +19,7 @@ public final class Config {
 	public final static Vector2 AIRSPACE_SIZE = new Vector2(1080, SCREEN_HEIGHT);
 	public final static Vector2 WAYPOINT_SIZE = new Vector2(20, 20);
 	public final static Vector2 EXIT_WAYPOINT_SIZE = new Vector2(50, 50);
+	public final static Vector2 AIRPORT_SIZE = new Vector2(164, 125);
 	
 	// Multiplayer config
 	public final static Vector2 MULTIPLAYER_SIZE = new Vector2(SCREEN_WIDTH,

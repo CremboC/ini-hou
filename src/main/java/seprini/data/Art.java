@@ -77,6 +77,7 @@ public class Art {
 		textures.put("libgdx", split(combined, 1353, 0, 53, 10));
 		textures.put("entrypoint", split(combined, 20, 720, 20, 20));
 		textures.put("exitpoint", split(combined, 40, 720, 20, 20));
+		textures.put("airport", split(combined, 1280, 312, 164, 120));
 
 		// load the default skin
 		loadSkin();

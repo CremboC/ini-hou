@@ -3,6 +3,7 @@ package seprini.models;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seprini.data.Art;
 import seprini.data.Config;
 import seprini.screens.AbstractScreen;
 
@@ -18,7 +19,8 @@ public class Airport extends Waypoint {
 	public Waypoint runwayEnd;
 	public Waypoint runwayLeft;
 	public Waypoint runwayRight;
-
+	
+	private final boolean visible;
 	private Random rand = new Random();
 	// Maximum number of aircraft that can be in the airport at once. If
 	// exceeded, game ends.
@@ -40,6 +42,10 @@ public class Airport extends Waypoint {
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
 		runwayRight = new Waypoint(x - 77, y - 140, false);
+		this.visible=visible;
+		this.texture=Art.getTextureRegion("airport");
+		this.size=Config.AIRPORT_SIZE;
+		
 
 	}
 
