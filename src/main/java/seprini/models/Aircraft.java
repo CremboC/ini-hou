@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 public final class Aircraft extends Entity {
 
@@ -198,7 +196,7 @@ public final class Aircraft extends Entity {
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
 				getWidth(), getHeight());
 
-		// finally, test waypoint collisions using new coordinates
+		// test waypoint collisions
 		testWaypointCollisions(controller);
 
 		// test screen boundary
@@ -355,58 +353,53 @@ public final class Aircraft extends Entity {
 	}
 
 	/**
-	 * Tests whether this aircraft has collided with any waypoints
+	 * Tests whether this aircraft has collided with any waypoints and take
+	 * appropriate action
 	 */
 	private void testWaypointCollisions(AircraftController controller) {
-		int numWaypoints = waypoints.size();
 
-		if (numWaypoints > 0) {
-			float distanceToWaypoint = coords.cpy()
-					.sub(waypoints.get(0).getCoords()).len();
+		if (coords.cpy().sub(waypoints.get(0).getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
+			if (getLastWaypoint() instanceof Airport) {
+				// Test if exit point is an airport, and add aircraft into
+				// airport while removing it from the airspace.
+				if (getLastWaypoint().equals(getNextWaypoint())) {
+					try {
+						((Airport) getNextWaypoint()).insertAircraft(this);
 
-			if (numWaypoints == 1) {
-				if (distanceToWaypoint < Config.EXIT_WAYPOINT_SIZE.x / 2) {
-					// Collided with exit point
-					Debug.msg("Aircraft id " + id + ": Reached exit WP");
-
-					// Test if exit point is an airport, and add aircraft into
-					// airport
-					if (getNextWaypoint() instanceof Airport) {
-						try {
-							((Airport) getNextWaypoint()).insertAircraft(this);
-							
-						} catch (IllegalStateException e) {
-							controller.collisionHasOccured(this, this);
-						}
-						Waypoint airport = getNextWaypoint();
-						ArrayList<Waypoint> newFlightPlan = controller.flightplan
-								.generate(airport);
-						waypoints.clear();
-						waypoints = newFlightPlan;
+					} catch (IllegalStateException e) {
+						controller.collisionHasOccured(this, this);
 					}
-
-					isActive = false;
+					Waypoint airport = getNextWaypoint();
+					ArrayList<Waypoint> newFlightPlan = controller.flightplan
+							.generate(airport);
+					waypoints.clear();
+					waypoints = newFlightPlan;
+					this.isActive = false;
+					return;
 				}
-			} else {
-				if (distanceToWaypoint < Config.WAYPOINT_SIZE.x / 2) {
-					// Collided with normal waypoint
-					// AircraftController.score += 10;
-					Debug.msg("Aircraft id " + id + ": Hit waypoint");
-					// Sets aircraft speed to 0 if it has reached the middle of
-					// runway.
-					// Only occurs when landing as runwayMid can only be part of
-					// a landing flight plan.
-
-					// Waypoint runwayMid = new Waypoint(387, 335, false);
-					// if (waypoints.get(0).getCoords()
-					// .equals(runwayMid.getCoords())) {
-					// this.setSpeed(0.00000000001f);
-					// this.altitude = 0;
-					// this.landed = true;
-					// }
-
-					waypoints.remove(0);
+				// These checks concern the stages of the aircrafts approach to
+				// the airport, incrementally decreasing speed and altitude.
+				else if (getNextWaypoint().equals(
+						waypoints.get(waypoints.size() - 2))) {
+					this.desiredAltitude = 0;
+					this.setSpeed(100 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+				} else if (getNextWaypoint().equals(
+						waypoints.get(waypoints.size() - 3))) {
+					this.desiredAltitude = 1000;
+					this.setSpeed(200 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+				} else if (getNextWaypoint().equals(
+						waypoints.get(waypoints.size() - 4))) {
+					this.desiredAltitude = 3000;
+					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+				} else if (getNextWaypoint().equals(
+						waypoints.get(waypoints.size() - 4))) {
+					this.desiredAltitude = 5000;
 				}
+			}
+			waypoints.remove(0);
+			// for when aircraft is at any other exit point.
+			if (waypoints.isEmpty()) {
+				this.isActive = false;
 			}
 		}
 	}
@@ -422,6 +415,10 @@ public final class Aircraft extends Entity {
 
 	public Waypoint getNextWaypoint() {
 		return waypoints.get(0);
+	}
+
+	private Waypoint getLastWaypoint() {
+		return waypoints.get(waypoints.size() - 1);
 	}
 
 	/**
