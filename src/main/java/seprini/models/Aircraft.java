@@ -359,31 +359,36 @@ public final class Aircraft extends Entity {
 	private void testWaypointCollisions(AircraftController controller) {
 
 		if (coords.cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
-			if (getLastWaypoint() instanceof Airport && this.altitude < 1000) {
-				// Test if exit point is an airport, and add aircraft into
-				// airport while removing it from the airspace.
-				if (getLastWaypoint().equals(getNextWaypoint())) {
-					try {
-						((Airport) getNextWaypoint()).insertAircraft(this);
 
-					} catch (IllegalStateException e) {
-						controller.collisionHasOccured(this, this);
-					}
-					Waypoint airport = getNextWaypoint();
-					ArrayList<Waypoint> newFlightPlan = controller.flightplan
-							.generate(airport);
-					waypoints.clear();
-					waypoints = newFlightPlan;
-					this.isActive = false;
+			// Test if exit point is an airport, and add aircraft into
+			// airport while removing it from the airspace.
+			if (getLastWaypoint() instanceof Airport) {
+				if (this.altitude > 1000) {
+					// TODO: Reset flightplan and add landing waypoints to
+					// flightplan if the flightplan is empty (?).
 					return;
 				}
-				// for when aircraft is at any other exit point.
-				waypoints.remove(0);
-				if (waypoints.isEmpty()) {
-					this.isActive = false;
+
+				try {
+					((Airport) getNextWaypoint()).insertAircraft(this);
+
+				} catch (IllegalStateException e) {
+					controller.collisionHasOccured(this, this);
 				}
+				Waypoint airport = getNextWaypoint();
+				ArrayList<Waypoint> newFlightPlan = controller.flightplan
+						.generate(airport);
+				waypoints.clear();
+				waypoints = newFlightPlan;
+				this.isActive = false;
 				return;
+
 			}
+			waypoints.remove(0);
+			if (waypoints.isEmpty()) {
+				this.isActive = false;
+			}
+			return;
 		}
 		if (coords.cpy().sub(getNextWaypoint().getCoords()).len() < Config.WAYPOINT_SIZE.x / 2) {
 			// These checks concern the stages of the aircrafts approach to
@@ -392,7 +397,6 @@ public final class Aircraft extends Entity {
 				if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 2))) {
 					this.desiredAltitude = 0;
-					this.setSpeed(100 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 3))) {
 					this.desiredAltitude = 1000;
@@ -402,10 +406,13 @@ public final class Aircraft extends Entity {
 					this.desiredAltitude = 3000;
 					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				} else if (getNextWaypoint().equals(
-						waypoints.get(waypoints.size() - 4))) {
+						waypoints.get(waypoints.size() - 5))) {
 					this.desiredAltitude = 5000;
+					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				}
 			}
+			// for when aircraft is at any other exit point.
+
 			waypoints.remove(0);
 			if (waypoints.isEmpty()) {
 				this.isActive = false;
