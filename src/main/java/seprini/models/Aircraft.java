@@ -359,7 +359,7 @@ public final class Aircraft extends Entity {
 	private void testWaypointCollisions(AircraftController controller) {
 
 		if (coords.cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
-			if (getLastWaypoint() instanceof Airport) {
+			if (getLastWaypoint() instanceof Airport && this.altitude < 1000) {
 				// Test if exit point is an airport, and add aircraft into
 				// airport while removing it from the airspace.
 				if (getLastWaypoint().equals(getNextWaypoint())) {
