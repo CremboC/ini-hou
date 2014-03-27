@@ -358,7 +358,7 @@ public final class Aircraft extends Entity {
 	 */
 	private void testWaypointCollisions(AircraftController controller) {
 
-		if (coords.cpy().sub(waypoints.get(0).getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
+		if (coords.cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 			if (getLastWaypoint() instanceof Airport) {
 				// Test if exit point is an airport, and add aircraft into
 				// airport while removing it from the airspace.
@@ -377,9 +377,19 @@ public final class Aircraft extends Entity {
 					this.isActive = false;
 					return;
 				}
-				// These checks concern the stages of the aircrafts approach to
-				// the airport, incrementally decreasing speed and altitude.
-				else if (getNextWaypoint().equals(
+				// for when aircraft is at any other exit point.
+				waypoints.remove(0);
+				if (waypoints.isEmpty()) {
+					this.isActive = false;
+				}
+				return;
+			}
+		}
+		if (coords.cpy().sub(getNextWaypoint().getCoords()).len() < Config.WAYPOINT_SIZE.x / 2) {
+			// These checks concern the stages of the aircrafts approach to
+			// the airport, incrementally decreasing speed and altitude.
+			if (getLastWaypoint() instanceof Airport) {
+				if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 2))) {
 					this.desiredAltitude = 0;
 					this.setSpeed(100 / Config.AIRCRAFT_SPEED_MULTIPLIER);
@@ -397,11 +407,11 @@ public final class Aircraft extends Entity {
 				}
 			}
 			waypoints.remove(0);
-			// for when aircraft is at any other exit point.
 			if (waypoints.isEmpty()) {
 				this.isActive = false;
 			}
 		}
+
 	}
 
 	/**
