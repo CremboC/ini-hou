@@ -19,7 +19,7 @@ public class Airport extends Waypoint {
 	public Waypoint runwayEnd;
 	public Waypoint runwayLeft;
 	public Waypoint runwayRight;
-	
+
 	private final boolean visible;
 	private Random rand = new Random();
 	// Maximum number of aircraft that can be in the airport at once. If
@@ -34,6 +34,8 @@ public class Airport extends Waypoint {
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
+	public static int countdown = 0;
+	private int timeElapsed = 0;
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -42,10 +44,9 @@ public class Airport extends Waypoint {
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
 		runwayRight = new Waypoint(x - 77, y - 140, false);
-		this.visible=visible;
-		this.texture=Art.getTextureRegion("airport");
-		this.size=Config.AIRPORT_SIZE;
-		
+		this.visible = visible;
+		this.texture = Art.getTextureRegion("airport");
+		this.size = Config.AIRPORT_SIZE;
 
 	}
 
@@ -72,6 +73,9 @@ public class Airport extends Waypoint {
 					"Tried landing an aircraft into a full airport.");
 		}
 		boardingAircraft += 1;
+		timeElapsed = 0;
+		countdown = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
@@ -79,6 +83,14 @@ public class Airport extends Waypoint {
 			}
 		}, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
 
+		Timer.schedule(new Task() {
+			@Override
+			public void run() {
+				countdown = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+						- timeElapsed;
+				timeElapsed = timeElapsed + 1;
+			}
+		}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
 	}
 
 	/**
