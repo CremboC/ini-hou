@@ -7,6 +7,7 @@ import seprini.controllers.AircraftController;
 import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.models.types.AircraftType;
+import seprini.models.types.Player;
 import seprini.screens.AbstractScreen;
 
 import com.badlogic.gdx.graphics.Color;
@@ -47,18 +48,21 @@ public final class Aircraft extends Entity {
 	// Set and store aircrafts points.
 	private int points = 10;
 
+	private Player player;
+
 	public int getPoints() {
 		return this.points;
 	}
 
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
-			int id, AircraftController controller) {
+			int id, AircraftController controller, Player player) {
 
 		// allows drawing debug shape of this entity
 		debugShape = true;
 		this.controller = controller;
 		this.id = id;
 		this.aircraftType = aircraftType;
+		this.player = player;
 
 		points = 50;
 
@@ -178,6 +182,7 @@ public final class Aircraft extends Entity {
 	 * 
 	 * @param
 	 */
+	@Override
 	public void act(float delta) {
 
 		if (!isActive || landed)
@@ -606,6 +611,10 @@ public final class Aircraft extends Entity {
 			}
 		}
 		breachingLastFrame = isBreaching();
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public void takingOff() {

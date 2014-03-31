@@ -15,6 +15,7 @@ import seprini.models.Airspace;
 import seprini.models.Map;
 import seprini.models.Waypoint;
 import seprini.models.types.AircraftType;
+import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.Input.Keys;
@@ -22,7 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public final class AircraftController extends InputListener {
+public class AircraftController extends InputListener {
 
 	private Random rand = new Random();
 
@@ -57,6 +58,8 @@ public final class AircraftController extends InputListener {
 
 	// game mode
 	private final GameMode mode;
+	private final Player[] players = { new Player(Player.ONE),
+			new Player(Player.TWO) };
 
 	/**
 	 * 
@@ -75,7 +78,6 @@ public final class AircraftController extends InputListener {
 		this.screen = screen;
 		this.mode = mode;
 
-		// TODO: jcowgill - this is a massive hack but it will do at the moment
 		score = 0;
 
 		// add the background
@@ -93,6 +95,7 @@ public final class AircraftController extends InputListener {
 				.setRadius(15).setSeparationRadius(diff.getSeparationRadius())
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(30f));
+		
 	}
 
 	/**
@@ -271,7 +274,7 @@ public final class AircraftController extends InputListener {
 			return null;
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++, this);
+				flightplan.generate(), aircraftId++, this, players[Player.TWO]);
 
 		aircraftList.add(newAircraft);
 
@@ -387,34 +390,26 @@ public final class AircraftController extends InputListener {
 	public boolean keyDown(InputEvent event, int keycode) {
 		if (selectedAircraft != null && !screen.isPaused()) {
 
-			if (keycode == Keys.LEFT || keycode == Keys.A)
+			if (keycode == selectedAircraft.getPlayer().getLeft())
 				selectedAircraft.turnLeft(true);
 
-			if (keycode == Keys.RIGHT || keycode == Keys.D)
+			if (keycode == selectedAircraft.getPlayer().getRight())
 				selectedAircraft.turnRight(true);
 
-			if (keycode == Keys.UP || keycode == Keys.W)
+			if (keycode == selectedAircraft.getPlayer().getAltIncrease())
 				selectedAircraft.increaseAltitude();
 
-			if (keycode == Keys.DOWN || keycode == Keys.S)
+			if (keycode == selectedAircraft.getPlayer().getAltDecrease())
 				selectedAircraft.decreaseAltitude();
 
-			if (keycode == Keys.E)
+			if (keycode == selectedAircraft.getPlayer().getSpeedIncrease())
 				selectedAircraft.increaseSpeed();
 
-			if (keycode == Keys.Q)
+			if (keycode == selectedAircraft.getPlayer().getSpeedDecrease())
 				selectedAircraft.decreaseSpeed();
 
-			if (keycode == Keys.R)
+			if (keycode == selectedAircraft.getPlayer().getReturnToPath())
 				selectedAircraft.returnToPath();
-
-			if (keycode == Keys.G) {
-			}
-			// selectedAircraft.landAircraft();
-
-			if (keycode == Keys.T) {
-			}
-			// selectedAircraft.takeOff();
 
 		}
 
