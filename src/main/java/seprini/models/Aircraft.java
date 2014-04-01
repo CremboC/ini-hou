@@ -50,12 +50,10 @@ public final class Aircraft extends Entity {
 
 	private Player player;
 
-	public int getPoints() {
-		return this.points;
-	}
-
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
 			int id, AircraftController controller, Player player) {
+
+		System.out.println("id: " + id);
 
 		// allows drawing debug shape of this entity
 		debugShape = true;
@@ -339,6 +337,10 @@ public final class Aircraft extends Entity {
 		}
 	}
 
+	public int getPoints() {
+		return this.points;
+	}
+
 	/**
 	 * Updates the altitude according to the current desiredAltitude value
 	 */
@@ -598,12 +600,6 @@ public final class Aircraft extends Entity {
 		return this.selected = newSelected;
 	}
 
-	@Override
-	public String toString() {
-		return "Aircraft - x: " + getX() + " y: " + getY()
-				+ "\n\r flight plan: " + waypoints.toString();
-	}
-
 	public void checkBreaching() {
 		if (isBreaching()) {
 			if (!breachingLastFrame) {
@@ -624,4 +620,24 @@ public final class Aircraft extends Entity {
 		this.desiredAltitude = Config.ALTITUDES[1];
 		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 	}
+
+	private int getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		
+		if (!(object instanceof Aircraft))
+			return false;
+		
+		return this.id == ((Aircraft) object).getId();
+	}
+
+	@Override
+	public String toString() {
+		return "Aircraft " + id + " x: " + getX() + " y: " + getY()
+				+ "\n\r flight plan: " + waypoints.toString();
+	}
+
 }

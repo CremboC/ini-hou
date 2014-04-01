@@ -274,7 +274,7 @@ public class AircraftController extends InputListener {
 			return null;
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++, this, players[Player.TWO]);
+				flightplan.generate(), aircraftId++, this, players[Player.ONE]);
 
 		aircraftList.add(newAircraft);
 
@@ -334,6 +334,20 @@ public class AircraftController extends InputListener {
 
 		// make new aircraft know it's selected
 		selectedAircraft.selected(true);
+	}
+
+	/**
+	 * Switch the currently selected aircraft
+	 */
+	private void switchAircraft(int playerNumber) {
+		for (Aircraft aircraft : aircraftList) {
+			if (aircraft.getPlayer().getNumber() == playerNumber) {
+				if (!aircraft.equals(selectedAircraft)) {
+					selectAircraft(aircraft);
+					return;
+				}
+			}
+		}
 	}
 
 	/**
@@ -411,6 +425,12 @@ public class AircraftController extends InputListener {
 			if (keycode == selectedAircraft.getPlayer().getReturnToPath())
 				selectedAircraft.returnToPath();
 
+		}
+
+		if (keycode == players[Player.ONE].getSwitchPlane()) {
+			switchAircraft(Player.ONE);
+		} else if (keycode == players[Player.TWO].getSwitchPlane()) {
+			switchAircraft(Player.TWO);
 		}
 
 		if (keycode == Keys.SPACE)
