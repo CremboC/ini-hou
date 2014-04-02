@@ -336,18 +336,36 @@ public class AircraftController extends InputListener {
 		selectedAircraft.selected(true);
 	}
 
+	private int lastAircraftIndex;
+
 	/**
 	 * Switch the currently selected aircraft
 	 */
 	private void switchAircraft(int playerNumber) {
-		for (Aircraft aircraft : aircraftList) {
-			if (aircraft.getPlayer().getNumber() == playerNumber) {
-				if (!aircraft.equals(selectedAircraft)) {
-					selectAircraft(aircraft);
-					return;
-				}
-			}
+		int index = lastAircraftIndex + 1;
+		Aircraft plane;
+		
+		// to prevent out of bounds exception
+		if (aircraftList.size() == 0) {
+			return;
 		}
+		
+		// if we increase the index by too much, it will give an an exception -
+		// restore index to the first one and loop again
+		try {
+			plane = aircraftList.get(index);
+		} catch (IndexOutOfBoundsException e) {
+			index = 0;
+			lastAircraftIndex = 0;
+		}
+
+		plane = aircraftList.get(index);
+
+		if (plane.getPlayer().getNumber() == playerNumber) {
+			selectAircraft(plane);
+		}
+
+		lastAircraftIndex = index;
 	}
 
 	/**
