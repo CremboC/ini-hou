@@ -19,7 +19,7 @@ public class AbstractScreen implements ScreenBase {
 
 	private final ATC atc;
 	private final Stage stage;
-	private boolean paused;
+	protected boolean paused;
 
 	/**
 	 * Initializes the AbstractScreen class with an ATC game reference

@@ -7,6 +7,7 @@ import seprini.data.Config;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.Airspace;
+import seprini.models.PauseOverlay;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -16,6 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class MultiplayerScreen extends AbstractScreen {
 
 	private final AircraftController controller;
+	private final PauseOverlay overlay;
+
+	private boolean added = false;
 
 	public MultiplayerScreen(ATC game, GameDifficulty diff) {
 		super(game);
@@ -52,11 +56,15 @@ public class MultiplayerScreen extends AbstractScreen {
 				.height(Config.MULTIPLAYER_SIZE.y);
 
 		Art.getSound("ambience").playLooping(0.7f);
+
+		overlay = new PauseOverlay();
 	}
 
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+
+		// temporary drawing of no man's land
 
 		getStage().getSpriteBatch().begin();
 
@@ -68,10 +76,24 @@ public class MultiplayerScreen extends AbstractScreen {
 
 		getStage().getSpriteBatch().end();
 
+		// end temporary drawing of no man's land
+
+
 		if (Config.DEBUG_UI) {
 			Stage root = getStage();
 
 			Table.drawDebug(root);
+		}
+	}
+
+	@Override
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+
+		if (paused) {
+			getStage().addActor(overlay);
+		} else {
+			overlay.remove();
 		}
 	}
 
