@@ -8,6 +8,7 @@ import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.Airspace;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -56,6 +57,16 @@ public class MultiplayerScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+
+		getStage().getSpriteBatch().begin();
+
+		AbstractScreen.drawLine(Color.RED, 540, 0, 540, 720, getStage()
+				.getSpriteBatch());
+
+		AbstractScreen.drawLine(Color.RED, 740, 0, 740, 720, getStage()
+				.getSpriteBatch());
+
+		getStage().getSpriteBatch().end();
 
 		if (Config.DEBUG_UI) {
 			Stage root = getStage();

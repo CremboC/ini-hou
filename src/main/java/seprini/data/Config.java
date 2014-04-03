@@ -24,6 +24,7 @@ public final class Config {
 	// Multiplayer config
 	public final static Vector2 MULTIPLAYER_SIZE = new Vector2(SCREEN_WIDTH,
 			SCREEN_HEIGHT);
+	public final static int[] NO_MAN_LAND = { 540, 640, 740 };
 
 	// UI related
 	public final static Vector2 SIDEBAR_SIZE = new Vector2(200, SCREEN_HEIGHT);

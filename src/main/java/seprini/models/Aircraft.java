@@ -6,6 +6,7 @@ import java.util.Random;
 import seprini.controllers.AircraftController;
 import seprini.data.Config;
 import seprini.data.Debug;
+import seprini.data.GameMode;
 import seprini.models.types.AircraftType;
 import seprini.models.types.Player;
 import seprini.screens.AbstractScreen;
@@ -22,47 +23,44 @@ public final class Aircraft extends Entity {
 	private static final Color LINE_COLOR = new Color(1, 0, 0, 0);
 	private static final Color BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 	private static final Vector2 TEXT_OFFSET = new Vector2(30, 20);
+	private static final int INITIAL_POINTS = 50;
+	private static final Vector2 SIZE = new Vector2(76, 63);
+	private static final float SCALE = 0.5f;
+
 	private final int id;
+
 	private AircraftController controller;
 	public ArrayList<Waypoint> waypoints;
+
 	private final AircraftType aircraftType;
-	private int desiredAltitude;
-	private int altitude;
+
+	private int desiredAltitude, altitude;
+
 	private Vector2 velocity = new Vector2(0, 0);
-	private boolean breaching;
-	private boolean breachingLastFrame;
-	private boolean isActive = true;
-	// When user has taken control of the aircraft
-	private boolean ignorePath = false;
-	// whether the aircraft is selected by the player
-	private boolean selected;
-	// Is the aircraft landed?
-	private boolean landed = false;
-	private boolean turnRight, turnLeft;
+	private boolean breaching, isActive, ignorePath, selected, landed,
+			turnRight, turnLeft, rotateRight, breachingLastFrame;
+
 	// used for smooth turning - remember last angle to check if it's increasing
 	// or not.
 	private float previousAngle = 0;
-	// if the above is increasing, switch rotation sides so it uses the
-	// 'smaller' angle
-	private boolean rotateRight = false;
+
 	// Set and store aircrafts points.
-	private int points = 10;
+	private int points;
 
 	private Player player;
 
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
-			int id, AircraftController controller, Player player) {
-
-		System.out.println("id: " + id);
-
+			int id, AircraftController controller) {
 		// allows drawing debug shape of this entity
 		debugShape = true;
+
 		this.controller = controller;
 		this.id = id;
 		this.aircraftType = aircraftType;
-		this.player = player;
 
-		points = 50;
+		Random rand = new Random();
+
+		points = INITIAL_POINTS;
 
 		// initialize entity
 		texture = aircraftType.getTexture();
@@ -70,7 +68,6 @@ public final class Aircraft extends Entity {
 		// initialize velocity and altitude
 		velocity = new Vector2(aircraftType.getInitialSpeed(), 0);
 
-		Random rand = new Random();
 		altitude = Config.ALTITUDES[rand.nextInt(Config.ALTITUDES.length)];
 		desiredAltitude = altitude;
 
@@ -78,17 +75,30 @@ public final class Aircraft extends Entity {
 		waypoints = flightPlan;
 
 		// define the size of the aircraft.
-		size = new Vector2(76, 63);
+		size = SIZE;
 
 		// set the coords to the entry point, remove it from the flight plan
 		Waypoint entryPoint = waypoints.get(0);
+
+		// set the player, depends on gamemode and where it spawns
+		if (controller.getGameMode() == GameMode.SINGLE) {
+			this.player = controller.getPlayers()[Player.ONE];
+		} else {
+
+			if (entryPoint.getCoords().x < Config.NO_MAN_LAND[0]) {
+				this.player = controller.getPlayers()[Player.ONE];
+			} else {
+				this.player = controller.getPlayers()[Player.TWO];
+			}
+		}
+
 		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
 		waypoints.remove(0);
 
 		// set origin to center of the aircraft, makes rotation more intuitive
 		this.setOrigin(size.x / 2, size.y / 2);
 
-		this.setScale(0.5f);
+		this.setScale(SCALE);
 
 		// set bounds so the aircraft is clickable
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
@@ -99,6 +109,15 @@ public final class Aircraft extends Entity {
 
 		this.velocity.setAngle(relativeAngle);
 		this.setRotation(relativeAngle);
+
+		// switch rotation sides so it uses the 'smaller' angle
+		rotateRight = false;
+
+		// When user has taken control of the aircraft
+		ignorePath = false;
+
+		landed = false;
+		isActive = true;
 
 		Debug.msg("||\nGenerated aircraft id " + id + "\nEntry point: "
 				+ coords + "\nRelative angle to first waypoint: "

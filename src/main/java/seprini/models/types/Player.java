@@ -44,11 +44,11 @@ public class Player {
 			ALT_INC = Keys.UP;
 			ALT_DEC = Keys.DOWN;
 
-			SPEED_INC = Keys.NUM_8;
-			SPEED_DEC = Keys.NUM_2;
+			SPEED_INC = Keys.NUMPAD_8;
+			SPEED_DEC = Keys.NUMPAD_2;
 
-			RETURN_TO_PATH = Keys.NUM_0;
-			SWITCH_PLANE = Keys.NUM_5;
+			RETURN_TO_PATH = Keys.NUMPAD_0;
+			SWITCH_PLANE = Keys.NUMPAD_5;
 
 			number = Player.TWO;
 			break;

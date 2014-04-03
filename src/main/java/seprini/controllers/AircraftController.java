@@ -276,7 +276,7 @@ public class AircraftController extends InputListener {
 			return null;
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++, this, players[Player.ONE]);
+				flightplan.generate(), aircraftId++, this);
 
 		aircraftList.add(newAircraft);
 
@@ -418,6 +418,10 @@ public class AircraftController extends InputListener {
 
 	public GameMode getGameMode() {
 		return mode;
+	}
+
+	public Player[] getPlayers() {
+		return players;
 	}
 
 	@Override
