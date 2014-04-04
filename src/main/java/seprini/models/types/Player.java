@@ -1,6 +1,7 @@
 package seprini.models.types;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * Sets all of the controls for the different players. Passed to aircraft to
@@ -14,10 +15,12 @@ public class Player {
 	public final static int ONE = 0;
 	public final static int TWO = 1;
 
-	public int LEFT, RIGHT, ALT_INC, ALT_DEC, SPEED_INC, SPEED_DEC,
+	protected int LEFT, RIGHT, ALT_INC, ALT_DEC, SPEED_INC, SPEED_DEC,
 			RETURN_TO_PATH, SWITCH_PLANE;
 
-	public int number;
+	protected int number;
+	
+	protected Color circleColor;
 
 	public Player(int playerNumber) {
 		switch (playerNumber) {
@@ -35,6 +38,7 @@ public class Player {
 			SWITCH_PLANE = Keys.TAB;
 
 			number = Player.ONE;
+			circleColor = Color.RED;
 			break;
 
 		case TWO:
@@ -51,6 +55,7 @@ public class Player {
 			SWITCH_PLANE = Keys.NUMPAD_5;
 
 			number = Player.TWO;
+			circleColor = Color.BLUE;
 			break;
 		}
 	}
@@ -135,5 +140,15 @@ public class Player {
 	 */
 	public int getNumber() {
 		return number;
+	}
+
+	/**
+	 * The colour for the circle when an aircraft it selected. Depends on which
+	 * player selects.
+	 * 
+	 * @return
+	 */
+	public Color getColor() {
+		return circleColor;
 	}
 }
