@@ -2,6 +2,7 @@ package seprini.screens;
 
 import seprini.ATC;
 import seprini.controllers.AircraftController;
+import seprini.controllers.OverlayController;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.GameDifficulty;
@@ -19,23 +20,33 @@ public class MultiplayerScreen extends AbstractScreen {
 	private final AircraftController controller;
 	private final PauseOverlay overlay;
 
-	private boolean added = false;
-
 	public MultiplayerScreen(ATC game, GameDifficulty diff) {
 		super(game);
 
 		// create a table layout, main ui
 		Stage root = getStage();
 		Table ui = new Table();
+		Table overlayWrapper = new Table();
 
-		if (Config.DEBUG_UI)
+		ui.top();
+
+		if (Config.DEBUG_UI) {
 			ui.debug();
+			overlayWrapper.debug();
+		}
 
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
 
 		controller = new AircraftController(diff, airspace, this,
 				GameMode.MULTI);
+
+		airspace.addListener(controller);
+		ui.add(airspace).width(Config.MULTIPLAYER_SIZE.x)
+				.height(Config.MULTIPLAYER_SIZE.y);
+
+		final OverlayController overlayController = new OverlayController(
+				controller, ui);
 
 		root.setKeyboardFocus(airspace);
 
@@ -44,16 +55,13 @@ public class MultiplayerScreen extends AbstractScreen {
 			@Override
 			public void act(float delta) {
 				controller.update(delta);
+				overlayController.update(delta);
 			}
 		});
 
 		// make it fill the whole screen
 		ui.setFillParent(true);
 		root.addActor(ui);
-
-		airspace.addListener(controller);
-		ui.add(airspace).width(Config.MULTIPLAYER_SIZE.x)
-				.height(Config.MULTIPLAYER_SIZE.y);
 
 		Art.getSound("ambience").playLooping(0.7f);
 
@@ -78,17 +86,14 @@ public class MultiplayerScreen extends AbstractScreen {
 
 		// end temporary drawing of no man's land
 
-
 		if (Config.DEBUG_UI) {
-			Stage root = getStage();
-
-			Table.drawDebug(root);
+			Table.drawDebug(getStage());
 		}
 	}
 
 	@Override
 	public void setPaused(boolean paused) {
-		this.paused = paused;
+		super.setPaused(paused);
 
 		if (paused) {
 			getStage().addActor(overlay);
