@@ -5,6 +5,7 @@ import java.util.Random;
 
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.controllers.components.WaypointComponent;
+import seprini.data.Animator;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.Debug;
@@ -52,7 +53,7 @@ public class AircraftController extends InputListener {
 
 	// game timer
 	private float timer = 0;
-
+	Animator collision = new Animator();
 	// game score
 	public static float score = 0;
 
@@ -80,6 +81,7 @@ public class AircraftController extends InputListener {
 		this.screen = screen;
 		this.mode = mode;
 
+		collision.create();
 		score = 0;
 
 		// add the background
@@ -97,17 +99,18 @@ public class AircraftController extends InputListener {
 				.setRadius(15).setSeparationRadius(diff.getSeparationRadius())
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(30f));
-		
+
 	}
 
 	/**
 	 * Updates the aircraft positions. Generates a new aircraft and adds it to
 	 * the stage. Collision Detection. Removes aircraft if inactive.
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void update(float delta) {
+	public void update(float delta) throws InterruptedException {
 		// Update timer
 		timer += delta;
-
 		// Update score
 		// score += difficulty.getScoreMultiplier() * delta;
 
@@ -124,7 +127,7 @@ public class AircraftController extends InputListener {
 
 			// Update aircraft.
 
-			planeI.act(delta);
+			// planeI.act(delta);
 
 			planeI.setBreaching(false);
 
@@ -224,13 +227,20 @@ public class AircraftController extends InputListener {
 	 *            first aircraft that collided
 	 * @param b
 	 *            second aircraft that collided
+	 * @throws InterruptedException
 	 */
-	public void collisionHasOccured(Aircraft a, Aircraft b) {
+	public void collisionHasOccured(Aircraft a, Aircraft b)
+			throws InterruptedException {
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();
 		Art.getSound("crash").play(0.6f);
 
 		// change the screen to the endScreen
+		// TODO: hold the screen for n seconds while asplosion animation is
+		// played, while ceasing all other updates.
+
+		Thread.sleep(1000);
+
 		screen.getGame().showEndScreen(timer, score);
 	}
 
@@ -349,12 +359,12 @@ public class AircraftController extends InputListener {
 	private void switchAircraft(int playerNumber) {
 		int index = lastAircraftIndex + 1;
 		Aircraft plane;
-		
+
 		// to prevent out of bounds exception
 		if (aircraftList.size() == 0) {
 			return;
 		}
-		
+
 		// if we increase the index by too much, it will give an an exception -
 		// restore index to the first one and loop again
 		try {
