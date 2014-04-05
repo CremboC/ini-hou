@@ -219,7 +219,12 @@ public final class Aircraft extends Entity {
 				getWidth(), getHeight());
 
 		// test waypoint collisions
-		testWaypointCollisions(controller);
+		try {
+			testWaypointCollisions(controller);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// test screen boundary
 		if (isActive) {
@@ -381,17 +386,24 @@ public final class Aircraft extends Entity {
 	/**
 	 * Tests whether this aircraft has collided with any waypoints and take
 	 * appropriate action
+	 * 
+	 * @throws InterruptedException
 	 */
-	private void testWaypointCollisions(AircraftController controller) {
+	private void testWaypointCollisions(AircraftController controller)
+			throws InterruptedException {
 
 		if (coords.cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 
 			// Test if exit point is an airport, and add aircraft into
 			// airport while removing it from the airspace.
 			if (getLastWaypoint() instanceof Airport) {
-				if (this.altitude > 1000) {
+				if (getLastWaypoint() instanceof Airport
+						&& this.altitude > 1000 && this.waypoints.size() == 1) {
 					// TODO: Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty (?).
+					this.insertWaypoint(((Airport) getLastWaypoint()).runwayStart);
+					this.insertWaypoint(((Airport) getLastWaypoint()).runwayLeft);
+					this.insertWaypoint(((Airport) getLastWaypoint()).runwayEnd);
 					return;
 				}
 
@@ -437,7 +449,7 @@ public final class Aircraft extends Entity {
 					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				}
 			}
-			// for when aircraft is at any other exit point.
+			// for when aircraft is at any other waypoint.
 
 			waypoints.remove(0);
 			if (waypoints.isEmpty()) {
@@ -646,10 +658,10 @@ public final class Aircraft extends Entity {
 
 	@Override
 	public boolean equals(Object object) {
-		
+
 		if (!(object instanceof Aircraft))
 			return false;
-		
+
 		return this.id == ((Aircraft) object).getId();
 	}
 

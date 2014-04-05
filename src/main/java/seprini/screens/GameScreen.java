@@ -48,15 +48,19 @@ public class GameScreen extends AbstractScreen {
 		root.setKeyboardFocus(airspace);
 
 		// create sidebar
-		final SidebarController sidebarController = new SidebarController(sidebar, controller, this);
+		final SidebarController sidebarController = new SidebarController(
+				sidebar, controller, this);
 
 		// set controller update as first actor
-		ui.addActor(new Actor()
-		{
+		ui.addActor(new Actor() {
 			@Override
-			public void act(float delta)
-			{
-				controller.update(delta);
+			public void act(float delta) {
+				try {
+					controller.update(delta);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				sidebarController.update();
 			}
 		});

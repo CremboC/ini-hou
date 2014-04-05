@@ -54,7 +54,12 @@ public class MultiplayerScreen extends AbstractScreen {
 		ui.addActor(new Actor() {
 			@Override
 			public void act(float delta) {
-				controller.update(delta);
+				try {
+					controller.update(delta);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				overlayController.update(delta);
 			}
 		});
@@ -101,5 +106,4 @@ public class MultiplayerScreen extends AbstractScreen {
 			overlay.remove();
 		}
 	}
-
 }

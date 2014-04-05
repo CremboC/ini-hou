@@ -125,10 +125,6 @@ public class AircraftController extends InputListener {
 		for (int i = 0; i < aircraftList.size(); i++) {
 			Aircraft planeI = aircraftList.get(i);
 
-			// Update aircraft.
-
-			// planeI.act(delta);
-
 			planeI.setBreaching(false);
 
 			// Collision Detection + Separation breach detection.
