@@ -2,11 +2,11 @@ package seprini.screens;
 
 import seprini.ATC;
 import seprini.controllers.AircraftController;
+import seprini.controllers.MultiplayerController;
 import seprini.controllers.OverlayController;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.GameDifficulty;
-import seprini.data.GameMode;
 import seprini.models.Airspace;
 import seprini.models.PauseOverlay;
 
@@ -38,8 +38,7 @@ public class MultiplayerScreen extends AbstractScreen {
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
 
-		controller = new AircraftController(diff, airspace, this,
-				GameMode.MULTI);
+		controller = new MultiplayerController(diff, airspace, this);
 
 		airspace.addListener(controller);
 		ui.add(airspace).width(Config.MULTIPLAYER_SIZE.x)

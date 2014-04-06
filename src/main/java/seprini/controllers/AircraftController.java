@@ -30,22 +30,22 @@ public class AircraftController extends InputListener {
 
 	// aircraft and aircraft type lists
 	private final ArrayList<AircraftType> aircraftTypeList = new ArrayList<AircraftType>();
-	private final ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
+	protected final ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 
 	private float lastGenerated, lastWarned;
 	private boolean breachingSound, breachingIsPlaying;
 
-	private Aircraft[] selectedAircraft = { null, null };
+	protected Aircraft selectedAircraft;
 
-	private final GameDifficulty difficulty;
+	protected final GameDifficulty difficulty;
 
 	// helpers for this class
-	public final WaypointComponent waypoints;
-	public final FlightPlanComponent flightplan;
+	public WaypointComponent waypoints;
+	public FlightPlanComponent flightplan;
 
 	// ui related
-	private final Airspace airspace;
-	private final ScreenBase screen;
+	protected final Airspace airspace;
+	protected final ScreenBase screen;
 
 	private boolean allowRedirection;
 
@@ -57,12 +57,12 @@ public class AircraftController extends InputListener {
 	// game score
 	public static float score = 0;
 
-	// game mode
-	private final GameMode mode;
-	private final Player[] players = { new Player(Player.ONE),
+	protected int lastAircraftIndex;
+
+	protected final Player[] players = { new Player(Player.ONE),
 			new Player(Player.TWO) };
 
-	private int lastAircraftIndex;
+	protected GameMode mode;
 
 	/**
 	 * 
@@ -75,23 +75,13 @@ public class AircraftController extends InputListener {
 	 * @param screen
 	 */
 	public AircraftController(GameDifficulty diff, Airspace airspace,
-			ScreenBase screen, GameMode mode) {
+			ScreenBase screen) {
 		this.difficulty = diff;
 		this.airspace = airspace;
 		this.screen = screen;
-		this.mode = mode;
 
 		collision.create();
 		score = 0;
-
-		// add the background
-		airspace.addActor(new Map(mode));
-
-		// manages the waypoints
-		this.waypoints = new WaypointComponent(this);
-
-		// helper for creating the flight plan of an aircraft
-		this.flightplan = new FlightPlanComponent(waypoints);
 
 		// initialise aircraft types.
 		aircraftTypeList.add(new AircraftType().setMaxClimbRate(600)
@@ -100,6 +90,22 @@ public class AircraftController extends InputListener {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(30f));
 
+		this.init();
+
+	}
+
+	protected void init() {
+
+		this.mode = GameMode.SINGLE;
+
+		// add the background
+		airspace.addActor(new Map(GameMode.SINGLE));
+
+		// manages the waypoints
+		this.waypoints = new WaypointComponent(this, GameMode.SINGLE);
+
+		// helper for creating the flight plan of an aircraft
+		this.flightplan = new FlightPlanComponent(waypoints);
 	}
 
 	/**
@@ -325,34 +331,29 @@ public class AircraftController extends InputListener {
 	 * 
 	 * @param aircraft
 	 */
-	private void selectAircraft(Aircraft aircraft) {
-
+	protected void selectAircraft(Aircraft aircraft) {
 		// make sure old selected aircraft is no longer selected in its own
 		// object
-		Aircraft playerAircraft = selectedAircraft[aircraft.getPlayer()
-				.getNumber()];
-
-		if (playerAircraft != null) {
-
-			playerAircraft.selected(false);
+		if (selectedAircraft != null) {
+			selectedAircraft.selected(false);
 
 			// make sure the old aircraft stops turning after selecting a new
 			// aircraft; prevents it from going in circles
-			playerAircraft.turnLeft(false);
-			playerAircraft.turnRight(false);
+			selectedAircraft.turnLeft(false);
+			selectedAircraft.turnRight(false);
 		}
 
 		// set new selected aircraft
-		selectedAircraft[aircraft.getPlayer().getNumber()] = aircraft;
+		selectedAircraft = aircraft;
 
 		// make new aircraft know it's selected
-		selectedAircraft[aircraft.getPlayer().getNumber()].selected(true);
+		selectedAircraft.selected(true);
 	}
 
 	/**
 	 * Switch the currently selected aircraft
 	 */
-	private void switchAircraft(int playerNumber) {
+	protected void switchAircraft(int playerNumber) {
 		int index = lastAircraftIndex + 1;
 		Aircraft plane;
 
@@ -372,9 +373,7 @@ public class AircraftController extends InputListener {
 
 		plane = aircraftList.get(index);
 
-		if (plane.getPlayer().getNumber() == playerNumber) {
-			selectAircraft(plane);
-		}
+		selectAircraft(plane);
 
 		lastAircraftIndex = index;
 	}
@@ -391,7 +390,7 @@ public class AircraftController extends InputListener {
 		if (getSelectedAircraft() == null)
 			return;
 
-		getSelectedAircraft()[Player.ONE].insertWaypoint(waypoint);
+		getSelectedAircraft().insertWaypoint(waypoint);
 	}
 
 	public float getTimer() {
@@ -402,7 +401,7 @@ public class AircraftController extends InputListener {
 		return score;
 	}
 
-	public Aircraft[] getSelectedAircraft() {
+	public Aircraft getSelectedAircraft() {
 		return selectedAircraft;
 	}
 
@@ -437,44 +436,37 @@ public class AircraftController extends InputListener {
 	public boolean keyDown(InputEvent event, int keycode) {
 		if (!screen.isPaused()) {
 
-			for (int i = 0; i < selectedAircraft.length; i++) {
+			if (selectedAircraft != null) {
+					if (keycode == selectedAircraft.getPlayer().getLeft())
+					selectedAircraft.turnLeft(true);
 
-				if (selectedAircraft[i] != null) {
-					if (keycode == selectedAircraft[i].getPlayer().getLeft())
-						selectedAircraft[i].turnLeft(true);
+				if (keycode == selectedAircraft.getPlayer().getRight())
+					selectedAircraft.turnRight(true);
 
-					if (keycode == selectedAircraft[i].getPlayer().getRight())
-						selectedAircraft[i].turnRight(true);
-
-					if (keycode == selectedAircraft[i].getPlayer()
+				if (keycode == selectedAircraft.getPlayer()
 							.getAltIncrease())
-						selectedAircraft[i].increaseAltitude();
+					selectedAircraft.increaseAltitude();
 
-					if (keycode == selectedAircraft[i].getPlayer()
+				if (keycode == selectedAircraft.getPlayer()
 							.getAltDecrease())
-						selectedAircraft[i].decreaseAltitude();
+					selectedAircraft.decreaseAltitude();
 
-					if (keycode == selectedAircraft[i].getPlayer()
+				if (keycode == selectedAircraft.getPlayer()
 							.getSpeedIncrease())
-						selectedAircraft[i].increaseSpeed();
+					selectedAircraft.increaseSpeed();
 
-					if (keycode == selectedAircraft[i].getPlayer()
+				if (keycode == selectedAircraft.getPlayer()
 							.getSpeedDecrease())
-						selectedAircraft[i].decreaseSpeed();
+					selectedAircraft.decreaseSpeed();
 
-					if (keycode == selectedAircraft[i].getPlayer()
+				if (keycode == selectedAircraft.getPlayer()
 							.getReturnToPath())
-						selectedAircraft[i].returnToPath();
+					selectedAircraft.returnToPath();
 				}
-
-			}
-
 		}
 
 		if (keycode == players[Player.ONE].getSwitchPlane()) {
 			switchAircraft(Player.ONE);
-		} else if (keycode == players[Player.TWO].getSwitchPlane()) {
-			switchAircraft(Player.TWO);
 		}
 
 		if (keycode == Keys.SPACE)
@@ -494,17 +486,13 @@ public class AircraftController extends InputListener {
 	 */
 	public boolean keyUp(InputEvent event, int keycode) {
 
-		for (int i = 0; i < selectedAircraft.length; i++) {
+		if (selectedAircraft != null) {
 
-			if (selectedAircraft[i] != null) {
+			if (keycode == selectedAircraft.getPlayer().getLeft())
+				selectedAircraft.turnLeft(false);
 
-				if (keycode == selectedAircraft[i].getPlayer().getLeft())
-					selectedAircraft[i].turnLeft(false);
-
-				if (keycode == selectedAircraft[i].getPlayer().getRight())
-					selectedAircraft[i].turnRight(false);
-
-			}
+			if (keycode == selectedAircraft.getPlayer().getRight())
+				selectedAircraft.turnRight(false);
 
 		}
 

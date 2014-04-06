@@ -6,6 +6,7 @@ import java.util.Random;
 
 import seprini.controllers.AircraftController;
 import seprini.data.Debug;
+import seprini.data.GameMode;
 import seprini.models.Airport;
 import seprini.models.Entrypoint;
 import seprini.models.Exitpoint;
@@ -27,11 +28,11 @@ public class WaypointComponent {
 
 	private Airport selectedAirport;
 
-	public WaypointComponent(AircraftController controller) {
+	public WaypointComponent(AircraftController controller, GameMode mode) {
 
 		this.controller = controller;
 
-		switch (controller.getGameMode()) {
+		switch (mode) {
 		case SINGLE:
 			singleplayerWaypoints();
 			break;

@@ -6,7 +6,6 @@ import seprini.data.Art;
 import seprini.data.Config;
 import seprini.models.Aircraft;
 import seprini.models.Airport;
-import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -190,7 +189,7 @@ public final class SidebarController extends ChangeListener {
 		// if there is no selected aircraft, return immediately to avoid errors
 		// otherwise set it to the local selectedAircraft variable and update
 		// the text
-		if ((selectedAircraft = controller.getSelectedAircraft()[Player.ONE]) == null) {
+		if ((selectedAircraft = controller.getSelectedAircraft()) == null) {
 			altitudeText = " Altitude: ";
 			speedText = " Speed: ";
 		} else {

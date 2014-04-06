@@ -6,7 +6,6 @@ import seprini.controllers.SidebarController;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.GameDifficulty;
-import seprini.data.GameMode;
 import seprini.models.Airspace;
 
 import com.badlogic.gdx.Gdx;
@@ -43,8 +42,7 @@ public class GameScreen extends AbstractScreen {
 
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
-		controller = new AircraftController(diff, airspace, this,
-				GameMode.SINGLE);
+		controller = new AircraftController(diff, airspace, this);
 		root.setKeyboardFocus(airspace);
 
 		// create sidebar

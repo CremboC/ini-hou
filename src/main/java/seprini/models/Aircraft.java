@@ -84,7 +84,6 @@ public final class Aircraft extends Entity {
 		if (controller.getGameMode() == GameMode.SINGLE) {
 			this.player = controller.getPlayers()[Player.ONE];
 		} else {
-
 			if (entryPoint.getCoords().x < Config.NO_MAN_LAND[0]) {
 				this.player = controller.getPlayers()[Player.ONE];
 			} else {
