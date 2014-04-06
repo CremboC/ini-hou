@@ -315,7 +315,8 @@ public final class SidebarController extends ChangeListener {
 
 			}
 
-			if (selectedAirport != null) {
+			if (selectedAirport != null
+					& selectedAirport.aircraftList.size() != 0) {
 				if (actor.equals(buttons.get("aircraft0")))
 					controller.takeoff(selectedAirport.takeoff(0));
 				if (actor.equals(buttons.get("aircraft1")))
