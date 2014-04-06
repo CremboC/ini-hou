@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import seprini.controllers.AircraftController;
+import seprini.controllers.MultiplayerController;
 import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.data.GameMode;
@@ -91,7 +92,7 @@ public final class Aircraft extends Entity {
 			}
 		}
 
-		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
+		setCoords(new Vector2(entryPoint.getX(), entryPoint.getY()));
 		waypoints.remove(0);
 
 		// set origin to center of the aircraft, makes rotation more intuitive
@@ -119,7 +120,7 @@ public final class Aircraft extends Entity {
 		isActive = true;
 
 		Debug.msg("||\nGenerated aircraft id " + id + "\nEntry point: "
-				+ coords + "\nRelative angle to first waypoint: "
+				+ getCoords() + "\nRelative angle to first waypoint: "
 				+ relativeAngle + "\nVelocity" + velocity + "\nWaypoints: "
 				+ waypoints + "\n||");
 	}
@@ -137,7 +138,7 @@ public final class Aircraft extends Entity {
 		// show full flight plan.
 		if (selected) {
 			// Initialises previous to plane's current position.
-			Vector2 previous = coords;
+			Vector2 previous = getCoords();
 
 			batch.end();
 
@@ -203,6 +204,20 @@ public final class Aircraft extends Entity {
 
 		if (!isActive || landed)
 			return;
+		
+		if (getCoords().x >= 540  && getCoords().x <= 740){
+            if (controller instanceof MultiplayerController) {
+                ((MultiplayerController) controller).deselectAircraft(this);
+        }
+
+		}
+		// Handing over control from player one to player 2
+		if (getCoords().x < 640) {
+			this.player = controller.getPlayers()[Player.ONE];
+		} 
+		else {
+			this.player = controller.getPlayers()[Player.TWO];
+		}
 
 		// handle aircraft rotation
 		rotateAircraft(delta);
@@ -211,7 +226,7 @@ public final class Aircraft extends Entity {
 		updateAltitude(delta);
 
 		// finally updating coordinates
-		coords.add(velocity.cpy().scl(delta));
+		getCoords().add(velocity.cpy().scl(delta));
 
 		// updating bounds to make sure the aircraft is clickable
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
@@ -242,7 +257,7 @@ public final class Aircraft extends Entity {
 	 * @return angle IN DEGREES, NOT RADIANS
 	 */
 	private float angleCoordsToWaypoint(Vector2 waypoint) {
-		Vector2 way = new Vector2(waypoint.x - coords.x, waypoint.y - coords.y)
+		Vector2 way = new Vector2(waypoint.x - getCoords().x, waypoint.y - getCoords().y)
 				.nor();
 		Vector2 coord = velocity.cpy().nor();
 
@@ -385,7 +400,7 @@ public final class Aircraft extends Entity {
 	private void testWaypointCollisions(AircraftController controller)
 			throws InterruptedException {
 
-		if (coords.cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
+		if (getCoords().cpy().sub(getLastWaypoint().getCoords()).len() < Config.EXIT_WAYPOINT_SIZE.x / 2) {
 
 			// Test if exit point is an airport, and add aircraft into
 			// airport while removing it from the airspace.
@@ -421,7 +436,7 @@ public final class Aircraft extends Entity {
 			}
 			return;
 		}
-		if (coords.cpy().sub(getNextWaypoint().getCoords()).len() < Config.WAYPOINT_SIZE.x / 2) {
+		if (getCoords().cpy().sub(getNextWaypoint().getCoords()).len() < Config.WAYPOINT_SIZE.x / 2) {
 			// These checks concern the stages of the aircrafts approach to
 			// the airport, incrementally decreasing speed and altitude.
 			if (getLastWaypoint() instanceof Airport) {
