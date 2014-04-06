@@ -89,6 +89,10 @@ public class WaypointComponent {
 		createExitpoint(1280, 0);
 		createExitpoint(0, 420);
 		createExitpoint(640, 720);
+
+		// add airports;
+		createAirport(387, 335);
+		createAirport(900, 350);
 	}
 
 	/**

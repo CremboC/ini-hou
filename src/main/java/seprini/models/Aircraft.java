@@ -225,16 +225,10 @@ public final class Aircraft extends Entity {
 			e.printStackTrace();
 		}
 
+
 		// test screen boundary
 		if (isActive) {
-			if (getX() < -10 || getY() < -10
-					|| getX() > Config.SCREEN_WIDTH - 190
-					|| getY() > Config.SCREEN_HEIGHT + 105) {
-
-				isActive = false;
-				Debug.msg("Aircraft id " + id
-						+ ": Out of bounds, last coordinates: " + coords);
-			}
+			isOutOfBounds();
 		}
 
 		checkBreaching();
@@ -459,6 +453,49 @@ public final class Aircraft extends Entity {
 	}
 
 	/**
+	 * Checks whether the aircraft is out of bounds depending on game mode (due
+	 * to the sidebar in SP)
+	 * 
+	 * @return
+	 */
+	private boolean isOutOfBounds() {
+		
+		int leftX = 0, leftY = 0, rightX = 0, rightY = 0;
+
+		switch (controller.getGameMode()) {
+		case SINGLE:
+
+			leftX = -10;
+			leftY = -10;
+			rightX = -190;
+			rightY = 105;
+
+			break;
+		case MULTI:
+
+			leftX = -10;
+			leftY = -10;
+			rightX = 10;
+			rightY = 10;
+
+			break;
+		}
+		
+
+		if (getX() < leftX || getY() < leftY
+				|| getX() > Config.SCREEN_WIDTH + rightX
+				|| getY() > Config.SCREEN_HEIGHT + rightY) {
+
+			isActive = false;
+
+			return true;
+
+		}
+
+		return false;
+	}
+
+	/**
 	 * Adding a new waypoint to the head of the arraylist
 	 * 
 	 * @param newWaypoint
@@ -529,14 +566,6 @@ public final class Aircraft extends Entity {
 		this.desiredAltitude -= ALTITUDE_CHANGE;
 	}
 
-	public boolean isTurningRight() {
-		return turnRight;
-	}
-
-	public boolean isTurningLeft() {
-		return turnLeft;
-	}
-
 	public void turnRight(boolean set) {
 		if (set)
 			turnLeft = false;
@@ -557,6 +586,49 @@ public final class Aircraft extends Entity {
 		turnLeft = false;
 		turnRight = false;
 		ignorePath = false;
+	}
+
+	/**
+	 * Setter for selected
+	 * 
+	 * @param newSelected
+	 * @return whether is selected
+	 */
+	public boolean selected(boolean newSelected) {
+		return this.selected = newSelected;
+	}
+
+	public void checkBreaching() {
+		if (isBreaching()) {
+			if (!breachingLastFrame) {
+				points -= 5;
+			}
+		}
+		breachingLastFrame = isBreaching();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void takingOff() {
+		this.isActive = true;
+		this.landed = false;
+		this.altitude = 0;
+		this.desiredAltitude = Config.ALTITUDES[1];
+		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+	}
+
+	public boolean isTurningRight() {
+		return turnRight;
+	}
+
+	public boolean isTurningLeft() {
+		return turnLeft;
+	}
+
+	private int getId() {
+		return id;
 	}
 
 	public ArrayList<Waypoint> getFlightPlan() {
@@ -618,41 +690,6 @@ public final class Aircraft extends Entity {
 	 */
 	public boolean isActive() {
 		return isActive;
-	}
-
-	/**
-	 * Setter for selected
-	 * 
-	 * @param newSelected
-	 * @return whether is selected
-	 */
-	public boolean selected(boolean newSelected) {
-		return this.selected = newSelected;
-	}
-
-	public void checkBreaching() {
-		if (isBreaching()) {
-			if (!breachingLastFrame) {
-				points -= 5;
-			}
-		}
-		breachingLastFrame = isBreaching();
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void takingOff() {
-		this.isActive = true;
-		this.landed = false;
-		this.altitude = 0;
-		this.desiredAltitude = Config.ALTITUDES[1];
-		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
-	}
-
-	private int getId() {
-		return id;
 	}
 
 	@Override
