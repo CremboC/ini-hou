@@ -92,7 +92,7 @@ public final class Aircraft extends Entity {
 			}
 		}
 
-		setCoords(new Vector2(entryPoint.getX(), entryPoint.getY()));
+		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
 		waypoints.remove(0);
 
 		// set origin to center of the aircraft, makes rotation more intuitive
@@ -204,18 +204,17 @@ public final class Aircraft extends Entity {
 
 		if (!isActive || landed)
 			return;
-		
-		if (getCoords().x >= 540  && getCoords().x <= 740){
-            if (controller instanceof MultiplayerController) {
-                ((MultiplayerController) controller).deselectAircraft(this);
-        }
+
+		if (getCoords().x >= 540 && getCoords().x <= 740) {
+			if (controller instanceof MultiplayerController) {
+				((MultiplayerController) controller).deselectAircraft(this);
+			}
 
 		}
 		// Handing over control from player one to player 2
 		if (getCoords().x < 640) {
 			this.player = controller.getPlayers()[Player.ONE];
-		} 
-		else {
+		} else {
 			this.player = controller.getPlayers()[Player.TWO];
 		}
 
@@ -240,7 +239,6 @@ public final class Aircraft extends Entity {
 			e.printStackTrace();
 		}
 
-
 		// test screen boundary
 		if (isActive) {
 			isOutOfBounds();
@@ -257,8 +255,8 @@ public final class Aircraft extends Entity {
 	 * @return angle IN DEGREES, NOT RADIANS
 	 */
 	private float angleCoordsToWaypoint(Vector2 waypoint) {
-		Vector2 way = new Vector2(waypoint.x - getCoords().x, waypoint.y - getCoords().y)
-				.nor();
+		Vector2 way = new Vector2(waypoint.x - getCoords().x, waypoint.y
+				- getCoords().y).nor();
 		Vector2 coord = velocity.cpy().nor();
 
 		float angle = (float) Math.acos(way.dot(coord) / way.len()
@@ -474,7 +472,7 @@ public final class Aircraft extends Entity {
 	 * @return
 	 */
 	private boolean isOutOfBounds() {
-		
+
 		int leftX = 0, leftY = 0, rightX = 0, rightY = 0;
 
 		switch (controller.getGameMode()) {
@@ -495,7 +493,6 @@ public final class Aircraft extends Entity {
 
 			break;
 		}
-		
 
 		if (getX() < leftX || getY() < leftY
 				|| getX() > Config.SCREEN_WIDTH + rightX

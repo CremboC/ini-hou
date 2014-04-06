@@ -3,7 +3,6 @@ package seprini.controllers;
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.controllers.components.WaypointComponent;
 import seprini.data.Art;
-import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
@@ -48,9 +47,9 @@ public class MultiplayerController extends AircraftController {
 	 */
 	@Override
 	protected void selectAircraft(Aircraft aircraft) {
-		
+
 		// Cannot select in the No Man's Land
-		if (aircraft.getCoords().x >= 540  && aircraft.getCoords().x <= 740){
+		if (aircraft.getCoords().x >= 540 && aircraft.getCoords().x <= 740) {
 			return;
 		}
 		// make sure old selected aircraft is no longer selected in its own
@@ -66,7 +65,7 @@ public class MultiplayerController extends AircraftController {
 			// aircraft; prevents it from going in circles
 			playerAircraft.turnLeft(false);
 			playerAircraft.turnRight(false);
-			
+
 		}
 
 		// set new selected aircraft
@@ -76,19 +75,19 @@ public class MultiplayerController extends AircraftController {
 		selectedAircraft[aircraft.getPlayer().getNumber()].selected(true);
 	}
 
-    public void deselectAircraft(Aircraft aircraft) {
-    	 
-        Aircraft selected = selectedAircraft[aircraft.getPlayer().getNumber()];
-       
-        if (selected != null) {
-                selected.selected(false);
+	public void deselectAircraft(Aircraft aircraft) {
 
-                selected.turnLeft(false);
-                selected.turnRight(false);
+		Aircraft selected = selectedAircraft[aircraft.getPlayer().getNumber()];
 
-                selected = null;
-        }
-}
+		if (selected != null) {
+			selected.selected(false);
+
+			selected.turnLeft(false);
+			selected.turnRight(false);
+
+			selected = null;
+		}
+	}
 
 	/**
 	 * Switch the currently selected aircraft
@@ -221,13 +220,5 @@ public class MultiplayerController extends AircraftController {
 
 		return false;
 	}
-	
-}
-	
-	
 
-	    
-			
-	
-			
-		
+}
