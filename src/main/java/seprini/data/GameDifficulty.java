@@ -27,6 +27,8 @@ public class GameDifficulty {
 	 *            separation radius between aircraft
 	 * @param scoreMultiplier
 	 *            score multiplier
+	 * @param verticalSeparationRadius
+	 *            vertical separation distance
 	 */
 	public GameDifficulty(int maxAircraft, int timeBetweenGenerations,
 			int separationRadius, double scoreMultiplier,

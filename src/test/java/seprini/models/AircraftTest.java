@@ -40,7 +40,7 @@ public class AircraftTest {
 
 	/** Returns a difficulty which no aircraft can be generated in */
 	private static GameDifficulty getNoAircraftDifficulty() {
-		return new GameDifficulty(0, 100000, 0, 0);
+		return new GameDifficulty(0, 100000, 0, 0, 0);
 	}
 
 	@Before
