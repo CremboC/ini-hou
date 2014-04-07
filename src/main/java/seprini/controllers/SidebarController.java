@@ -225,7 +225,7 @@ public final class SidebarController extends ChangeListener {
 
 			for (int i = 0; i < selectedAirport.boardingAircraft; i++) {
 				buttons.get("aircraft" + Integer.toString(i)).setText(
-						"Aircraft boarding: " + Airport.countdown);
+						"Aircraft boarding: " + Airport.countdown[i]);
 			}
 
 			for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
@@ -318,7 +318,8 @@ public final class SidebarController extends ChangeListener {
 			if (selectedAirport != null
 					&& selectedAirport.aircraftList.size() != 0) {
 
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
+
 					if (actor.equals(buttons.get("aircraft" + i)))
 						controller.takeoff(selectedAirport.takeoff(i));
 				}
