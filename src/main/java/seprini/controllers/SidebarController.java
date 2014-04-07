@@ -316,17 +316,13 @@ public final class SidebarController extends ChangeListener {
 			}
 
 			if (selectedAirport != null
-					& selectedAirport.aircraftList.size() != 0) {
-				if (actor.equals(buttons.get("aircraft0")))
-					controller.takeoff(selectedAirport.takeoff(0));
-				if (actor.equals(buttons.get("aircraft1")))
-					controller.takeoff(selectedAirport.takeoff(1));
-				if (actor.equals(buttons.get("aircraft2")))
-					controller.takeoff(selectedAirport.takeoff(2));
-				if (actor.equals(buttons.get("aircraft3")))
-					controller.takeoff(selectedAirport.takeoff(3));
-				if (actor.equals(buttons.get("aircraft4")))
-					controller.takeoff(selectedAirport.takeoff(4));
+					&& selectedAirport.aircraftList.size() != 0) {
+
+				for (int i = 0; i < 5; i++) {
+					if (actor.equals(buttons.get("aircraft" + i)))
+						controller.takeoff(selectedAirport.takeoff(i));
+				}
+
 			}
 		}
 
