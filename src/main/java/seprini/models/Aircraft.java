@@ -387,14 +387,14 @@ public final class Aircraft extends Entity {
 
 			// Test if exit point is an airport, and add aircraft into
 			// airport while removing it from the airspace.
-			if (getLastWaypoint() instanceof Airport) {
+			if (getLastWaypoint() instanceof Airport
+					&& this.waypoints.size() == 1) {
 
 				Airport airport = (Airport) getLastWaypoint();
 
-				if (this.altitude > 1000 && this.waypoints.size() == 1) {
+				if (this.altitude > 1000) {
 					// TODO: Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty (?).
-					this.waypoints.remove(0);
 					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 					this.desiredAltitude = 2000;
 					this.insertWaypoint(airport.runwayStart);
@@ -420,9 +420,13 @@ public final class Aircraft extends Entity {
 
 				return;
 
+			} else if (getLastWaypoint() instanceof Airport) {
+				return;
 			}
 
-			waypoints.remove(0);
+			else {
+				waypoints.remove(0);
+			}
 
 			if (waypoints.isEmpty()) {
 				this.isActive = false;

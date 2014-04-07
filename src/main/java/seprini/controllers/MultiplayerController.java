@@ -1,6 +1,7 @@
 package seprini.controllers;
 
 import seprini.controllers.components.FlightPlanComponent;
+import seprini.controllers.components.ScoreComponent;
 import seprini.controllers.components.WaypointComponent;
 import seprini.data.Art;
 import seprini.data.Config;
@@ -19,7 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class MultiplayerController extends AircraftController {
 
-	protected Aircraft[] selectedAircraft = { null, null };
+	private Aircraft[] selectedAircraft = { null, null };
+	private ScoreComponent playerOneScore = new ScoreComponent();
+	private ScoreComponent playerTwoScore = new ScoreComponent();
 
 	public MultiplayerController(GameDifficulty diff, Airspace airspace,
 			ScreenBase screen) {
@@ -47,27 +50,40 @@ public class MultiplayerController extends AircraftController {
 
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline
-		for (Aircraft plane : aircraftList) {
+		for (Aircraft aircraft : aircraftList) {
 
-			if (selectedAircraft[plane.getPlayer().getNumber()] != null) {
+			if (selectedAircraft[aircraft.getPlayer().getNumber()] != null) {
 				// if the aircraft is in no man's land and it is selected,
 				// deselect it
-				if (plane.getCoords().x >= Config.NO_MAN_LAND[0]
-						&& plane.getCoords().x <= Config.NO_MAN_LAND[2]
-						&& selectedAircraft[plane.getPlayer().getNumber()]
-								.equals(plane)) {
-					deselectAircraft(plane);
+				if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
+						&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]
+						&& selectedAircraft[aircraft.getPlayer().getNumber()]
+								.equals(aircraft)) {
+					deselectAircraft(aircraft);
 				}
 			}
 
 			// Handing over control from player one to player two
-			if (plane.getCoords().x < Config.NO_MAN_LAND[1]) {
-				plane.setPlayer(getPlayers()[Player.ONE]);
+			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
+				aircraft.setPlayer(getPlayers()[Player.ONE]);
 			} else {
-				plane.setPlayer(getPlayers()[Player.TWO]);
+				aircraft.setPlayer(getPlayers()[Player.TWO]);
 			}
 
 		}
+	}
+
+	@Override
+	public void collisionHasOccured(Aircraft a, Aircraft b) {
+		// stop the ambience sound and play the crash sound
+		Art.getSound("ambience").stop();
+		Art.getSound("crash").play(0.6f);
+
+		// change the screen to the endScreen
+		// TODO: hold the screen for n seconds while asplosion animation is
+		// played, while ceasing all other updates.
+
+		showGameOver();
 	}
 
 	/**
@@ -270,4 +286,14 @@ public class MultiplayerController extends AircraftController {
 		return false;
 	}
 
+	@Override
+	protected void showGameOver() {
+		// TODO overload gameover constructor to show scores
+		// TODO remove lump sum from score of losing player
+	}
+
+	@Override
+	protected void incrementScore(int value) {
+		playerOneScore.incrementScore(value);
+	}
 }
