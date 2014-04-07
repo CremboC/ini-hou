@@ -53,7 +53,7 @@ public class AircraftController extends InputListener {
 	private int aircraftId = 0;
 
 	// game timer
-	private float timer = 0;
+	protected float timer = 0;
 	Animator collision = new Animator();
 	// game score
 	private ScoreComponent playerScore = new ScoreComponent();

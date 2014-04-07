@@ -296,6 +296,8 @@ public class MultiplayerController extends AircraftController {
 			playerTwoScore.incrementScore(difficulty.getScoreMultiplier()
 					* Config.MULTIPLAYER_CRASH_BONUS);
 		}
+		screen.getGame().showMultiEndScreen(timer,
+				this.playerOneScore.getScore(), this.playerOneScore.getScore());
 	}
 
 	@Override

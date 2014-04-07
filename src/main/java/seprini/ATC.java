@@ -5,6 +5,7 @@ import seprini.data.GameDifficulty;
 import seprini.screens.EndScreen;
 import seprini.screens.GameScreen;
 import seprini.screens.MenuScreen;
+import seprini.screens.MultiplayerEndScreen;
 import seprini.screens.MultiplayerScreen;
 
 import com.badlogic.gdx.Game;
@@ -53,5 +54,9 @@ public class ATC extends Game {
 	 */
 	public void showEndScreen(float time, float score) {
 		setScreen(new EndScreen(this, time, score));
+	}
+
+	public void showMultiEndScreen(float time, float scoreOne, float scoreTwo) {
+		setScreen(new MultiplayerEndScreen(this, time, scoreOne, scoreTwo));
 	}
 }
