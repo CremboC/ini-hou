@@ -49,15 +49,11 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected void selectAircraft(Aircraft aircraft) {
 
-		Debug.msg("Select aircraft.");
-
 		// Cannot select in the No Man's Land
 		if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]) {
 			return;
 		}
-
-		Debug.msg("Selected aircraft.");
 
 		// make sure old selected aircraft is no longer selected in its own
 		// object
