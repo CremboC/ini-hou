@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import seprini.controllers.AircraftController;
-import seprini.controllers.MultiplayerController;
 import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.data.GameMode;
@@ -204,21 +203,6 @@ public final class Aircraft extends Entity {
 
 		if (!isActive || landed)
 			return;
-
-		// if the aircraft is in no man's land and it is selected, deselect it
-		if (getCoords().x >= Config.NO_MAN_LAND[0]
-				&& getCoords().x <= Config.NO_MAN_LAND[2] && selected) {
-			if (controller instanceof MultiplayerController) {
-				((MultiplayerController) controller).deselectAircraft(this);
-			}
-		}
-
-		// Handing over control from player one to player two
-		if (getCoords().x < Config.NO_MAN_LAND[1]) {
-			this.player = controller.getPlayers()[Player.ONE];
-		} else {
-			this.player = controller.getPlayers()[Player.TWO];
-		}
 
 		// handle aircraft rotation
 		rotateAircraft(delta);
@@ -706,6 +690,10 @@ public final class Aircraft extends Entity {
 	 */
 	public float getSpeed() {
 		return velocity.len();
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	/**

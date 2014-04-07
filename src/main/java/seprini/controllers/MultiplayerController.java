@@ -41,6 +41,33 @@ public class MultiplayerController extends AircraftController {
 		this.flightplan = new FlightPlanComponent(waypoints);
 	}
 
+	@Override
+	public void update(float delta) throws InterruptedException {
+		super.update(delta);
+
+		// go over the aircraft list, deselect aircraft in no man's land, hand
+		// over aircraft if they passed the midline
+		for (Aircraft plane : aircraftList) {
+
+			// if the aircraft is in no man's land and it is selected, deselect
+			// it
+			if (plane.getCoords().x >= Config.NO_MAN_LAND[0]
+					&& plane.getCoords().x <= Config.NO_MAN_LAND[2]
+					&& selectedAircraft[plane.getPlayer().getNumber()]
+							.equals(plane)) {
+				deselectAircraft(plane);
+			}
+
+			// Handing over control from player one to player two
+			if (plane.getCoords().x < Config.NO_MAN_LAND[1]) {
+				plane.setPlayer(getPlayers()[Player.ONE]);
+			} else {
+				plane.setPlayer(getPlayers()[Player.TWO]);
+			}
+
+		}
+	}
+
 	/**
 	 * Selects an aircraft.
 	 * 
@@ -84,7 +111,7 @@ public class MultiplayerController extends AircraftController {
 	 * 
 	 * @param aircraft
 	 */
-	public void deselectAircraft(Aircraft aircraft) {
+	protected void deselectAircraft(Aircraft aircraft) {
 
 		Aircraft selected = selectedAircraft[aircraft.getPlayer().getNumber()];
 
