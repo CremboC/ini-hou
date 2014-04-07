@@ -3,6 +3,7 @@ package seprini.controllers;
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.controllers.components.WaypointComponent;
 import seprini.data.Art;
+import seprini.data.Config;
 import seprini.data.Debug;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
@@ -48,10 +49,16 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected void selectAircraft(Aircraft aircraft) {
 
+		Debug.msg("Select aircraft.");
+
 		// Cannot select in the No Man's Land
-		if (aircraft.getCoords().x >= 540 && aircraft.getCoords().x <= 740) {
+		if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
+				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]) {
 			return;
 		}
+
+		Debug.msg("Selected aircraft.");
+
 		// make sure old selected aircraft is no longer selected in its own
 		// object
 		Aircraft playerAircraft = selectedAircraft[aircraft.getPlayer()
@@ -68,16 +75,30 @@ public class MultiplayerController extends AircraftController {
 
 		}
 
-		// set new selected aircraft
+		// set new selected aircraft in this controller
 		selectedAircraft[aircraft.getPlayer().getNumber()] = aircraft;
 
 		// make new aircraft know it's selected
 		selectedAircraft[aircraft.getPlayer().getNumber()].selected(true);
 	}
 
+	/**
+	 * Allows the deselection of an aircraft, used when an aircraft goes into no
+	 * man's land
+	 * 
+	 * @param aircraft
+	 */
 	public void deselectAircraft(Aircraft aircraft) {
 
 		Aircraft selected = selectedAircraft[aircraft.getPlayer().getNumber()];
+
+		// only select if passed aircraft is the same as the currently selected
+		// aircraft, otherwise it doesn't allow selecting an aircraft while
+		// there is one in no man's land (another check is done in
+		// Aircraft.java)
+		if (!selected.equals(aircraft)) {
+			return;
+		}
 
 		if (selected != null) {
 			selected.selected(false);
@@ -85,7 +106,7 @@ public class MultiplayerController extends AircraftController {
 			selected.turnLeft(false);
 			selected.turnRight(false);
 
-			selected = null;
+			selectedAircraft[aircraft.getPlayer().getNumber()] = null;
 		}
 	}
 
