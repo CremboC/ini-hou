@@ -42,7 +42,7 @@ public class FlightPlanComponentTest {
 	@Before
 	public void setupGenerator() {
 		waypointComponent = new WaypointComponent(new AircraftController(
-				GameDifficulty.EASY, new Airspace(), null, GameMode.SINGLE));
+				GameDifficulty.EASY, new Airspace(), null), GameMode.SINGLE);
 		flightPlanComponent = new FlightPlanComponent(waypointComponent);
 	}
 

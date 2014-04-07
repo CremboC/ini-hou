@@ -13,7 +13,6 @@ import org.junit.runners.JUnit4;
 import seprini.ATC;
 import seprini.data.FakeArtEnabler;
 import seprini.data.GameDifficulty;
-import seprini.data.GameMode;
 import seprini.models.Aircraft;
 import seprini.models.Airspace;
 import seprini.models.Waypoint;
@@ -39,7 +38,11 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		flightPlan.add(new Waypoint(x, y, false));
 		flightPlan.add(new Waypoint(1000, 1000, false));
 
-		Aircraft aircraft = new Aircraft(aircraftType, flightPlan, 1, false);
+		AircraftController controller = new AircraftController(
+				getNoAircraftDifficulty(), new Airspace(), null);
+
+		Aircraft aircraft = new Aircraft(aircraftType, flightPlan, 1,
+				controller);
 
 		// Force middle altitude
 		if (aircraft.getAltitude() < 10000) {
@@ -59,14 +62,18 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		// Create 2 aircraft in different places - should not collide
 		ScreenBaseImpl screenBase = new ScreenBaseImpl();
 		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), screenBase,
-				GameMode.SINGLE);
+				getNoAircraftDifficulty(), new Airspace(), screenBase);
 
 		controller.getAircraftList().add(makeFakeAircraft(100, 100));
 		controller.getAircraftList().add(makeFakeAircraft(400, 100));
 
 		// Should not crash + aircraft should still be on the lists
-		controller.update(0.1f);
+		try {
+			controller.update(0.1f);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertThat(controller.getAircraftList(), hasSize(2));
 		assertThat(screenBase.gameEnded, is(false));
 	}
@@ -76,14 +83,18 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		// Create 2 aircraft in same place - should collide
 		ScreenBaseImpl screenBase = new ScreenBaseImpl();
 		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), screenBase,
-				GameMode.SINGLE);
+				getNoAircraftDifficulty(), new Airspace(), screenBase);
 
 		controller.getAircraftList().add(makeFakeAircraft(100, 100));
 		controller.getAircraftList().add(makeFakeAircraft(100, 100));
 
 		// Should crash
-		controller.update(0.1f);
+		try {
+			controller.update(0.1f);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertThat(screenBase.gameEnded, is(true));
 	}
 
@@ -92,13 +103,18 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		// Generate airspace with 2 aircraft in it (with limit on 2)
 		GameDifficulty difficulty = new GameDifficulty(2, 0, 0, 0);
 		AircraftController controller = new AircraftController(difficulty,
-				new Airspace(), null, GameMode.SINGLE);
+				new Airspace(), null);
 		controller.getAircraftList().add(makeFakeAircraft(500, 500));
 		controller.getAircraftList().add(makeFakeAircraft(100, 100));
 
 		// Keep refreshing, no more should appear
 		for (int i = 0; i < 100; i++) {
-			controller.update(1);
+			try {
+				controller.update(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			assertThat(controller.getAircraftList(), hasSize(2));
 		}
 	}
@@ -112,6 +128,7 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		@Override
 		public ATC getGame() {
 			return new ATC() {
+				@Override
 				public void showEndScreen(float time, float score) {
 					gameEnded = true;
 				}
@@ -122,27 +139,35 @@ public class AircraftControllerTest extends FakeArtEnabler {
 		public boolean isPaused() {
 			return false;
 		}
+
 		@Override
 		public void setPaused(boolean paused) {
 		}
+
 		@Override
 		public void render(float delta) {
 		}
+
 		@Override
 		public void resize(int width, int height) {
 		}
+
 		@Override
 		public void show() {
 		}
+
 		@Override
 		public void hide() {
 		}
+
 		@Override
 		public void pause() {
 		}
+
 		@Override
 		public void resume() {
 		}
+
 		@Override
 		public void dispose() {
 		}

@@ -24,7 +24,7 @@ public class WaypointComponentTest {
 	@Before
 	public void setUpWaypointComponent() {
 		waypointComponent = new WaypointComponent(new AircraftController(
-				GameDifficulty.EASY, new Airspace(), null, GameMode.SINGLE));
+				GameDifficulty.EASY, new Airspace(), null), GameMode.SINGLE);
 	}
 
 	/** Should be >= 2 entry points */
