@@ -172,10 +172,8 @@ public class AircraftController extends InputListener {
 			}
 			// This should never happen but...
 			if (planeI.getAltitude() < 0) {
-				screen.getGame().showEndScreen(timer,
-						this.playerScore.getScore());
+				showGameOver();
 			}
-
 		}
 
 		// make sure the breaching sound plays only when a separation breach
@@ -244,7 +242,7 @@ public class AircraftController extends InputListener {
 
 		Thread.sleep(1000);
 
-		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
+		showGameOver();
 	}
 
 	/**
@@ -525,4 +523,7 @@ public class AircraftController extends InputListener {
 		aircraft.takingOff();
 	}
 
+	protected void showGameOver() {
+		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
+	}
 }
