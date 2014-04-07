@@ -40,14 +40,13 @@ public class EndScreen extends AbstractScreen {
 
 		Label text = new Label(
 				"You have failed.\n"
-						+ "Two aeroplanes have collided mid-flight in a huge crash which resulted in the death of many innocent people.\n"
-						+ "However, surprisingly, you managed to avoid a crash for exactly "
+						+ "You have allowed two aircraft to collided, resulting in death and distruction of a sort not seen for a millenia.\n"
+						+ "You spent "
 						+ Math.round(time)
-						+ " seconds, which is respectable (at least by some standards).\n"
-						+ "In addition you achieved a score of "
-						+ Math.round(score) + ".\n"
-						+ "\nPRESS ESC TO RETURN TO THE MENU ", Art.getSkin(),
-				"textStyle");
+						+ " seconds in employment and would have earnt "
+						+ Math.round(score)
+						+ " Dolla had you not been knocked up in some Cuban prison for your actions. \n",
+				Art.getSkin(), "textStyle");
 
 		ui.add(text).center();
 
