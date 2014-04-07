@@ -237,7 +237,6 @@ public final class Aircraft extends Entity {
 		try {
 			testWaypointCollisions(controller);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -405,41 +404,52 @@ public final class Aircraft extends Entity {
 			// Test if exit point is an airport, and add aircraft into
 			// airport while removing it from the airspace.
 			if (getLastWaypoint() instanceof Airport) {
-				if (getLastWaypoint() instanceof Airport
-						&& this.altitude > 1000 && this.waypoints.size() == 1) {
+
+				Airport airport = (Airport) getLastWaypoint();
+
+				if (this.altitude > 1000 && this.waypoints.size() == 1) {
 					// TODO: Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty (?).
-					this.insertWaypoint(((Airport) getLastWaypoint()).runwayStart);
-					this.insertWaypoint(((Airport) getLastWaypoint()).runwayLeft);
-					this.insertWaypoint(((Airport) getLastWaypoint()).runwayEnd);
+					this.insertWaypoint(airport.runwayStart);
+					this.insertWaypoint(airport.runwayLeft);
+					this.insertWaypoint(airport.runwayEnd);
 					return;
 				}
 
 				try {
-					((Airport) getNextWaypoint()).insertAircraft(this);
-
+					airport.insertAircraft(this);
 				} catch (IllegalStateException e) {
 					controller.collisionHasOccured(this, this);
 				}
-				Waypoint airport = getNextWaypoint();
+
+				Waypoint nAirport = getNextWaypoint();
 				ArrayList<Waypoint> newFlightPlan = controller.flightplan
-						.generate(airport);
+						.generate(nAirport);
+
 				waypoints.clear();
 				waypoints = newFlightPlan;
+
 				this.isActive = false;
+
 				return;
 
 			}
+
 			waypoints.remove(0);
+
 			if (waypoints.isEmpty()) {
 				this.isActive = false;
 			}
+
 			return;
 		}
+
 		if (getCoords().cpy().sub(getNextWaypoint().getCoords()).len() < Config.WAYPOINT_SIZE.x / 2) {
+
 			// These checks concern the stages of the aircrafts approach to
 			// the airport, incrementally decreasing speed and altitude.
 			if (getLastWaypoint() instanceof Airport) {
+
 				if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 2))) {
 					this.desiredAltitude = 0;
@@ -456,7 +466,9 @@ public final class Aircraft extends Entity {
 					this.desiredAltitude = 5000;
 					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				}
+
 			}
+
 			// for when aircraft is at any other waypoint.
 
 			waypoints.remove(0);
