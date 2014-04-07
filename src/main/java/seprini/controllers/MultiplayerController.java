@@ -49,13 +49,15 @@ public class MultiplayerController extends AircraftController {
 		// over aircraft if they passed the midline
 		for (Aircraft plane : aircraftList) {
 
-			// if the aircraft is in no man's land and it is selected, deselect
-			// it
-			if (plane.getCoords().x >= Config.NO_MAN_LAND[0]
-					&& plane.getCoords().x <= Config.NO_MAN_LAND[2]
-					&& selectedAircraft[plane.getPlayer().getNumber()]
-							.equals(plane)) {
-				deselectAircraft(plane);
+			if (selectedAircraft[plane.getPlayer().getNumber()] != null) {
+				// if the aircraft is in no man's land and it is selected,
+				// deselect it
+				if (plane.getCoords().x >= Config.NO_MAN_LAND[0]
+						&& plane.getCoords().x <= Config.NO_MAN_LAND[2]
+						&& selectedAircraft[plane.getPlayer().getNumber()]
+								.equals(plane)) {
+					deselectAircraft(plane);
+				}
 			}
 
 			// Handing over control from player one to player two
