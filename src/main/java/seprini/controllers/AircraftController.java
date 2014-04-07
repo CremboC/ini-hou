@@ -125,56 +125,9 @@ public class AircraftController extends InputListener {
 		// wait at least 2 seconds before allowing to warn again
 		breachingIsPlaying = (timer - lastWarned < 2);
 
-		// Updates aircraft in turn
-		// Removes aircraft which are no longer active from aircraftList.
-		// Manages collision detection.
-		for (int i = 0; i < aircraftList.size(); i++) {
-			Aircraft planeI = aircraftList.get(i);
-
-			planeI.setBreaching(false);
-
-			// Collision Detection + Separation breach detection.
-			for (Aircraft planeJ : aircraftList) {
-
-				// Quite simply checks if distance between the centres of both
-				// the aircraft <= the radius of aircraft i + radius of aircraft
-				// j
-
-				if (!planeI.equals(planeJ)
-						// Check difference in altitude.
-						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < Config.MIN_ALTITUDE_DIFFERENCE
-						// Check difference in horizontal 2d plane.
-						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
-								.getRadius() + planeJ.getRadius()) {
-					collisionHasOccured(planeI, planeJ);
-					return;
-				}
-
-				// Checking for breach of separation.
-				if (!planeI.equals(planeJ)
-						// Check difference in altitude.
-						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < planeI
-								.getSeparationRadius()
-						// Check difference in horizontal 2d plane.
-						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
-								.getSeparationRadius()) {
-
-					separationRulesBreached(planeI, planeJ);
-				} else {
-					planeI.setBreaching(false);
-					planeJ.setBreaching(false);
-				}
-			}
-
-			// Remove inactive aircraft.
-			if (!planeI.isActive()) {
-				removeAircraft(i);
-			}
-			// This should never happen but...
-			if (planeI.getAltitude() < 0) {
-				showGameOver();
-			}
-		}
+		// Checks for collisions or separation rule breaches and
+		// removes aircraft which are no longer active from aircraftList.
+		updateCollision();
 
 		// make sure the breaching sound plays only when a separation breach
 		// occurs. Also makes sure it start playing it only one time so there
@@ -322,7 +275,7 @@ public class AircraftController extends InputListener {
 		aircraftList.remove(i);
 
 		// adds removed aircrafts' points to player score
-		incrementScore(aircraft.getPoints());
+		incrementScore(aircraft);
 		// removes the aircraft from the stage
 		aircraft.remove();
 
@@ -530,7 +483,57 @@ public class AircraftController extends InputListener {
 		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
 	}
 
-	protected void incrementScore(int value) {
-		playerScore.incrementScore(value * difficulty.getScoreMultiplier());
+	protected void incrementScore(Aircraft aircraft) {
+		playerScore.incrementScore(aircraft.getPoints()
+				* difficulty.getScoreMultiplier());
+	}
+
+	private void updateCollision() throws InterruptedException {
+		// Manages collision detection.
+		for (int i = 0; i < aircraftList.size(); i++) {
+			Aircraft planeI = aircraftList.get(i);
+
+			planeI.setBreaching(false);
+
+			// Collision Detection + Separation breach detection.
+			for (Aircraft planeJ : aircraftList) {
+
+				// Quite simply checks if distance between the centres of both
+				// the aircraft <= the radius of aircraft i + radius of aircraft
+				// j
+
+				if (!planeI.equals(planeJ)
+						// Check difference in altitude.
+						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < Config.MIN_ALTITUDE_DIFFERENCE
+						// Check difference in horizontal 2d plane.
+						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
+								.getRadius() + planeJ.getRadius()) {
+					collisionHasOccured(planeI, planeJ);
+					return;
+				}
+
+				// Checking for breach of separation.
+				if (!planeI.equals(planeJ)
+						// Check difference in altitude.
+						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < planeI
+								.getSeparationRadius()
+						// Check difference in horizontal 2d plane.
+						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
+								.getSeparationRadius()) {
+
+					separationRulesBreached(planeI, planeJ);
+				} else {
+					planeI.setBreaching(false);
+					planeJ.setBreaching(false);
+				}
+			}// Remove inactive aircraft.
+			if (!planeI.isActive()) {
+				removeAircraft(i);
+			}
+			// This should never happen but...
+			if (planeI.getAltitude() < 0) {
+				showGameOver();
+			}
+		}
 	}
 }
