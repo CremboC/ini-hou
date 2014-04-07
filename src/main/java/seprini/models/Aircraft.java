@@ -394,6 +394,9 @@ public final class Aircraft extends Entity {
 				if (this.altitude > 1000 && this.waypoints.size() == 1) {
 					// TODO: Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty (?).
+					this.waypoints.remove(0);
+					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+					this.desiredAltitude = 2000;
 					this.insertWaypoint(airport.runwayStart);
 					this.insertWaypoint(airport.runwayLeft);
 					this.insertWaypoint(airport.runwayEnd);
@@ -448,7 +451,7 @@ public final class Aircraft extends Entity {
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 5))) {
 					this.desiredAltitude = 5000;
-					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				}
 
 			}

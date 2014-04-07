@@ -88,7 +88,7 @@ public class AircraftController extends InputListener {
 				.setMinSpeed(30f).setMaxSpeed(90f).setMaxTurningSpeed(48f)
 				.setRadius(15).setSeparationRadius(diff.getSeparationRadius())
 				.setTexture(Art.getTextureRegion("aircraft"))
-				.setInitialSpeed(30f));
+				.setInitialSpeed(60f));
 
 		this.init();
 
@@ -437,32 +437,27 @@ public class AircraftController extends InputListener {
 		if (!screen.isPaused()) {
 
 			if (selectedAircraft != null) {
-					if (keycode == selectedAircraft.getPlayer().getLeft())
+				if (keycode == selectedAircraft.getPlayer().getLeft())
 					selectedAircraft.turnLeft(true);
 
 				if (keycode == selectedAircraft.getPlayer().getRight())
 					selectedAircraft.turnRight(true);
 
-				if (keycode == selectedAircraft.getPlayer()
-							.getAltIncrease())
+				if (keycode == selectedAircraft.getPlayer().getAltIncrease())
 					selectedAircraft.increaseAltitude();
 
-				if (keycode == selectedAircraft.getPlayer()
-							.getAltDecrease())
+				if (keycode == selectedAircraft.getPlayer().getAltDecrease())
 					selectedAircraft.decreaseAltitude();
 
-				if (keycode == selectedAircraft.getPlayer()
-							.getSpeedIncrease())
+				if (keycode == selectedAircraft.getPlayer().getSpeedIncrease())
 					selectedAircraft.increaseSpeed();
 
-				if (keycode == selectedAircraft.getPlayer()
-							.getSpeedDecrease())
+				if (keycode == selectedAircraft.getPlayer().getSpeedDecrease())
 					selectedAircraft.decreaseSpeed();
 
-				if (keycode == selectedAircraft.getPlayer()
-							.getReturnToPath())
+				if (keycode == selectedAircraft.getPlayer().getReturnToPath())
 					selectedAircraft.returnToPath();
-				}
+			}
 		}
 
 		if (keycode == players[Player.ONE].getSwitchPlane()) {
