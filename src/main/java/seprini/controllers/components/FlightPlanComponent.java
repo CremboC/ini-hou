@@ -83,8 +83,8 @@ public class FlightPlanComponent {
 				// Now decide which landing waypoint aircraft is to use,
 				// dependent on the previous waypoint's position.
 				if ((previousWaypoint.getX() > airportGradient
-						* previousWaypoint.getY()
-						- lastWaypoint.getY() + lastWaypoint.getX())) {
+						* previousWaypoint.getY() - lastWaypoint.getY()
+						+ lastWaypoint.getX())) {
 					flightPlan.add(flightPlan.size() - 2,
 							((Airport) lastWaypoint).runwayRight);
 				} else {
@@ -192,7 +192,8 @@ public class FlightPlanComponent {
 
 	/**
 	 * Selects random exitpoint from exitpointList, that is at least minDistance
-	 * away from the aircrafts entryWaypoint
+	 * away from the aircrafts entryWaypoint and doesn't lie on either the same
+	 * x or y coord.
 	 * 
 	 * @param entryWaypoint
 	 *            - where this aircraft entered the game
@@ -204,7 +205,9 @@ public class FlightPlanComponent {
 	private Waypoint setEndpoint(Waypoint entryWaypoint, int minDistance) {
 		Waypoint chosenExitPoint = waypoints.getExitList().get(
 				rand.nextInt(waypoints.getExitList().size()));
-		if (chosenExitPoint.getCoords().dst(entryWaypoint.getCoords()) < minDistance) {
+		if (chosenExitPoint.getCoords().dst(entryWaypoint.getCoords()) < minDistance
+				|| chosenExitPoint.getCoords().x == entryWaypoint.getCoords().x
+				|| chosenExitPoint.getCoords().y == entryWaypoint.getCoords().y) {
 			chosenExitPoint = setEndpoint(entryWaypoint, minDistance);
 		}
 

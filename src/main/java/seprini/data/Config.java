@@ -20,7 +20,7 @@ public final class Config {
 	public final static Vector2 WAYPOINT_SIZE = new Vector2(20, 20);
 	public final static Vector2 EXIT_WAYPOINT_SIZE = new Vector2(50, 50);
 	public final static Vector2 AIRPORT_SIZE = new Vector2(164, 125);
-	
+
 	// Multiplayer config
 	public final static Vector2 MULTIPLAYER_SIZE = new Vector2(SCREEN_WIDTH,
 			SCREEN_HEIGHT);
@@ -34,6 +34,8 @@ public final class Config {
 	public final static int MIN_ALTITUDE_DIFFERENCE = 1000;
 	public static final int[] ALTITUDES = { 5000, 10000, 15000 };
 	public static final int AIRCRAFT_TAKEOFF_AND_LANDING_DELAY = 10;
+	public static final int AIRCRAFT_POINTS = 20;
+	public static final int MULTIPLAYER_CRASH_BONUS = 200;
 
 	// other
 	public final static String COPYRIGHT_NOTICE = "Copyright Disclaimer Under Section 107 of the Copyright Act 1976, allowance is made "

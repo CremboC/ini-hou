@@ -193,7 +193,7 @@ public class AircraftController extends InputListener {
 		// TODO: hold the screen for n seconds while asplosion animation is
 		// played, while ceasing all other updates.
 
-		Thread.sleep(1000);
+		Thread.sleep(5000);
 
 		showGameOver();
 	}
@@ -515,8 +515,8 @@ public class AircraftController extends InputListener {
 				// Checking for breach of separation.
 				if (!planeI.equals(planeJ)
 						// Check difference in altitude.
-						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < planeI
-								.getSeparationRadius()
+						&& Math.abs(planeI.getAltitude() - planeJ.getAltitude()) < difficulty
+								.getVerticalSeparationRadius()
 						// Check difference in horizontal 2d plane.
 						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
 								.getSeparationRadius()) {

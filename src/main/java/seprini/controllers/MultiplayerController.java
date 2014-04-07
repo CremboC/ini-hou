@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 public class MultiplayerController extends AircraftController {
 
 	private Aircraft[] selectedAircraft = { null, null };
+	// One is the left player
 	private ScoreComponent playerOneScore = new ScoreComponent();
 	private ScoreComponent playerTwoScore = new ScoreComponent();
 
@@ -83,7 +84,7 @@ public class MultiplayerController extends AircraftController {
 		// TODO: hold the screen for n seconds while asplosion animation is
 		// played, while ceasing all other updates.
 
-		showGameOver();
+		showGameOverMulti(a);
 	}
 
 	/**
@@ -286,14 +287,25 @@ public class MultiplayerController extends AircraftController {
 		return false;
 	}
 
-	@Override
-	protected void showGameOver() {
+	protected void showGameOverMulti(Aircraft aircraft) {
 		// TODO overload gameover constructor to show scores
-		// TODO remove lump sum from score of losing player
+		if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
+			playerOneScore.incrementScore(difficulty.getScoreMultiplier()
+					* Config.MULTIPLAYER_CRASH_BONUS);
+		} else {
+			playerTwoScore.incrementScore(difficulty.getScoreMultiplier()
+					* Config.MULTIPLAYER_CRASH_BONUS);
+		}
 	}
 
 	@Override
-	protected void incrementScore(int value) {
-		playerOneScore.incrementScore(value);
+	protected void incrementScore(Aircraft aircraft) {
+		if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
+			playerOneScore.incrementScore(aircraft.getPoints()
+					* difficulty.getScoreMultiplier());
+		} else {
+			playerTwoScore.incrementScore(aircraft.getPoints()
+					* difficulty.getScoreMultiplier());
+		}
 	}
 }

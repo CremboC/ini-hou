@@ -23,7 +23,6 @@ public final class Aircraft extends Entity {
 	private static final Color LINE_COLOR = new Color(1, 0, 0, 0);
 	private static final Color BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 	private static final Vector2 TEXT_OFFSET = new Vector2(30, 20);
-	private static final int INITIAL_POINTS = 50;
 	private static final Vector2 SIZE = new Vector2(76, 63);
 	private static final float SCALE = 0.5f;
 
@@ -60,7 +59,7 @@ public final class Aircraft extends Entity {
 
 		Random rand = new Random();
 
-		points = INITIAL_POINTS;
+		points = Config.AIRCRAFT_POINTS;
 
 		// initialize entity
 		texture = aircraftType.getTexture();
@@ -618,7 +617,7 @@ public final class Aircraft extends Entity {
 	public void checkBreaching() {
 		if (isBreaching()) {
 			if (!breachingLastFrame) {
-				points -= 5;
+				this.points = 0;
 			}
 		}
 		breachingLastFrame = isBreaching();

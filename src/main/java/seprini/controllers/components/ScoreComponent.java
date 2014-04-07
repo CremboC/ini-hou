@@ -10,10 +10,10 @@ public class ScoreComponent {
 	/**
 	 * Adds argument value to the score.
 	 * 
-	 * @param value
+	 * @param d
 	 */
-	public void incrementScore(int value) {
-		score += value;
+	public void incrementScore(double d) {
+		score += d;
 	}
 
 	/**

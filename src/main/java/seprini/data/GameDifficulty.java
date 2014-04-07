@@ -5,13 +5,16 @@ package seprini.data;
  */
 public class GameDifficulty {
 	// maxAircraft, timeBetweenGenerations, separationRadius, scoreMultiplier
-	public static final GameDifficulty EASY = new GameDifficulty(10, 4, 150, 1);
+	public static final GameDifficulty EASY = new GameDifficulty(10, 4, 150,
+			0.5, 2000);
 	public static final GameDifficulty MEDIUM = new GameDifficulty(10, 3, 100,
-			2);
-	public static final GameDifficulty HARD = new GameDifficulty(10, 2, 75, 3);
+			1, 2000);
+	public static final GameDifficulty HARD = new GameDifficulty(10, 2, 75,
+			1.5, 1000);
 
 	private final int maxAircraft, timeBetweenGenerations, separationRadius,
-			scoreMultiplier;
+			verticalSeparationRadius;
+	private final double scoreMultiplier;
 
 	/**
 	 * Initializes a new game difficulty
@@ -26,11 +29,13 @@ public class GameDifficulty {
 	 *            score multiplier
 	 */
 	public GameDifficulty(int maxAircraft, int timeBetweenGenerations,
-			int separationRadius, int scoreMultiplier) {
+			int separationRadius, double scoreMultiplier,
+			int verticalSeparationRadius) {
 		this.maxAircraft = maxAircraft;
 		this.timeBetweenGenerations = timeBetweenGenerations;
 		this.separationRadius = separationRadius;
 		this.scoreMultiplier = scoreMultiplier;
+		this.verticalSeparationRadius = verticalSeparationRadius;
 	}
 
 	/** Returns the maximum number of aircraft allowed */
@@ -49,7 +54,14 @@ public class GameDifficulty {
 	}
 
 	/** Returns the score multiplier */
-	public int getScoreMultiplier() {
+	public double getScoreMultiplier() {
 		return scoreMultiplier;
+	}
+
+	/**
+	 * @return the verticalSeparationRadius
+	 */
+	public int getVerticalSeparationRadius() {
+		return verticalSeparationRadius;
 	}
 }
