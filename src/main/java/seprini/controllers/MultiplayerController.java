@@ -221,6 +221,9 @@ public class MultiplayerController extends AircraftController {
 					if (keycode == selectedAircraft[i].getPlayer()
 							.getReturnToPath())
 						selectedAircraft[i].returnToPath();
+
+					if (keycode == selectedAircraft[i].getPlayer().getTakeoff())
+						takeoff(waypoints.getAirportList().get(i).takeoff(0));
 				}
 
 			}

@@ -500,6 +500,10 @@ public class AircraftController extends InputListener {
 	}
 
 	public void takeoff(final Aircraft aircraft) {
+
+		if (aircraft == null)
+			return;
+
 		aircraft.addListener(new ClickListener() {
 
 			@Override

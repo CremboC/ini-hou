@@ -103,9 +103,9 @@ public class Airport extends Waypoint {
 	 *             if there are no aircraft in the airport
 	 */
 
-	public Aircraft takeoff(int i) throws IllegalStateException {
+	public Aircraft takeoff(int i) {
 		if (aircraftList.size() == 0)
-			throw new IllegalStateException("No aircraft in airport");
+			return null;
 
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);
@@ -118,6 +118,7 @@ public class Airport extends Waypoint {
 		this.selected = value;
 	}
 
+	@Override
 	protected void additionalDraw(SpriteBatch batch) {
 
 		if (selected) {

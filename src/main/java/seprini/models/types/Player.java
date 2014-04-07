@@ -15,8 +15,8 @@ public class Player {
 	public final static int ONE = 0;
 	public final static int TWO = 1;
 
-	protected int LEFT, RIGHT, ALT_INC, ALT_DEC, SPEED_INC, SPEED_DEC,
-			RETURN_TO_PATH, SWITCH_PLANE;
+	private final int LEFT, RIGHT, ALT_INC, ALT_DEC, SPEED_INC, SPEED_DEC,
+			RETURN_TO_PATH, SWITCH_PLANE, TAKEOFF;
 
 	protected int number;
 	
@@ -24,6 +24,7 @@ public class Player {
 
 	public Player(int playerNumber) {
 		switch (playerNumber) {
+		default:
 		case ONE:
 			LEFT = Keys.A;
 			RIGHT = Keys.D;
@@ -36,6 +37,8 @@ public class Player {
 
 			RETURN_TO_PATH = Keys.R;
 			SWITCH_PLANE = Keys.TAB;
+
+			TAKEOFF = Keys.F;
 
 			number = Player.ONE;
 			circleColor = Color.RED;
@@ -53,6 +56,8 @@ public class Player {
 
 			RETURN_TO_PATH = Keys.NUMPAD_0;
 			SWITCH_PLANE = Keys.NUMPAD_5;
+
+			TAKEOFF = Keys.NUMPAD_1;
 
 			number = Player.TWO;
 			circleColor = Color.BLUE;
@@ -131,6 +136,16 @@ public class Player {
 	 */
 	public int getSwitchPlane() {
 		return SWITCH_PLANE;
+	}
+
+	/**
+	 * Get the key to make an aircraft takeoff from the appropriate airport in
+	 * MP
+	 * 
+	 * @return
+	 */
+	public int getTakeoff() {
+		return TAKEOFF;
 	}
 
 	/**
