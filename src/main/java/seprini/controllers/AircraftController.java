@@ -321,8 +321,11 @@ public class AircraftController extends InputListener {
 		// removes the aircraft from the list of aircrafts on screen
 		aircraftList.remove(i);
 
+		// adds removed aircrafts' points to player score
+		incrementScore(aircraft.getPoints());
 		// removes the aircraft from the stage
 		aircraft.remove();
+
 	}
 
 	/**
@@ -525,5 +528,9 @@ public class AircraftController extends InputListener {
 
 	protected void showGameOver() {
 		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
+	}
+
+	protected void incrementScore(int value) {
+		playerScore.incrementScore(value * difficulty.getScoreMultiplier());
 	}
 }
