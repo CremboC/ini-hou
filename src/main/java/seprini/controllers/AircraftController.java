@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import seprini.controllers.components.FlightPlanComponent;
+import seprini.controllers.components.ScoreComponent;
 import seprini.controllers.components.WaypointComponent;
 import seprini.data.Animator;
 import seprini.data.Art;
@@ -55,7 +56,7 @@ public class AircraftController extends InputListener {
 	private float timer = 0;
 	Animator collision = new Animator();
 	// game score
-	public static float score = 0;
+	private ScoreComponent playerScore = new ScoreComponent();
 
 	protected int lastAircraftIndex;
 
@@ -81,7 +82,6 @@ public class AircraftController extends InputListener {
 		this.screen = screen;
 
 		collision.create();
-		score = 0;
 
 		// initialise aircraft types.
 		aircraftTypeList.add(new AircraftType().setMaxClimbRate(600)
@@ -170,9 +170,10 @@ public class AircraftController extends InputListener {
 			if (!planeI.isActive()) {
 				removeAircraft(i);
 			}
-
+			// This should never happen but...
 			if (planeI.getAltitude() < 0) {
-				screen.getGame().showEndScreen(timer, score);
+				screen.getGame().showEndScreen(timer,
+						this.playerScore.getScore());
 			}
 
 		}
@@ -243,7 +244,7 @@ public class AircraftController extends InputListener {
 
 		Thread.sleep(1000);
 
-		screen.getGame().showEndScreen(timer, score);
+		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
 	}
 
 	/**
@@ -397,8 +398,8 @@ public class AircraftController extends InputListener {
 		return timer;
 	}
 
-	public float getScore() {
-		return score;
+	public float getPlayerScore() {
+		return this.playerScore.getScore();
 	}
 
 	public Aircraft getSelectedAircraft() {
