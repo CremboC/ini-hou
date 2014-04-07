@@ -79,16 +79,18 @@ public class WaypointComponent {
 	 */
 	public void multiplayerWaypoints() {
 		// add entry waypoints to entryList
-		createEntrypoint(0, 0);
-		createEntrypoint(0, 720);
-		createEntrypoint(1280, 360);
-		createEntrypoint(640, 0);
+		createEntrypoint(0, 0); // bottom left
+		createEntrypoint(1280, 720); // top right
+
+		createEntrypoint(340, 720); // no man's land left top
+		createEntrypoint(940, 0); // no man's land right bottom
 
 		// add exit waypoints to exitList
-		createExitpoint(1280, 720);
-		createExitpoint(1280, 0);
-		createExitpoint(0, 420);
-		createExitpoint(640, 720);
+		createExitpoint(0, 720); // top left
+		createExitpoint(1280, 0); // bottom right
+
+		createExitpoint(440, 0); // no man's land left bottom
+		createExitpoint(840, 720); // no man's land top right
 
 		// add airports;
 		createAirport(387, 335);
