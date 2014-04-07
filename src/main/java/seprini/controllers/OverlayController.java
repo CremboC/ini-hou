@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import seprini.data.Art;
 import seprini.data.Config;
+import seprini.models.Airport;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,7 +18,7 @@ public class OverlayController extends ChangeListener {
 	private final static int LEFT = 0;
 	private final static int RIGHT = 1;
 
-	private final AircraftController controller;
+	private final MultiplayerController controller;
 
 	private final HashMap<String, TextButton> buttons = new HashMap<String, TextButton>();
 	private final HashMap<String, Label> labels = new HashMap<String, Label>();
@@ -26,7 +27,7 @@ public class OverlayController extends ChangeListener {
 	private final Table[] landedAircraft = { new Table(), new Table() };
 	private Table ui;
 
-	public OverlayController(AircraftController controller, Table ui) {
+	public OverlayController(MultiplayerController controller, Table ui) {
 		this.controller = controller;
 		this.ui = ui;
 
@@ -65,7 +66,32 @@ public class OverlayController extends ChangeListener {
 
 	}
 
+	/**
+	 * Update the tag texts
+	 * 
+	 * @param delta
+	 */
 	public void update(float delta) {
+
+		for (int i = 0; i < controller.waypoints.getAirportList().size(); i++) {
+			Airport airport = controller.waypoints.getAirportList().get(i);
+
+			for (int j = 0; j < 5; j++) {
+				buttons.get("aircraft" + i + "_" + j).setText(" ");
+				buttons.get("aircraft" + i + "_" + j).setVisible(false);
+			}
+
+			for (int j = 0; j < airport.boardingAircraft; j++) {
+				buttons.get("aircraft" + i + "_" + j).setVisible(true);
+				buttons.get("aircraft" + i + "_" + j).setText(
+						"B: " + Airport.countdown);
+			}
+
+			for (int j = 0; j < airport.aircraftList.size(); j++) {
+				buttons.get("aircraft" + i + "_" + j).setVisible(true);
+				buttons.get("aircraft" + i + "_" + j).setText("R!");
+			}
+		}
 
 	}
 
@@ -90,7 +116,17 @@ public class OverlayController extends ChangeListener {
 
 	@Override
 	public void changed(ChangeEvent event, Actor actor) {
-		// TODO Auto-generated method stub
+
+		// go through all airports in the screen
+		for (int i = 0; i < controller.waypoints.getAirportList().size(); i++) {
+			Airport airport = controller.waypoints.getAirportList().get(i);
+
+			// go through all buttons, 5 for each airport
+			for (int j = 0; j < 5; j++) {
+				if (actor.equals(buttons.get("aircraft" + i + "_" + j)))
+					controller.takeoff(airport.takeoff(j));
+			}
+		}
 
 	}
 

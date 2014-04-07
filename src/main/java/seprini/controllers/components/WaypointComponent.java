@@ -169,10 +169,17 @@ public class WaypointComponent {
 		controller.getAirspace().addActor(point);
 	}
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	private void createAirport(float x, float y) {
 		final Airport airport = new Airport(x, y, true);
+
 		exitList.add(airport);
 		airportList.add(airport);
+
 		controller.getAirspace().addActor(airport);
 
 		airport.addListener(new ClickListener() {
@@ -203,6 +210,10 @@ public class WaypointComponent {
 
 	public ArrayList<Waypoint> getExitList() {
 		return exitList;
+	}
+
+	public ArrayList<Airport> getAirportList() {
+		return airportList;
 	}
 
 	public Airport getSelectedAirport() {

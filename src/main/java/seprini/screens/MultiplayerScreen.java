@@ -1,7 +1,6 @@
 package seprini.screens;
 
 import seprini.ATC;
-import seprini.controllers.AircraftController;
 import seprini.controllers.MultiplayerController;
 import seprini.controllers.OverlayController;
 import seprini.data.Art;
@@ -17,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class MultiplayerScreen extends AbstractScreen {
 
-	private final AircraftController controller;
+	private final MultiplayerController controller;
 	private final PauseOverlay overlay;
 
 	public MultiplayerScreen(ATC game, GameDifficulty diff) {
