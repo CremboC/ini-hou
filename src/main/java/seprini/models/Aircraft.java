@@ -450,11 +450,10 @@ public final class Aircraft extends Entity {
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 4))) {
 					this.desiredAltitude = 3000;
-					this.setSpeed(350 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 5))) {
 					this.desiredAltitude = 5000;
-					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				}
 
 			}

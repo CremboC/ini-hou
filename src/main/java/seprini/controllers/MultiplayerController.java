@@ -50,16 +50,16 @@ public class MultiplayerController extends AircraftController {
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline
 		for (Aircraft aircraft : aircraftList) {
-
-			if (selectedAircraft[aircraft.getPlayer().getNumber()] != null) {
-				// if the aircraft is in no man's land and it is selected,
-				// deselect it
-				if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
-						&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]
+			if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
+					&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]) {
+				if (selectedAircraft[aircraft.getPlayer().getNumber()] != null
 						&& selectedAircraft[aircraft.getPlayer().getNumber()]
 								.equals(aircraft)) {
+					// if the aircraft is in no man's land and it is selected,
+					// deselect it
 					deselectAircraft(aircraft);
 				}
+				aircraft.returnToPath();
 			}
 
 			// Handing over control from player one to player two
@@ -74,6 +74,14 @@ public class MultiplayerController extends AircraftController {
 
 	@Override
 	public void collisionHasOccured(Aircraft a, Aircraft b) {
+		// prevents game from ending if collision occurs in no-mans land.
+		if (a.getCoords().x >= Config.NO_MAN_LAND[0]
+				&& a.getCoords().x <= Config.NO_MAN_LAND[2]
+				|| b.getCoords().x >= Config.NO_MAN_LAND[0]
+				&& b.getCoords().x <= Config.NO_MAN_LAND[2]) {
+			return;
+		}
+
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();
 		Art.getSound("crash").play(0.6f);
@@ -274,10 +282,10 @@ public class MultiplayerController extends AircraftController {
 		// TODO overload gameover constructor to show scores
 
 		if (withinPlayerZone(aircraft, Player.ONE)) {
-			playerScore[Player.ONE].incrementScore(difficulty
+			playerScore[Player.TWO].incrementScore(difficulty
 					.getScoreMultiplier() * Config.MULTIPLAYER_CRASH_BONUS);
 		} else {
-			playerScore[Player.TWO].incrementScore(difficulty
+			playerScore[Player.ONE].incrementScore(difficulty
 					.getScoreMultiplier() * Config.MULTIPLAYER_CRASH_BONUS);
 		}
 
