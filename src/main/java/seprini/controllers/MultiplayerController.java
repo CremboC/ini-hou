@@ -50,15 +50,17 @@ public class MultiplayerController extends AircraftController {
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline
 		for (Aircraft aircraft : aircraftList) {
-			if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
-					&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]) {
-				if (selectedAircraft[aircraft.getPlayer().getNumber()] != null
-						&& selectedAircraft[aircraft.getPlayer().getNumber()]
-								.equals(aircraft)) {
+			if (withinNoMansLand(aircraft)) {
+
+				Aircraft selected = selectedAircraft[aircraft.getPlayer()
+						.getNumber()];
+
+				if (selected != null && selected.equals(aircraft)) {
 					// if the aircraft is in no man's land and it is selected,
 					// deselect it
 					deselectAircraft(aircraft);
 				}
+
 				aircraft.returnToPath();
 			}
 
@@ -75,10 +77,7 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	public void collisionHasOccured(Aircraft a, Aircraft b) {
 		// prevents game from ending if collision occurs in no-mans land.
-		if (a.getCoords().x >= Config.NO_MAN_LAND[0]
-				&& a.getCoords().x <= Config.NO_MAN_LAND[2]
-				|| b.getCoords().x >= Config.NO_MAN_LAND[0]
-				&& b.getCoords().x <= Config.NO_MAN_LAND[2]) {
+		if (withinNoMansLand(a) && withinNoMansLand(b)) {
 			return;
 		}
 
@@ -102,8 +101,7 @@ public class MultiplayerController extends AircraftController {
 	protected void selectAircraft(Aircraft aircraft) {
 
 		// Cannot select in the No Man's Land
-		if (aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
-				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2]) {
+		if (withinNoMansLand(aircraft)) {
 			return;
 		}
 
@@ -329,7 +327,7 @@ public class MultiplayerController extends AircraftController {
 	 */
 	public static boolean withinPlayerZone(Aircraft aircraft, int playerNumber) {
 		if (playerNumber == Player.ONE) {
-			if (aircraft.getCoords().x < Config.NO_MAN_LAND[0]) {
+			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
 				return true;
 			} else {
 				return false;
@@ -337,7 +335,7 @@ public class MultiplayerController extends AircraftController {
 		}
 
 		if (playerNumber == Player.TWO) {
-			if (aircraft.getCoords().x > Config.NO_MAN_LAND[2]) {
+			if (aircraft.getCoords().x > Config.NO_MAN_LAND[1]) {
 				return true;
 			} else {
 				return false;
@@ -345,5 +343,16 @@ public class MultiplayerController extends AircraftController {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check whether an aircraft is in no man's land
+	 * 
+	 * @param aircraft
+	 * @return
+	 */
+	public static boolean withinNoMansLand(Aircraft aircraft) {
+		return aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
+				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
 	}
 }
