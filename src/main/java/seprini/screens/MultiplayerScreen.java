@@ -10,11 +10,16 @@ import seprini.models.Airspace;
 import seprini.models.PauseOverlay;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class MultiplayerScreen extends AbstractScreen {
+
+	// position of the score texts for both player
+	private final static Vector2[] SCORE_POS = { new Vector2(230, 715),
+			new Vector2(1010, 715) };
 
 	private final MultiplayerController controller;
 	private final PauseOverlay overlay;
@@ -55,7 +60,6 @@ public class MultiplayerScreen extends AbstractScreen {
 				try {
 					controller.update(delta);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				overlayController.update(delta);
@@ -78,6 +82,15 @@ public class MultiplayerScreen extends AbstractScreen {
 		// temporary drawing of no man's land
 
 		getStage().getSpriteBatch().begin();
+
+		int[] scores = controller.getPlayerScores();
+
+		for (int i = 0; i < scores.length; i++) {
+
+			AbstractScreen.drawString("Score: " + scores[i], SCORE_POS[i].x,
+					SCORE_POS[i].y, Color.BLUE, getStage().getSpriteBatch(),
+					true, 1);
+		}
 
 		AbstractScreen.drawLine(Color.RED, 540, 0, 540, 720, getStage()
 				.getSpriteBatch());

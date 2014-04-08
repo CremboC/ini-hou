@@ -25,7 +25,7 @@ public class OverlayController extends ChangeListener {
 
 	// UI wrappers for the controls and the buttons at the bottom
 	private final Table[] landedAircraft = { new Table(), new Table() };
-	private Table ui;
+	private final Table ui;
 
 	public OverlayController(MultiplayerController controller, Table ui) {
 		this.controller = controller;
@@ -45,7 +45,6 @@ public class OverlayController extends ChangeListener {
 			if (Config.DEBUG_UI)
 				landedAircraft[i].debug();
 
-			landedAircraft[i].top();
 			ui.addActor(landedAircraft[i]);
 
 			for (int j = 0; j <= 4; j++) {
@@ -63,7 +62,6 @@ public class OverlayController extends ChangeListener {
 
 		ui.add(landedAircraft[LEFT]);
 		ui.add(landedAircraft[RIGHT]);
-
 	}
 
 	/**

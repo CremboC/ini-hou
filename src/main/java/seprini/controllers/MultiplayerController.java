@@ -5,13 +5,11 @@ import seprini.controllers.components.ScoreComponent;
 import seprini.controllers.components.WaypointComponent;
 import seprini.data.Art;
 import seprini.data.Config;
-import seprini.data.Debug;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.Aircraft;
 import seprini.models.Airspace;
 import seprini.models.Map;
-import seprini.models.Waypoint;
 import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
@@ -20,10 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class MultiplayerController extends AircraftController {
 
-	private Aircraft[] selectedAircraft = { null, null };
+	private final Aircraft[] selectedAircraft = { null, null };
 	// One is the left player
-	private ScoreComponent playerOneScore = new ScoreComponent();
-	private ScoreComponent playerTwoScore = new ScoreComponent();
+	private final ScoreComponent[] playerScore = { new ScoreComponent(),
+			new ScoreComponent() };
 
 	public MultiplayerController(GameDifficulty diff, Airspace airspace,
 			ScreenBase screen) {
@@ -183,26 +181,6 @@ public class MultiplayerController extends AircraftController {
 		lastAircraftIndex = index;
 	}
 
-	public Aircraft[] getSelectedAircrafts() {
-		return selectedAircraft;
-	}
-
-	/**
-	 * Redirects aircraft to another waypoint.
-	 * 
-	 * @param waypoint
-	 *            Waypoint to redirect to
-	 */
-	@Override
-	public void redirectAircraft(Waypoint waypoint) {
-		Debug.msg("Redirecting aircraft " + 0 + " to " + waypoint);
-
-		if (getSelectedAircraft() == null)
-			return;
-
-		getSelectedAircrafts()[Player.ONE].insertWaypoint(waypoint);
-	}
-
 	@Override
 	/**
 	 * Enables Keyboard Shortcuts as alternatives to the on screen buttons
@@ -287,27 +265,77 @@ public class MultiplayerController extends AircraftController {
 		return false;
 	}
 
+	/**
+	 * Game over - display the end screen
+	 * 
+	 * @param aircraft
+	 */
 	protected void showGameOverMulti(Aircraft aircraft) {
 		// TODO overload gameover constructor to show scores
-		if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
-			playerOneScore.incrementScore(difficulty.getScoreMultiplier()
-					* Config.MULTIPLAYER_CRASH_BONUS);
+
+		if (withinPlayerZone(aircraft, Player.ONE)) {
+			playerScore[Player.ONE].incrementScore(difficulty
+					.getScoreMultiplier() * Config.MULTIPLAYER_CRASH_BONUS);
 		} else {
-			playerTwoScore.incrementScore(difficulty.getScoreMultiplier()
-					* Config.MULTIPLAYER_CRASH_BONUS);
+			playerScore[Player.TWO].incrementScore(difficulty
+					.getScoreMultiplier() * Config.MULTIPLAYER_CRASH_BONUS);
 		}
+
 		screen.getGame().showMultiEndScreen(timer,
-				this.playerOneScore.getScore(), this.playerOneScore.getScore());
+				playerScore[Player.ONE].getScore(),
+				playerScore[Player.TWO].getScore());
 	}
 
 	@Override
 	protected void incrementScore(Aircraft aircraft) {
-		if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
-			playerOneScore.incrementScore(aircraft.getPoints()
+		if (withinPlayerZone(aircraft, Player.ONE)) {
+			playerScore[Player.ONE].incrementScore(aircraft.getPoints()
 					* difficulty.getScoreMultiplier());
 		} else {
-			playerTwoScore.incrementScore(aircraft.getPoints()
+			playerScore[Player.TWO].incrementScore(aircraft.getPoints()
 					* difficulty.getScoreMultiplier());
 		}
+	}
+
+	/**
+	 * Get the player scores in an array
+	 * 
+	 * @return
+	 */
+	public int[] getPlayerScores() {
+		int[] scores = { playerScore[Player.ONE].getScore(),
+				playerScore[Player.TWO].getScore() };
+
+		return scores;
+	}
+
+	/**
+	 * A static method to check the position of the aircraft - whether it's in
+	 * P1's zone or P2's zone. Returns false if it's in NML.
+	 * 
+	 * @param aircraft
+	 *            the aircraft which needs checking
+	 * @param playerNumber
+	 *            pass Player.ONE or Player.TWO
+	 * @return
+	 */
+	public static boolean withinPlayerZone(Aircraft aircraft, int playerNumber) {
+		if (playerNumber == Player.ONE) {
+			if (aircraft.getCoords().x < Config.NO_MAN_LAND[0]) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		if (playerNumber == Player.TWO) {
+			if (aircraft.getCoords().x > Config.NO_MAN_LAND[2]) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		return false;
 	}
 }

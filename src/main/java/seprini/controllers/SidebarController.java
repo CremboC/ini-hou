@@ -214,9 +214,7 @@ public final class SidebarController extends ChangeListener {
 		// if there is no selected airport, return immediately to avoid errors
 		// otherwise set it to the local selectedAirport variable and update
 		// the text
-		if ((selectedAirport = controller.waypoints.getSelectedAirport()) == null) {
-
-		} else {
+		if ((selectedAirport = controller.waypoints.getSelectedAirport()) != null) {
 			// update the list of airport's aircraft
 
 			for (int i = 0; i < 5; i++) {
