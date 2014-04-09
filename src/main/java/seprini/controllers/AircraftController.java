@@ -215,6 +215,15 @@ public class AircraftController extends InputListener {
 	}
 
 	/**
+	 * Selects random aircraft type from aircraftTypeList.
+	 * 
+	 * @return AircraftType
+	 */
+	private AircraftType randomAircraftType() {
+		return aircraftTypeList.get(rand.nextInt(aircraftTypeList.size()));
+	}
+
+	/**
 	 * Generates aircraft of random type with 'random' flight plan.
 	 * <p>
 	 * Checks if maximum number of aircraft is not exceeded. If it isn't, a new
@@ -228,7 +237,7 @@ public class AircraftController extends InputListener {
 	 *         otherwise <b>null</b>
 	 * 
 	 */
-	private Aircraft generateAircraft() {
+	protected Aircraft generateAircraft() {
 		// number of aircraft has reached maximum, abort
 		if (aircraftList.size() >= difficulty.getMaxAircraft())
 			return null;
@@ -252,20 +261,12 @@ public class AircraftController extends InputListener {
 	}
 
 	/**
-	 * Selects random aircraft type from aircraftTypeList.
-	 * 
-	 * @return AircraftType
-	 */
-	private AircraftType randomAircraftType() {
-		return aircraftTypeList.get(rand.nextInt(aircraftTypeList.size()));
-	}
-
-	/**
 	 * Removes aircraft from aircraftList at index i.
 	 * 
 	 * @param i
+	 * @return returns the removed aircraft
 	 */
-	private void removeAircraft(int i) {
+	protected Aircraft removeAircraft(int i) {
 		Aircraft aircraft = aircraftList.get(i);
 
 		if (aircraft.equals(selectedAircraft))
@@ -279,6 +280,7 @@ public class AircraftController extends InputListener {
 		// removes the aircraft from the stage
 		aircraft.remove();
 
+		return aircraft;
 	}
 
 	/**

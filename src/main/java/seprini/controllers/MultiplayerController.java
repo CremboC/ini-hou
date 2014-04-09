@@ -1,5 +1,7 @@
 package seprini.controllers;
 
+import java.util.ArrayList;
+
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.controllers.components.ScoreComponent;
 import seprini.controllers.components.WaypointComponent;
@@ -22,6 +24,11 @@ public class MultiplayerController extends AircraftController {
 	// One is the left player
 	private final ScoreComponent[] playerScore = { new ScoreComponent(),
 			new ScoreComponent() };
+
+	private ArrayList<Aircraft> playerOneAircraft = new ArrayList<Aircraft>();
+	private ArrayList<Aircraft> playerTwoAircraft = new ArrayList<Aircraft>();
+
+	private int[] lastIndex = { 0, 0 };
 
 	public MultiplayerController(GameDifficulty diff, Airspace airspace,
 			ScreenBase screen) {
@@ -67,8 +74,18 @@ public class MultiplayerController extends AircraftController {
 			// Handing over control from player one to player two
 			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
 				aircraft.setPlayer(getPlayers()[Player.ONE]);
+
+				// remove it from player two's list and add it to player one's
+				// list
+				removeFromListByPlayer(aircraft);
+				addToListByPlayer(aircraft);
 			} else {
 				aircraft.setPlayer(getPlayers()[Player.TWO]);
+
+				// remove it from player one's list and add it to player two's
+				// list
+				removeFromListByPlayer(aircraft);
+				addToListByPlayer(aircraft);
 			}
 
 		}
@@ -101,7 +118,7 @@ public class MultiplayerController extends AircraftController {
 	protected void selectAircraft(Aircraft aircraft) {
 
 		// Cannot select in the No Man's Land
-		if (withinNoMansLand(aircraft)) {
+		if (withinNoMansLand(aircraft) || aircraft == null) {
 			return;
 		}
 
@@ -156,35 +173,111 @@ public class MultiplayerController extends AircraftController {
 		}
 	}
 
+	@Override
+	protected Aircraft generateAircraft() {
+		Aircraft aircraft = super.generateAircraft();
+		
+		if (aircraft == null)
+			return null;
+
+		addToListByPlayer(aircraft);
+
+		return aircraft;
+	}
+
+	@Override
+	protected Aircraft removeAircraft(int i) {
+		Aircraft aircraft = super.removeAircraft(i);
+
+		removeFromListByPlayer(aircraft);
+
+		return aircraft;
+	}
+
 	/**
 	 * Switch the currently selected aircraft
 	 */
 	@Override
 	protected void switchAircraft(int playerNumber) {
-		int index = lastAircraftIndex + 1;
-		Aircraft plane;
 
-		// to prevent out of bounds exception
+		ArrayList<Aircraft> aircraftList;
+
+		switch (playerNumber) {
+		default:
+		case Player.ONE:
+			aircraftList = playerOneAircraft;
+			break;
+
+		case Player.TWO:
+			aircraftList = playerTwoAircraft;
+			break;
+
+		}
+
 		if (aircraftList.size() == 0) {
 			return;
 		}
 
-		// if we increase the index by too much, it will give an an exception -
-		// restore index to the first one and loop again
+		int index;
+		Aircraft aircraft = null;
+
+		index = lastIndex[playerNumber] + 1;
+
 		try {
-			plane = aircraftList.get(index);
+			aircraft = aircraftList.get(index);
 		} catch (IndexOutOfBoundsException e) {
 			index = 0;
-			lastAircraftIndex = 0;
+			lastIndex[playerNumber] = 0;
 		}
 
-		plane = aircraftList.get(index);
-
-		if (plane.getPlayer().getNumber() == playerNumber) {
-			selectAircraft(plane);
+		if (index == 0) {
+			aircraft = aircraftList.get(index);
 		}
 
-		lastAircraftIndex = index;
+		if (aircraft == null)
+			System.out.println("wtf");
+
+		selectAircraft(aircraft);
+
+		lastIndex[playerNumber] = index;
+	}
+
+	/**
+	 * 
+	 * @param aircraft
+	 */
+	private void addToListByPlayer(Aircraft aircraft) {
+		switch (aircraft.getPlayer().getNumber()) {
+		case Player.ONE:
+			playerOneAircraft.add(aircraft);
+			break;
+
+		case Player.TWO:
+			playerTwoAircraft.add(aircraft);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 * @param aircraft
+	 */
+	private void removeFromListByPlayer(Aircraft aircraft) {
+		switch (aircraft.getPlayer().getNumber()) {
+		case Player.ONE:
+			playerOneAircraft.remove(aircraft);
+			break;
+
+		case Player.TWO:
+			playerTwoAircraft.remove(aircraft);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	@Override
