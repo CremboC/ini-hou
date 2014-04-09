@@ -73,18 +73,20 @@ public class MultiplayerController extends AircraftController {
 
 			// Handing over control from player one to player two
 			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
+				// remove it from player two's list
+				removeFromListByPlayer(aircraft);
+
 				aircraft.setPlayer(getPlayers()[Player.ONE]);
 
-				// remove it from player two's list and add it to player one's
-				// list
-				removeFromListByPlayer(aircraft);
+				// add it to player one's list
 				addToListByPlayer(aircraft);
 			} else {
+				// remove it from player one's list and
+				removeFromListByPlayer(aircraft);
+
 				aircraft.setPlayer(getPlayers()[Player.TWO]);
 
-				// remove it from player one's list and add it to player two's
-				// list
-				removeFromListByPlayer(aircraft);
+				// add it to player two's list
 				addToListByPlayer(aircraft);
 			}
 
