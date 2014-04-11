@@ -178,7 +178,7 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected Aircraft generateAircraft() {
 		Aircraft aircraft = super.generateAircraft();
-		
+
 		if (aircraft == null)
 			return null;
 
@@ -390,11 +390,28 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected void incrementScore(Aircraft aircraft) {
 		if (withinPlayerZone(aircraft, Player.ONE)) {
-			playerScore[Player.ONE].incrementScore(aircraft.getPoints()
-					* difficulty.getScoreMultiplier());
+
+			// Creates a bonus. Fewer planes in your airspace = bigger
+			// bonus
+			int aircraftsInSpaceBonus = 10 - playerOneAircraft.size();
+			// ensures the bonus can never go below 0
+			if (aircraftsInSpaceBonus < 0) {
+				aircraftsInSpaceBonus = 0;
+			}
+			playerScore[Player.ONE]
+					.incrementScore((aircraft.getPoints() + aircraftsInSpaceBonus)
+							* difficulty.getScoreMultiplier());
 		} else {
-			playerScore[Player.TWO].incrementScore(aircraft.getPoints()
-					* difficulty.getScoreMultiplier());
+			// Creates a bonus. Fewer planes in your airspace = bigger
+			// bonus
+			int aircraftsInSpaceBonus = 10 - playerOneAircraft.size();
+			// ensures the bonus can never go below 0
+			if (aircraftsInSpaceBonus < 0) {
+				aircraftsInSpaceBonus = 0;
+			}
+			playerScore[Player.TWO]
+					.incrementScore((aircraft.getPoints() + aircraftsInSpaceBonus)
+							* difficulty.getScoreMultiplier());
 		}
 	}
 
