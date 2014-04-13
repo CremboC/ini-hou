@@ -92,6 +92,14 @@ public class WaypointComponent {
 		createExitpoint(440, 0); // no man's land left bottom
 		createExitpoint(840, 720); // no man's land top right
 
+		// add visible waypoints
+		createWaypoint(640, 240, true);
+		createWaypoint(640, 480, true);
+		createWaypoint(960, 240, true);
+		createWaypoint(960, 480, true);
+		createWaypoint(320, 240, true);
+		createWaypoint(320, 480, true);
+
 		// add airports;
 		createAirport(387, 335);
 		createAirport(900, 350);
