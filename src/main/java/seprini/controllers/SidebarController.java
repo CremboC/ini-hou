@@ -214,9 +214,9 @@ public final class SidebarController extends ChangeListener {
 
 		// resets countdown for boarding times
 		for (int i = 0; i <= 4; i++) {
-			if (Airport.countdown[i] == 0)
+			if (Airport.countdown[i] <= 0)
 				Airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
-			if (Airport.timeElapsed[i] == Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
+			if (Airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
 				Airport.timeElapsed[i] = 0;
 		}
 

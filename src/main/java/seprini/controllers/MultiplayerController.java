@@ -10,6 +10,7 @@ import seprini.data.Config;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.Aircraft;
+import seprini.models.Airport;
 import seprini.models.Airspace;
 import seprini.models.Map;
 import seprini.models.types.Player;
@@ -53,6 +54,18 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	public void update(float delta) throws InterruptedException {
 		super.update(delta);
+
+		// resets countdown for boarding times
+		for (int i = 0; i <= 4; i++) {
+			if (Airport.countdown[i] <= 0)
+				Airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+			if (Airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
+				Airport.timeElapsed[i] = 0;
+		}
+
+		// resets countdown for time between takeoffs
+		if (Airport.countdown[5] == 0)
+			Airport.countdown[5] = Airport.timeTillFreeRunway;
 
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline
