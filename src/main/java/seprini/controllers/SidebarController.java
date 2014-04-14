@@ -184,7 +184,8 @@ public final class SidebarController extends ChangeListener {
 		labels.get("timer").setText("" + Math.round(controller.getTimer()));
 
 		// update score
-		labels.get("score").setText("" + Math.round(controller.getPlayerScore()));
+		labels.get("score").setText(
+				"" + Math.round(controller.getPlayerScore()));
 
 		// if there is no selected aircraft, return immediately to avoid errors
 		// otherwise set it to the local selectedAircraft variable and update
@@ -211,6 +212,18 @@ public final class SidebarController extends ChangeListener {
 		// update aircraft speed text
 		labels.get("speed").setText(speedText);
 
+		// resets countdown for boarding times
+		for (int i = 0; i <= 4; i++) {
+			if (Airport.countdown[i] == 0)
+				Airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+			if (Airport.timeElapsed[i] == Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
+				Airport.timeElapsed[i] = 0;
+		}
+
+		// resets countdown for time between takeoffs
+		if (Airport.countdown[5] == 0)
+			Airport.countdown[5] = Airport.timeTillFreeRunway;
+
 		// if there is no selected airport, return immediately to avoid errors
 		// otherwise set it to the local selectedAirport variable and update
 		// the text
@@ -230,7 +243,9 @@ public final class SidebarController extends ChangeListener {
 				buttons.get("aircraft" + Integer.toString(i)).setText(
 						"Ready for take off");
 			}
+
 		}
+
 	}
 
 	/**
@@ -314,12 +329,13 @@ public final class SidebarController extends ChangeListener {
 			}
 
 			if (selectedAirport != null
-					&& selectedAirport.aircraftList.size() != 0) {
+					&& selectedAirport.aircraftList.size() != 0
+					&& Airport.countdown[5] == (Airport.timeTillFreeRunway)) {
 
 				for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
-
 					if (actor.equals(buttons.get("aircraft" + i)))
 						controller.takeoff(selectedAirport.takeoff(i));
+
 				}
 
 			}
