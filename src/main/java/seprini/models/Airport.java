@@ -148,6 +148,9 @@ public class Airport extends Waypoint {
 
 		}
 
+		AbstractScreen.drawString("Time remaining: " + countdown[5], getX(),
+				getY(), Color.BLACK, batch, true, 1);
+
 	}
 
 	private void boardingCountdown(int boardingAircraft) {
