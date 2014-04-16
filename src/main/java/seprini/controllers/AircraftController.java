@@ -490,6 +490,11 @@ public class AircraftController extends InputListener {
 				* difficulty.getScoreMultiplier());
 	}
 
+	/**
+	 * Collision detection for both collisions and breaches of separation rules.
+	 * 
+	 * @throws InterruptedException
+	 */
 	private void updateCollision() throws InterruptedException {
 		// Manages collision detection.
 		for (int i = 0; i < aircraftList.size(); i++) {
@@ -524,9 +529,6 @@ public class AircraftController extends InputListener {
 								.getSeparationRadius()) {
 
 					separationRulesBreached(planeI, planeJ);
-				} else {
-					planeI.setBreaching(false);
-					planeJ.setBreaching(false);
 				}
 			}// Remove inactive aircraft.
 			if (!planeI.isActive()) {
