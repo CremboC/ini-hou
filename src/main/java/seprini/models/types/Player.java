@@ -19,7 +19,7 @@ public class Player {
 			RETURN_TO_PATH, SWITCH_PLANE, TAKEOFF;
 
 	protected int number;
-	
+
 	protected Color circleColor;
 
 	public Player(int playerNumber) {
@@ -30,7 +30,7 @@ public class Player {
 			RIGHT = Keys.D;
 
 			ALT_INC = Keys.W;
-			ALT_DEC = Keys.A;
+			ALT_DEC = Keys.S;
 
 			SPEED_INC = Keys.E;
 			SPEED_DEC = Keys.Q;
