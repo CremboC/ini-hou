@@ -49,6 +49,8 @@ public final class Aircraft extends Entity {
 	private Color LINE_COLOR;
 	private Color BREACHING_CIRCLE_COLOR;
 
+	int leftX = 0, leftY = 0, rightX = 0, rightY = 0;
+
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
 			int id, AircraftController controller) {
 		// allows drawing debug shape of this entity
@@ -83,16 +85,26 @@ public final class Aircraft extends Entity {
 		// set the player, depends on gamemode and where it spawns
 		if (controller.getGameMode() == GameMode.SINGLE) {
 			this.player = controller.getPlayers()[Player.ONE];
+			this.LINE_COLOR = new Color(1, 0, 0, 0);
+			this.BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
+			leftX = -10;
+			leftY = -10;
+			rightX = -190;
+			rightY = 105;
 		} else {
 			if (entryPoint.getCoords().x < Config.NO_MAN_LAND[0]) {
 				this.player = controller.getPlayers()[Player.ONE];
-				LINE_COLOR = new Color(1, 0, 0, 0);
-				BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
+				this.LINE_COLOR = new Color(1, 0, 0, 0);
+				this.BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 			} else {
 				this.player = controller.getPlayers()[Player.TWO];
-				LINE_COLOR = new Color(0, 0, 1, 0);
-				BREACHING_CIRCLE_COLOR = new Color(0, 0, 1, 0);
+				this.LINE_COLOR = new Color(0, 0, 1, 0);
+				this.BREACHING_CIRCLE_COLOR = new Color(0, 0, 1, 0);
 			}
+			leftX = -10;
+			leftY = -10;
+			rightX = 10;
+			rightY = 10;
 		}
 
 		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
@@ -481,33 +493,12 @@ public final class Aircraft extends Entity {
 	 */
 	private boolean isOutOfBounds() {
 
-		int leftX = 0, leftY = 0, rightX = 0, rightY = 0;
-
-		switch (controller.getGameMode()) {
-		case SINGLE:
-
-			leftX = -10;
-			leftY = -10;
-			rightX = -190;
-			rightY = 105;
-
-			break;
-		case MULTI:
-
-			leftX = -10;
-			leftY = -10;
-			rightX = 10;
-			rightY = 10;
-
-			break;
-		}
-
 		if (getX() < leftX || getY() < leftY
 				|| getX() > Config.SCREEN_WIDTH + rightX
 				|| getY() > Config.SCREEN_HEIGHT + rightY) {
 
 			isActive = false;
-
+			this.points = 0;
 			return true;
 
 		}
