@@ -90,7 +90,7 @@ public final class Aircraft extends Entity {
 			leftX = -10;
 			leftY = -10;
 			rightX = -190;
-			rightY = 105;
+			rightY = 10;
 		} else {
 			if (entryPoint.getCoords().x < Config.NO_MAN_LAND[0]) {
 				this.player = controller.getPlayers()[Player.ONE];
