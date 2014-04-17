@@ -94,16 +94,18 @@ public class WaypointComponent {
 		createExitpoint(840, 720); // no man's land top right
 
 		// add visible waypoints
-		createWaypoint(640, 240, true);
-		createWaypoint(640, 480, true);
-		createWaypoint(960, 240, true);
-		createWaypoint(960, 480, true);
-		createWaypoint(320, 240, true);
-		createWaypoint(320, 480, true);
+		createWaypoint(150, 360, true);
+		createWaypoint(250, 600, true);
+		createWaypoint(600, 650, true);
+		createWaypoint(700, 100, true);
+		createWaypoint(550, 360, true);
+		createWaypoint(700, 500, true);
+		createWaypoint(450, 100, true);
+		createWaypoint(850, 300, true);
 
 		// add airports;
-		createAirport(387, 335);
-		createAirport(900, 350);
+		createAirport(250, 250);
+		createAirport(1030, 470);
 	}
 
 	/**

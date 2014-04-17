@@ -193,7 +193,7 @@ public class AircraftController extends InputListener {
 		// TODO: hold the screen for n seconds while asplosion animation is
 		// played, while ceasing all other updates.
 
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 
 		showGameOver();
 	}

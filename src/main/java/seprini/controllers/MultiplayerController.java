@@ -107,7 +107,8 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	@Override
-	public void collisionHasOccured(Aircraft a, Aircraft b) {
+	public void collisionHasOccured(Aircraft a, Aircraft b)
+			throws InterruptedException {
 		// prevents game from ending if collision occurs in no-mans land.
 		if (withinNoMansLand(a) && withinNoMansLand(b)) {
 			return;
@@ -120,6 +121,8 @@ public class MultiplayerController extends AircraftController {
 		// change the screen to the endScreen
 		// TODO: hold the screen for n seconds while asplosion animation is
 		// played, while ceasing all other updates.
+
+		Thread.sleep(3000);
 
 		showGameOverMulti(a);
 	}
