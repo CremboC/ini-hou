@@ -28,19 +28,18 @@ public class Airport extends Waypoint {
 	// Required altitude for an aircraft to land
 	public final static int MIN_ALTITUDE = 5000;
 	// Time remaining before an aircraft can take off.
-	public static int timeTillFreeRunway = 5;
+	public int timeTillFreeRunway = 5;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
 	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
-	public static int[] countdown = {
-			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
+	public int[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway };
-	public static int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
+	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -112,23 +111,23 @@ public class Airport extends Waypoint {
 		aircraftList.remove(i);
 		boardingAircraft -= 1;
 
-		countdown[5] = Airport.timeTillFreeRunway;
+		countdown[5] = this.timeTillFreeRunway;
 
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-				countdown[5] = Airport.timeTillFreeRunway - timeElapsed[5];
+				countdown[5] = timeTillFreeRunway - timeElapsed[5];
 				timeElapsed[5] = timeElapsed[5] + 1;
 
 			}
-		}, 0, 1, Airport.timeTillFreeRunway);
+		}, 0, 1, this.timeTillFreeRunway);
 
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
 				timeElapsed[5] = 0;
 			}
-		}, Airport.timeTillFreeRunway);
+		}, this.timeTillFreeRunway);
 
 		boardingCountdown(boardingAircraft);
 

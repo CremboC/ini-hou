@@ -55,17 +55,19 @@ public class MultiplayerController extends AircraftController {
 	public void update(float delta) throws InterruptedException {
 		super.update(delta);
 
-		// resets countdown for boarding times
-		for (int i = 0; i <= 4; i++) {
-			if (Airport.countdown[i] <= 0)
-				Airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
-			if (Airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
-				Airport.timeElapsed[i] = 0;
-		}
+		for (Airport airport : waypoints.getAirportList()) {
+			// resets countdown for boarding times
+			for (int i = 0; i <= 4; i++) {
+				if (airport.countdown[i] <= 0)
+					airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+				if (airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
+					airport.timeElapsed[i] = 0;
+			}
 
-		// resets countdown for time between takeoffs
-		if (Airport.countdown[5] == 0)
-			Airport.countdown[5] = Airport.timeTillFreeRunway;
+			// resets countdown for time between takeoffs
+			if (airport.countdown[5] == 0)
+				airport.countdown[5] = airport.timeTillFreeRunway;
+		}
 
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline

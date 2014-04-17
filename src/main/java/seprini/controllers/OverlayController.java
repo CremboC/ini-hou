@@ -82,7 +82,7 @@ public class OverlayController extends ChangeListener {
 			for (int j = 0; j < airport.boardingAircraft; j++) {
 				buttons.get("aircraft" + i + "_" + j).setVisible(true);
 				buttons.get("aircraft" + i + "_" + j).setText(
-						"B: " + Airport.countdown[j]);
+						"B: " + airport.countdown[j]);
 			}
 
 			for (int j = 0; j < airport.aircraftList.size(); j++) {

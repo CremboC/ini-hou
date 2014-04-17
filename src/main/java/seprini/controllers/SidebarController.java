@@ -213,16 +213,19 @@ public final class SidebarController extends ChangeListener {
 		labels.get("speed").setText(speedText);
 
 		// resets countdown for boarding times
-		for (int i = 0; i <= 4; i++) {
-			if (Airport.countdown[i] <= 0)
-				Airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
-			if (Airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
-				Airport.timeElapsed[i] = 0;
-		}
 
-		// resets countdown for time between takeoffs
-		if (Airport.countdown[5] == 0)
-			Airport.countdown[5] = Airport.timeTillFreeRunway;
+		for (Airport airport : controller.waypoints.getAirportList()) {
+			for (int i = 0; i <= 4; i++) {
+				if (airport.countdown[i] <= 0)
+					airport.countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+				if (airport.timeElapsed[i] >= Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY)
+					airport.timeElapsed[i] = 0;
+			}
+
+			// resets countdown for time between takeoffs
+			if (airport.countdown[5] == 0)
+				airport.countdown[5] = airport.timeTillFreeRunway;
+		}
 
 		// if there is no selected airport, return immediately to avoid errors
 		// otherwise set it to the local selectedAirport variable and update
@@ -236,7 +239,7 @@ public final class SidebarController extends ChangeListener {
 
 			for (int i = 0; i < selectedAirport.boardingAircraft; i++) {
 				buttons.get("aircraft" + Integer.toString(i)).setText(
-						"Aircraft boarding: " + Airport.countdown[i]);
+						"Aircraft boarding: " + selectedAirport.countdown[i]);
 			}
 
 			for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
@@ -328,9 +331,9 @@ public final class SidebarController extends ChangeListener {
 
 			}
 
-			if (selectedAirport != null
-					&& selectedAirport.aircraftList.size() != 0
-					&& Airport.countdown[5] == (Airport.timeTillFreeRunway)) {
+			if ((selectedAirport != null)
+					&& (selectedAirport.aircraftList.size() != 0)
+					&& (selectedAirport.countdown[5] == selectedAirport.timeTillFreeRunway)) {
 
 				for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
 					if (actor.equals(buttons.get("aircraft" + i)))
