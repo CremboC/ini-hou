@@ -20,8 +20,6 @@ public final class Aircraft extends Entity {
 
 	private static final float SPEED_CHANGE = 6f;
 	private static final int ALTITUDE_CHANGE = 5000;
-	private static final Color LINE_COLOR = new Color(1, 0, 0, 0);
-	private static final Color BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 	private static final Vector2 TEXT_OFFSET = new Vector2(30, 20);
 	private static final Vector2 SIZE = new Vector2(76, 63);
 	private static final float SCALE = 0.5f;
@@ -47,6 +45,9 @@ public final class Aircraft extends Entity {
 	private int points;
 
 	private Player player;
+	// player colours
+	private Color LINE_COLOR;
+	private Color BREACHING_CIRCLE_COLOR;
 
 	public Aircraft(AircraftType aircraftType, ArrayList<Waypoint> flightPlan,
 			int id, AircraftController controller) {
@@ -85,8 +86,12 @@ public final class Aircraft extends Entity {
 		} else {
 			if (entryPoint.getCoords().x < Config.NO_MAN_LAND[0]) {
 				this.player = controller.getPlayers()[Player.ONE];
+				LINE_COLOR = new Color(1, 0, 0, 0);
+				BREACHING_CIRCLE_COLOR = new Color(1, 0, 0, 0);
 			} else {
 				this.player = controller.getPlayers()[Player.TWO];
+				LINE_COLOR = new Color(0, 0, 1, 0);
+				BREACHING_CIRCLE_COLOR = new Color(0, 0, 1, 0);
 			}
 		}
 
