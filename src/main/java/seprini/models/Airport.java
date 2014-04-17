@@ -57,7 +57,7 @@ public class Airport extends Waypoint {
 
 	public void setTimeLeft(int timeTillFreeRunway) {
 		// avoid the timer becoming negative.
-		if (timeTillFreeRunway >= 0) {
+		if (timeTillFreeRunway <= 0) {
 			this.timeTillFreeRunway = 0;
 		}
 
@@ -148,8 +148,13 @@ public class Airport extends Waypoint {
 
 		}
 
-		AbstractScreen.drawString("Time remaining: " + countdown[5], getX(),
-				getY(), Color.BLACK, batch, true, 1);
+		if (countdown[5] == 5) {
+			AbstractScreen.drawString("Time remaining: 0", getX(), getY(),
+					Color.BLACK, batch, true, 1);
+		} else {
+			AbstractScreen.drawString("Time remaining: " + countdown[5],
+					getX(), getY(), Color.BLACK, batch, true, 1);
+		}
 
 	}
 
