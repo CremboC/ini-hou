@@ -177,7 +177,7 @@ public final class Aircraft extends Entity {
 		if (selected || breaching) {
 
 			AbstractScreen.drawCircle(getPlayer().getColor(), getX(), getY(),
-					getSeparationRadius() * 0.5f, batch);
+					getSeparationRadius(), batch);
 
 		}
 
