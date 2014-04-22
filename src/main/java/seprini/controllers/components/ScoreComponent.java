@@ -16,6 +16,10 @@ public class ScoreComponent {
 		score += d;
 	}
 
+	public void decrementScore(double d) {
+		score -= d;
+	}
+
 	/**
 	 * Gets this score
 	 * 

@@ -18,6 +18,8 @@ import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class MultiplayerController extends AircraftController {
 
@@ -25,6 +27,7 @@ public class MultiplayerController extends AircraftController {
 	// One is the left player
 	private final ScoreComponent[] playerScore = { new ScoreComponent(),
 			new ScoreComponent() };
+	private final ScoreComponent totalScore = new ScoreComponent();
 
 	private ArrayList<Aircraft> playerOneAircraft = new ArrayList<Aircraft>();
 	private ArrayList<Aircraft> playerTwoAircraft = new ArrayList<Aircraft>();
@@ -49,6 +52,8 @@ public class MultiplayerController extends AircraftController {
 
 		// helper for creating the flight plan of an aircraft
 		this.flightplan = new FlightPlanComponent(waypoints);
+
+		decrementScoresTimer();
 	}
 
 	@Override
@@ -408,29 +413,15 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected void incrementScore(Aircraft aircraft) {
 		if (withinPlayerZone(aircraft, Player.ONE)) {
-
-			// Creates a bonus. Fewer planes in your airspace = bigger
-			// bonus
-			int aircraftsInSpaceBonus = 10 - playerOneAircraft.size();
-			// ensures the bonus can never go below 0
-			if (aircraftsInSpaceBonus < 0) {
-				aircraftsInSpaceBonus = 0;
-			}
-			playerScore[Player.ONE]
-					.incrementScore((aircraft.getPoints() + aircraftsInSpaceBonus)
-							* difficulty.getScoreMultiplier());
+			playerScore[Player.ONE].incrementScore((aircraft.getPoints())
+					* difficulty.getScoreMultiplier());
 		} else {
-			// Creates a bonus. Fewer planes in your airspace = bigger
-			// bonus
-			int aircraftsInSpaceBonus = 10 - playerOneAircraft.size();
-			// ensures the bonus can never go below 0
-			if (aircraftsInSpaceBonus < 0) {
-				aircraftsInSpaceBonus = 0;
-			}
-			playerScore[Player.TWO]
-					.incrementScore((aircraft.getPoints() + aircraftsInSpaceBonus)
-							* difficulty.getScoreMultiplier());
+			playerScore[Player.TWO].incrementScore((aircraft.getPoints())
+					* difficulty.getScoreMultiplier());
 		}
+
+		totalScore.incrementScore((aircraft.getPoints())
+				* difficulty.getScoreMultiplier());
 	}
 
 	/**
@@ -485,4 +476,18 @@ public class MultiplayerController extends AircraftController {
 		return aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
 	}
+
+	private void decrementScoresTimer() {
+		Timer.schedule(new Task() {
+			@Override
+			public void run() {
+				playerScore[Player.ONE].decrementScore(playerOneAircraft.size());
+				playerScore[Player.TWO]
+						.decrementScore(playerTwoAircraft.size());
+				totalScore.decrementScore(playerOneAircraft.size()
+						+ playerTwoAircraft.size());
+			}
+		}, 0, 5);
+	}
+
 }
