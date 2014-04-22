@@ -56,7 +56,9 @@ public class ATC extends Game {
 		setScreen(new EndScreen(this, time, score));
 	}
 
-	public void showMultiEndScreen(float time, float scoreOne, float scoreTwo) {
-		setScreen(new MultiplayerEndScreen(this, time, scoreOne, scoreTwo));
+	public void showMultiEndScreen(float time, float scoreOne, float scoreTwo,
+			float totalScore) {
+		setScreen(new MultiplayerEndScreen(this, time, scoreOne, scoreTwo,
+				totalScore));
 	}
 }

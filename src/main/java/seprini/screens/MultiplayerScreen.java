@@ -92,6 +92,11 @@ public class MultiplayerScreen extends AbstractScreen {
 					true, 1);
 		}
 
+		int totalScore = controller.getTotalScore();
+
+		AbstractScreen.drawString("Total Score: " + totalScore, 600, 715,
+				Color.BLUE, getStage().getSpriteBatch(), true, 1);
+
 		AbstractScreen.drawLine(Color.RED, 540, 0, 540, 720, getStage()
 				.getSpriteBatch());
 

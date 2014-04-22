@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 public class MultiplayerEndScreen extends AbstractScreen {
 
 	public MultiplayerEndScreen(ATC game, float time, float scoreOne,
-			float scoreTwo) {
+			float scoreTwo, float totalScore) {
 
 		super(game);
 
@@ -61,11 +61,13 @@ public class MultiplayerEndScreen extends AbstractScreen {
 			text = new Label("Game Over!\n\n" + winningPlayer
 					+ " won the game with " + winningScore + " points. \n"
 					+ losingPlayer + " followed with " + losingScore
-					+ " points. \n", Art.getSkin(), "textStyle");
+					+ " points. \n" + "Total score was " + totalScore
+					+ " points.\n", Art.getSkin(), "textStyle");
 		} else {
 			text = new Label("Game Over!\n\n"
 					+ "You drew with one another, both gaining a score of "
-					+ scoreTwo + " points.\n\n", Art.getSkin(), "textStyle");
+					+ scoreTwo + " points.\n" + "Total score was " + totalScore
+					+ " points.\n", Art.getSkin(), "textStyle");
 		}
 
 		ui.add(text).center();

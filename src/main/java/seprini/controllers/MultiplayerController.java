@@ -407,7 +407,7 @@ public class MultiplayerController extends AircraftController {
 
 		screen.getGame().showMultiEndScreen(timer,
 				playerScore[Player.ONE].getScore(),
-				playerScore[Player.TWO].getScore());
+				playerScore[Player.TWO].getScore(), totalScore.getScore());
 	}
 
 	@Override
@@ -488,6 +488,10 @@ public class MultiplayerController extends AircraftController {
 						+ playerTwoAircraft.size());
 			}
 		}, 0, 5);
+	}
+
+	public int getTotalScore() {
+		return totalScore.getScore();
 	}
 
 }
