@@ -37,6 +37,8 @@ public class MultiplayerController extends AircraftController {
 	public MultiplayerController(GameDifficulty diff, Airspace airspace,
 			ScreenBase screen) {
 		super(diff, airspace, screen);
+
+		decrementScoresTimer(diff.getTimeBetweenScoreDecrement());
 	}
 
 	@Override
@@ -53,7 +55,6 @@ public class MultiplayerController extends AircraftController {
 		// helper for creating the flight plan of an aircraft
 		this.flightplan = new FlightPlanComponent(waypoints);
 
-		decrementScoresTimer();
 	}
 
 	@Override
@@ -477,7 +478,7 @@ public class MultiplayerController extends AircraftController {
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
 	}
 
-	private void decrementScoresTimer() {
+	private void decrementScoresTimer(int timeInterval) {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
@@ -487,7 +488,7 @@ public class MultiplayerController extends AircraftController {
 				totalScore.decrementScore(playerOneAircraft.size()
 						+ playerTwoAircraft.size());
 			}
-		}, 0, 5);
+		}, 0, timeInterval);
 	}
 
 	public int getTotalScore() {
