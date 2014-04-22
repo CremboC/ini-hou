@@ -154,6 +154,9 @@ public final class SidebarController extends ChangeListener {
 
 		// adding buttons for airport listings
 
+		createLabel("takeoffTimer", " 0 seconds", landedAircraft).width(100);
+		landedAircraft.row();
+
 		createButton("aircraft0", " ", landedAircraft, false).width(200);
 		landedAircraft.row();
 
@@ -245,6 +248,13 @@ public final class SidebarController extends ChangeListener {
 			for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
 				buttons.get("aircraft" + Integer.toString(i)).setText(
 						"Ready for take off");
+			}
+
+			if (selectedAirport.countdown[5] == 5) {
+				labels.get("takeoffTimer").setText(" 0 seconds");
+			} else {
+				labels.get("takeoffTimer").setText(
+						" " + selectedAirport.countdown[5] + " seconds");
 			}
 
 		}
