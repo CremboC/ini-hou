@@ -560,7 +560,7 @@ public final class Aircraft extends Entity {
 	/**
 	 * Decrements the targetAltitudeIndex by 1.
 	 */
-	public void increaseAltitude() {
+	public void decreaseAltitude() {
 		if (targetAltitudeIndex <= 3)
 			return;
 		else {
@@ -572,7 +572,7 @@ public final class Aircraft extends Entity {
 	/**
 	 * Increases the target altitude by an index of 1.
 	 */
-	public void decreaseAltitude() {
+	public void increaseAltitude() {
 		if (targetAltitudeIndex == 5)
 			return;
 		else {
