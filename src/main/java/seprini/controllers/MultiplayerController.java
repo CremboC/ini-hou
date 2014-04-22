@@ -413,13 +413,10 @@ public class MultiplayerController extends AircraftController {
 
 	@Override
 	protected void incrementScore(Aircraft aircraft) {
-		if (withinPlayerZone(aircraft, Player.ONE)) {
-			playerScore[Player.ONE].incrementScore((aircraft.getPoints())
-					* difficulty.getScoreMultiplier());
-		} else {
-			playerScore[Player.TWO].incrementScore((aircraft.getPoints())
-					* difficulty.getScoreMultiplier());
-		}
+		playerScore[Player.ONE].incrementScore((aircraft.getPoints() / 2)
+				* difficulty.getScoreMultiplier());
+		playerScore[Player.TWO].incrementScore((aircraft.getPoints() / 2)
+				* difficulty.getScoreMultiplier());
 
 		totalScore.incrementScore((aircraft.getPoints())
 				* difficulty.getScoreMultiplier());
