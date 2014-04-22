@@ -32,7 +32,7 @@ public final class Config {
 	// Game related
 	public final static float AIRCRAFT_SPEED_MULTIPLIER = 40f / 3f;
 	public final static int MIN_ALTITUDE_DIFFERENCE = 1000;
-	public static final int[] ALTITUDES = { 5000, 10000, 15000 };
+	public static final int[] ALTITUDES = { 0, 2000, 3000, 5000, 10000, 15000 };
 	public static final int AIRCRAFT_TAKEOFF_AND_LANDING_DELAY = 10;
 	public static final int AIRCRAFT_POINTS = 20;
 	public static final int MULTIPLAYER_CRASH_BONUS = 200;
