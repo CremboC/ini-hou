@@ -1,5 +1,6 @@
 package seprini.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import seprini.data.Art;
@@ -26,6 +27,8 @@ public class OverlayController extends ChangeListener {
 	// UI wrappers for the controls and the buttons at the bottom
 	private final Table[] landedAircraft = { new Table(), new Table() };
 	private final Table ui;
+
+	private ArrayList<Airport> airportList = new ArrayList<Airport>();
 
 	public OverlayController(MultiplayerController controller, Table ui) {
 		this.controller = controller;
@@ -62,6 +65,12 @@ public class OverlayController extends ChangeListener {
 
 		ui.add(landedAircraft[LEFT]);
 		ui.add(landedAircraft[RIGHT]);
+
+		createLabel("leftTakeoffCountdown", " 0", landedAircraft[0]).width(40);
+		createLabel("rightTakeoffCountdown", " 0", landedAircraft[1]).width(40);
+
+		airportList = controller.waypoints.getAirportList();
+
 	}
 
 	/**
@@ -91,6 +100,34 @@ public class OverlayController extends ChangeListener {
 			}
 		}
 
+		if (airportList.get(0).countdown[5] == 5) {
+			labels.get("leftTakeoffCountdown").setText(" 0");
+		} else {
+			labels.get("leftTakeoffCountdown").setText(
+					" " + airportList.get(0).countdown[5]);
+		}
+		if (airportList.get(1).countdown[5] == 5) {
+			labels.get("rightTakeoffCountdown").setText(" 0");
+		} else {
+			labels.get("rightTakeoffCountdown").setText(
+					" " + airportList.get(1).countdown[5]);
+		}
+
+	}
+
+	/**
+	 * Convinience method to create labels
+	 * 
+	 * @param name
+	 * @param text
+	 * @return
+	 */
+	private Cell<?> createLabel(String name, String text, Table parent) {
+		Label label = new Label(text, Art.getSkin());
+
+		labels.put(name, label);
+
+		return parent.add(label);
 	}
 
 	/**
