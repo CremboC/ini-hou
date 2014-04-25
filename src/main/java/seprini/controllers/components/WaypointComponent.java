@@ -193,22 +193,6 @@ public class WaypointComponent {
 
 		controller.getAirspace().addActor(airport);
 
-		airport.addListener(new ClickListener() {
-
-			@Override
-			public boolean touchDown(InputEvent event, float tX, float tY,
-					int pointer, int button) {
-
-				for (Airport airportI : airportList) {
-					airportI.setSelected(false);
-				}
-
-				airport.setSelected(true);
-				selectedAirport = airport;
-
-				return true;
-			}
-		});
 	}
 
 	public ArrayList<Waypoint> getPermanentList() {

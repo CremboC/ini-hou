@@ -5,7 +5,6 @@ import java.util.Random;
 
 import seprini.data.Art;
 import seprini.data.Config;
-import seprini.screens.AbstractScreen;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,7 +31,6 @@ public class Airport extends Waypoint {
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
-	private boolean selected;
 	private static final Color COLOR = new Color(1, 0, 0, 0);
 	public int[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
@@ -136,18 +134,8 @@ public class Airport extends Waypoint {
 		return aircraft;
 	}
 
-	public void setSelected(boolean value) {
-		this.selected = value;
-	}
-
 	@Override
 	protected void additionalDraw(SpriteBatch batch) {
-
-		if (selected) {
-
-			AbstractScreen.drawCircle(COLOR, getX(), getY(), 25, batch);
-
-		}
 
 	}
 
