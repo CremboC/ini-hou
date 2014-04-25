@@ -40,6 +40,7 @@ public class Airport extends Waypoint {
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway };
 	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
+	public boolean takeoffReady = true;
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -111,7 +112,7 @@ public class Airport extends Waypoint {
 		aircraftList.remove(i);
 		boardingAircraft -= 1;
 
-		countdown[5] = this.timeTillFreeRunway;
+		takeoffReady = false;
 
 		Timer.schedule(new Task() {
 			@Override
@@ -126,6 +127,7 @@ public class Airport extends Waypoint {
 			@Override
 			public void run() {
 				timeElapsed[5] = 0;
+				takeoffReady = true;
 			}
 		}, this.timeTillFreeRunway);
 

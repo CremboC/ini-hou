@@ -343,7 +343,7 @@ public final class SidebarController extends ChangeListener {
 
 			if ((selectedAirport != null)
 					&& (selectedAirport.aircraftList.size() != 0)
-					&& (selectedAirport.countdown[5] == selectedAirport.timeTillFreeRunway)) {
+					&& (selectedAirport.takeoffReady)) {
 
 				for (int i = 0; i < selectedAirport.aircraftList.size(); i++) {
 					if (actor.equals(buttons.get("aircraft" + i)))
