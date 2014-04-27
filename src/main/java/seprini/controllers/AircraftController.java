@@ -138,13 +138,13 @@ public class AircraftController extends InputListener {
 			Art.getSound("warning").play(1.0f);
 		}
 
-		// try to generate a new aircraft
-		final Aircraft generatedAircraft = generateAircraft();
-
-		// if the newly generated aircraft is not null (ie checking one was
-		// generated), add it as an actor to the stage
-		if (generatedAircraft != null) {
-
+		// If the number of aircraft is below the maximum permitted, or the time
+		// elapsed since the last generation is less than
+		// time difference between aircraft generated, create a new aircraft
+		if (aircraftList.size() > difficulty.getMaxAircraft()
+				|| timer - lastGenerated > difficulty
+						.getTimeBetweenGenerations() + rand.nextInt(100)) {
+			final Aircraft generatedAircraft = generateAircraft();
 			// makes the aircraft clickable. Once clicked it is set as the
 			// selected aircraft.
 			generatedAircraft.addListener(new ClickListener() {
@@ -238,15 +238,6 @@ public class AircraftController extends InputListener {
 	 * 
 	 */
 	protected Aircraft generateAircraft() {
-		// number of aircraft has reached maximum, abort
-		if (aircraftList.size() >= difficulty.getMaxAircraft())
-			return null;
-
-		// time difference between aircraft generated - depends on difficulty
-		// selected
-		if (timer - lastGenerated < difficulty.getTimeBetweenGenerations()
-				+ rand.nextInt(100))
-			return null;
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
 				flightplan.generate(), aircraftId++, this);
