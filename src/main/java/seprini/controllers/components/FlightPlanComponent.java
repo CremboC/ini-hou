@@ -3,6 +3,7 @@ package seprini.controllers.components;
 import java.util.ArrayList;
 import java.util.Random;
 
+import seprini.data.Config;
 import seprini.models.Airport;
 import seprini.models.Waypoint;
 
@@ -30,7 +31,8 @@ public class FlightPlanComponent {
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
 		Waypoint entryWaypoint = setStartpoint();
-		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 500);
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint,
+				Config.MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
 		return flightPlanWaypointGenerator(flightPlan, entryWaypoint,
@@ -38,7 +40,7 @@ public class FlightPlanComponent {
 	}
 
 	/**
-	 * Overload to use when aircraft is taking off from the airport, allowing
+	 * Overload to use when aircraft is taking off from an airport, allowing
 	 * entry waypoint to be specified.
 	 * 
 	 * @param entryWaypoint
@@ -48,7 +50,8 @@ public class FlightPlanComponent {
 
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
-		Waypoint lastWaypoint = setEndpoint(entryWaypoint, 500);
+		Waypoint lastWaypoint = setEndpoint(entryWaypoint,
+				Config.MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
 		if (entryWaypoint instanceof Airport) {

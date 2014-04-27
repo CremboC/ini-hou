@@ -31,11 +31,18 @@ public final class Config {
 
 	// Game related
 	public final static float AIRCRAFT_SPEED_MULTIPLIER = 40f / 3f;
-	public final static int MIN_ALTITUDE_DIFFERENCE = 1000;
-	public static final int[] ALTITUDES = { 0, 2000, 3000, 5000, 10000, 15000 };
+	// Minimum vertical altitude between aircraft that must be maintained when
+	// passing over one another to avoid a crash.
+	public final static int MIN_ALTITUDE_DIFFERENCE = 500;
+	// The altitude 'levels'
+	public static final int[] ALTITUDES = { 0, 1000, 2000, 5000, 10000, 15000 };
+	// Time that must elapse before an aircraft can take off after landing
 	public static final int AIRCRAFT_TAKEOFF_AND_LANDING_DELAY = 10;
+	// Number of points held by an aircraft when it enters the airspace
 	public static final int AIRCRAFT_POINTS = 20;
+	// lump sum given to player who didn't crash, when a crash occurs.
 	public static final int MULTIPLAYER_CRASH_BONUS = 200;
+	public static final int MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS = 300;
 
 	// other
 	public final static String COPYRIGHT_NOTICE = "Copyright Disclaimer Under Section 107 of the Copyright Act 1976, allowance is made "
