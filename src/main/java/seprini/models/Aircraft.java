@@ -43,7 +43,7 @@ public final class Aircraft extends Entity {
 
 	// Set and store aircrafts points.
 	private int points;
-
+	private Random rand;
 	private Player player;
 	// player colours
 	private Color LINE_COLOR;
@@ -60,7 +60,7 @@ public final class Aircraft extends Entity {
 		this.id = id;
 		this.aircraftType = aircraftType;
 
-		Random rand = new Random();
+		rand = new Random();
 
 		points = Config.AIRCRAFT_POINTS;
 
@@ -409,7 +409,7 @@ public final class Aircraft extends Entity {
 
 				Airport airport = (Airport) getLastWaypoint();
 
-				if (this.altitude > 1000) {
+				if (this.altitude > 200) {
 					// Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty.
 					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
@@ -425,17 +425,7 @@ public final class Aircraft extends Entity {
 				} catch (IllegalStateException e) {
 					controller.collisionHasOccured(this, this);
 				}
-
-				Waypoint nAirport = getNextWaypoint();
-				ArrayList<Waypoint> newFlightPlan = controller.flightplan
-						.generate(nAirport);
-
-				waypoints.clear();
-				waypoints = newFlightPlan;
-
-				this.isActive = false;
-
-				return;
+				insertThisIntoAirport(airport);
 
 			} else if (getLastWaypoint() instanceof Airport) {
 				return;
@@ -464,7 +454,7 @@ public final class Aircraft extends Entity {
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 3))) {
 					this.desiredAltitude = Config.ALTITUDES[1];
-					this.setSpeed(200 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+					this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 				} else if (getNextWaypoint().equals(
 						waypoints.get(waypoints.size() - 4))) {
 					this.desiredAltitude = Config.ALTITUDES[2];
@@ -484,6 +474,20 @@ public final class Aircraft extends Entity {
 			}
 		}
 
+	}
+
+	/**
+	 * Handles inserting aircraft instance into an airport. This will reset its
+	 * flightplan and then remove it from the airspace.
+	 */
+	private void insertThisIntoAirport(Airport airport) {
+		ArrayList<Waypoint> newFlightPlan = controller.flightplan
+				.generate(airport);
+		waypoints.clear();
+		waypoints = newFlightPlan;
+		this.isActive = false;
+		this.targetAltitudeIndex = rand.nextInt(3) + 3;
+		return;
 	}
 
 	/**
