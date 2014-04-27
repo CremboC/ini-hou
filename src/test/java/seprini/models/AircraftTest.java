@@ -1,221 +1,317 @@
+/**
+ * 
+ */
 package seprini.models;
 
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.either;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-import static seprhou.logic.IsCloseToFloat.closeTo;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
+import seprini.ATC;
 import seprini.controllers.AircraftController;
-import seprini.data.Config;
+import seprini.data.Art;
 import seprini.data.GameDifficulty;
 import seprini.models.types.AircraftType;
+import seprini.screens.GameScreen;
 
 /**
- * Test class for {@link Aircraft}
+ * @author Leslie
+ * 
  */
-@RunWith(JUnit4.class)
 public class AircraftTest {
-	private static final Integer[] OBJECT_ALTITUDES = arrayToObject(Config.ALTITUDES);
 
-	private Aircraft aircraft;
-	private AircraftType aircraftType;
-	private List<Waypoint> originalFlightPlan;
+	Aircraft aircraft;
 
-	/** Returns a difficulty which no aircraft can be generated in */
-	private static GameDifficulty getNoAircraftDifficulty() {
-		return new GameDifficulty(0, 100000, 0, 0, 0, 0);
-	}
-
-	@Before
-	public void setupAircraft() {
-		// Create flight plan
-		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
-		flightPlan.add(new Waypoint(0, 0, true));
-		flightPlan.add(new Waypoint(100, 500, true));
-		flightPlan.add(new Waypoint(700, 700, true));
-		originalFlightPlan = new ArrayList<Waypoint>(flightPlan);
-
-		// Create aircraft type
-		aircraftType = new AircraftType().setMaxClimbRate(100).setMinSpeed(30f)
-				.setMaxSpeed(90f).setMaxTurningSpeed(50f).setRadius(15)
-				.setSeparationRadius(100).setInitialSpeed(30f);
-
-		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), null);
-
-		// Create aircraft
-		aircraft = new Aircraft(aircraftType, flightPlan, 1, controller);
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
 	/**
-	 * Tests the initial state of the aircraft
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
+				5);
+		ATC atc = new ATC();
+		GameScreen gameScreen = new GameScreen(atc, gameDifficulty);
+		Airspace airspace = new Airspace();
+		AircraftController aircraftController = new AircraftController(
+				gameDifficulty, airspace, gameScreen);
+		AircraftType aircraftType = new AircraftType().setMaxClimbRate(600)
+				.setMinSpeed(30f).setMaxSpeed(90f).setMaxTurningSpeed(48f)
+				.setRadius(15)
+				.setSeparationRadius(gameDifficulty.getSeparationRadius())
+				.setTexture(Art.getTextureRegion("aircraft"))
+				.setInitialSpeed(60f);
+
+		aircraft = new Aircraft(aircraftType,
+				aircraftController.flightplan.generate(), 0, aircraftController);
+
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#act(float)}.
 	 */
 	@Test
-	public void testInitialState() {
-		assertThat(aircraft.isActive(), is(true));
-		assertThat(aircraft.isBreaching(), is(false));
-		assertThat(aircraft.getAltitude(), isIn(OBJECT_ALTITUDES));
-		assertThat(aircraft.getFlightPlan(),
-				hasSize(originalFlightPlan.size() - 1));
-		assertThat(aircraft.getNextWaypoint(), is(originalFlightPlan.get(1)));
-		assertThat(aircraft.getCoords(), is(originalFlightPlan.get(0)
-				.getCoords()));
-		assertThat(aircraft.getSpeed(),
-				is(closeTo(aircraftType.getInitialSpeed())));
+	public void testAct() {
 	}
 
+	/**
+	 * Test method for
+	 * {@link seprini.models.Aircraft#additionalDraw(com.badlogic.gdx.graphics.g2d.SpriteBatch)}
+	 * .
+	 */
 	@Test
-	public void testSpeedChanges() {
-		float initialSpeed = aircraft.getSpeed();
-
-		// Test increase
-		aircraft.increaseSpeed();
-		aircraft.act(1);
-		assertThat(aircraft.getSpeed(), is(greaterThan(initialSpeed)));
-
-		// Test decrease back to original speed
-		aircraft.decreaseSpeed();
-		aircraft.act(1);
-		assertThat(aircraft.getSpeed(), is(closeTo(initialSpeed)));
+	public void testAdditionalDraw() {
 	}
 
+	/**
+	 * Test method for
+	 * {@link seprini.models.Aircraft#Aircraft(seprini.models.types.AircraftType, java.util.ArrayList, int, seprini.controllers.AircraftController)}
+	 * .
+	 */
 	@Test
-	public void testIncreaseAltitude() {
-		int initialAltitude = aircraft.getAltitude();
-
-		// Increase altitude
-		aircraft.increaseAltitude();
-		aircraft.act(1);
-
-		// Test result
-		if (initialAltitude != 15000) {
-			// Should have got closer to altitude and eventually get to it
-			int nextHigher = initialAltitude + 5000;
-			assertThat(
-					aircraft.getAltitude(),
-					is(both(greaterThan(initialAltitude)).and(
-							lessThanOrEqualTo(nextHigher))));
-		} else {
-			assertThat(aircraft.getAltitude(), is(initialAltitude));
-		}
+	public void testAircraft() {
 	}
 
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getPoints()}.
+	 */
+	@Test
+	public void testGetPoints() {
+		System.out.println(aircraft.getPoints());
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.models.Aircraft#insertWaypoint(seprini.models.Waypoint)}.
+	 */
+	@Test
+	public void testInsertWaypoint() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getNextWaypoint()}.
+	 */
+	@Test
+	public void testGetNextWaypoint() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#increaseSpeed()}.
+	 */
+	@Test
+	public void testIncreaseSpeed() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#decreaseSpeed()}.
+	 */
+	@Test
+	public void testDecreaseSpeed() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#decreaseAltitude()}.
+	 */
 	@Test
 	public void testDecreaseAltitude() {
-		int initialAltitude = aircraft.getAltitude();
-
-		// Decrease altitude
-		aircraft.decreaseAltitude();
-		aircraft.act(1);
-
-		// Test result
-		if (initialAltitude != 5000) {
-			// Should have got closer to altitude and eventually get to it
-			int nextLower = initialAltitude - 5000;
-			assertThat(
-					aircraft.getAltitude(),
-					is(both(lessThan(initialAltitude)).and(
-							greaterThanOrEqualTo(nextLower))));
-		} else {
-			assertThat(aircraft.getAltitude(), is(initialAltitude));
-		}
+		fail("Not yet implemented");
 	}
 
+	/**
+	 * Test method for {@link seprini.models.Aircraft#increaseAltitude()}.
+	 */
 	@Test
-	public void testFollowFlightPath() {
-		int prevWaypointsLeft = aircraft.getFlightPlan().size();
-
-		// The plane should eventually follow the waypoints and complete the
-		// flight plan by itself
-		for (int i = 0; i < 100; i++) {
-			aircraft.act(1);
-
-			// Number of waypoints left muct decrease by 1 or stay the same
-			int waypointsLeft = aircraft.getFlightPlan().size();
-
-			assertThat(
-					waypointsLeft,
-					is(either(equalTo(prevWaypointsLeft)).or(
-							equalTo(prevWaypointsLeft - 1))));
-
-			// Exit if there are no waypoints left
-			if (waypointsLeft == 0)
-				return;
-
-			prevWaypointsLeft = waypointsLeft;
-		}
-
-		// Did not complete in the time
-		fail("did not complete flight plan in the allowed time");
+	public void testIncreaseAltitude() {
+		fail("Not yet implemented");
 	}
 
+	/**
+	 * Test method for {@link seprini.models.Aircraft#turnRight(boolean)}.
+	 */
 	@Test
-	public void testManualControl() {
-		// Take manual control for 1 tick
-		aircraft.act(1);
-		aircraft.turnRight(true);
-		aircraft.act(1);
-		aircraft.turnRight(false);
-
-		// Must still be active
-		assertThat(aircraft.isActive(), is(true));
-
-		// Should exit without hitting any waypoints
-		for (int i = 0; i < 100; i++) {
-			aircraft.act(1);
-
-			// Test flight plan has not changed
-			assertThat(aircraft.getFlightPlan(), hasSize(2));
-			assertThat(aircraft.getSpeed(),
-					is(closeTo(aircraftType.getInitialSpeed())));
-
-			// If inactive, exit now
-			if (!aircraft.isActive())
-				return;
-		}
-
-		// Did not complete in the time
-		fail("did not exit airspace in the allowed time");
+	public void testTurnRight() {
+		fail("Not yet implemented");
 	}
 
+	/**
+	 * Test method for {@link seprini.models.Aircraft#turnLeft(boolean)}.
+	 */
+	@Test
+	public void testTurnLeft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#returnToPath()}.
+	 */
 	@Test
 	public void testReturnToPath() {
-		// Take manual control for 2 ticks and then return it
-		aircraft.act(1);
-		aircraft.turnRight(true);
-		aircraft.act(1);
-		aircraft.act(1);
-		aircraft.returnToPath();
-
-		// Must still be active
-		assertThat(aircraft.isActive(), is(true));
-
-		// Must now follow the flight plan
-		testFollowFlightPath();
+		fail("Not yet implemented");
 	}
 
-	/** Converts primitive integer arrays to their object equivalent */
-	private static Integer[] arrayToObject(int[] array) {
-		Integer[] result = new Integer[array.length];
-		for (int i = 0; i < array.length; i++)
-			result[i] = array[i];
-		return result;
+	/**
+	 * Test method for {@link seprini.models.Aircraft#selected(boolean)}.
+	 */
+	@Test
+	public void testSelected() {
+		fail("Not yet implemented");
 	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#checkBreaching()}.
+	 */
+	@Test
+	public void testCheckBreaching() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getPlayer()}.
+	 */
+	@Test
+	public void testGetPlayer() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#takingOff()}.
+	 */
+	@Test
+	public void testTakingOff() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#isTurningRight()}.
+	 */
+	@Test
+	public void testIsTurningRight() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#isTurningLeft()}.
+	 */
+	@Test
+	public void testIsTurningLeft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getFlightPlan()}.
+	 */
+	@Test
+	public void testGetFlightPlan() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getRadius()}.
+	 */
+	@Test
+	public void testGetRadius() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getSeparationRadius()}.
+	 */
+	@Test
+	public void testGetSeparationRadius() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#isBreaching()}.
+	 */
+	@Test
+	public void testIsBreaching() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#setBreaching(boolean)}.
+	 */
+	@Test
+	public void testSetBreaching() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getAltitude()}.
+	 */
+	@Test
+	public void testGetAltitude() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#getSpeed()}.
+	 */
+	@Test
+	public void testGetSpeed() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.models.Aircraft#setPlayer(seprini.models.types.Player)}.
+	 */
+	@Test
+	public void testSetPlayer() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#isActive()}.
+	 */
+	@Test
+	public void testIsActive() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#equals(java.lang.Object)}.
+	 */
+	@Test
+	public void testEqualsObject() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.models.Aircraft#toString()}.
+	 */
+	@Test
+	public void testToString() {
+		fail("Not yet implemented");
+	}
+
 }

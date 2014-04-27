@@ -1,175 +1,263 @@
+/**
+ * 
+ */
 package seprini.controllers;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-
-import seprini.ATC;
-import seprini.data.FakeArtEnabler;
-import seprini.data.GameDifficulty;
-import seprini.models.Aircraft;
-import seprini.models.Airspace;
-import seprini.models.Waypoint;
-import seprini.models.types.AircraftType;
-import seprini.screens.ScreenBase;
 
 /**
- * Test class for {@link AircraftController}
+ * @author Leslie
+ * 
  */
-@RunWith(JUnit4.class)
-public class AircraftControllerTest extends FakeArtEnabler {
-	/** Returns a difficulty which no aircraft can be generated in */
-	private static GameDifficulty getNoAircraftDifficulty() {
-		return new GameDifficulty(0, 100000, 0, 0, 0, 0);
-	}
+public class AircraftControllerTest {
 
-	/** Generates a fake aircraft at the given position */
-	private static Aircraft makeFakeAircraft(float x, float y) {
-		AircraftType aircraftType = new AircraftType().setRadius(50)
-				.setMaxClimbRate(100000000);
-
-		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
-		flightPlan.add(new Waypoint(x, y, false));
-		flightPlan.add(new Waypoint(1000, 1000, false));
-
-		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), null);
-
-		Aircraft aircraft = new Aircraft(aircraftType, flightPlan, 1,
-				controller);
-
-		// Force middle altitude
-		if (aircraft.getAltitude() < 10000) {
-			aircraft.increaseAltitude();
-			aircraft.act(1);
-		}
-		if (aircraft.getAltitude() > 10000) {
-			aircraft.decreaseAltitude();
-			aircraft.act(1);
-		}
-
-		return aircraft;
-	}
-
-	@Test
-	public void testNoCollision() {
-		// Create 2 aircraft in different places - should not collide
-		ScreenBaseImpl screenBase = new ScreenBaseImpl();
-		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), screenBase);
-
-		controller.getAircraftList().add(makeFakeAircraft(100, 100));
-		controller.getAircraftList().add(makeFakeAircraft(400, 100));
-
-		// Should not crash + aircraft should still be on the lists
-		try {
-			controller.update(0.1f);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		assertThat(controller.getAircraftList(), hasSize(2));
-		assertThat(screenBase.gameEnded, is(false));
-	}
-
-	@Test
-	public void testCollision() {
-		// Create 2 aircraft in same place - should collide
-		ScreenBaseImpl screenBase = new ScreenBaseImpl();
-		AircraftController controller = new AircraftController(
-				getNoAircraftDifficulty(), new Airspace(), screenBase);
-
-		controller.getAircraftList().add(makeFakeAircraft(100, 100));
-		controller.getAircraftList().add(makeFakeAircraft(100, 100));
-
-		// Should crash
-		try {
-			controller.update(0.1f);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		assertThat(screenBase.gameEnded, is(true));
-	}
-
-	@Test
-	public void testMaxAircraft() {
-		// Generate airspace with 2 aircraft in it (with limit on 2)
-		GameDifficulty difficulty = new GameDifficulty(2, 0, 0, 0, 0, 0);
-		AircraftController controller = new AircraftController(difficulty,
-				new Airspace(), null);
-		controller.getAircraftList().add(makeFakeAircraft(500, 500));
-		controller.getAircraftList().add(makeFakeAircraft(100, 100));
-
-		// Keep refreshing, no more should appear
-		for (int i = 0; i < 100; i++) {
-			try {
-				controller.update(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			assertThat(controller.getAircraftList(), hasSize(2));
-		}
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
 	/**
-	 * Implementation of ScreenBase which detects when the game ends
+	 * @throws java.lang.Exception
 	 */
-	private class ScreenBaseImpl implements ScreenBase {
-		public boolean gameEnded = false;
-
-		@Override
-		public ATC getGame() {
-			return new ATC() {
-				@Override
-				public void showEndScreen(float time, float score) {
-					gameEnded = true;
-				}
-			};
-		}
-
-		@Override
-		public boolean isPaused() {
-			return false;
-		}
-
-		@Override
-		public void setPaused(boolean paused) {
-		}
-
-		@Override
-		public void render(float delta) {
-		}
-
-		@Override
-		public void resize(int width, int height) {
-		}
-
-		@Override
-		public void show() {
-		}
-
-		@Override
-		public void hide() {
-		}
-
-		@Override
-		public void pause() {
-		}
-
-		@Override
-		public void resume() {
-		}
-
-		@Override
-		public void dispose() {
-		}
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#AircraftController(seprini.data.GameDifficulty, seprini.models.Airspace, seprini.screens.ScreenBase)}
+	 * .
+	 */
+	@Test
+	public void testAircraftController() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.controllers.AircraftController#init()}.
+	 */
+	@Test
+	public void testInit() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#update(float)}.
+	 */
+	@Test
+	public void testUpdate() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}
+	 * .
+	 */
+	@Test
+	public void testCollisionHasOccured() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#generateAircraft()}.
+	 */
+	@Test
+	public void testGenerateAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#removeAircraft(int)}.
+	 */
+	@Test
+	public void testRemoveAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#selectAircraft(seprini.models.Aircraft)}
+	 * .
+	 */
+	@Test
+	public void testSelectAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#switchAircraft(int)}.
+	 */
+	@Test
+	public void testSwitchAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#redirectAircraft(seprini.models.Waypoint)}
+	 * .
+	 */
+	@Test
+	public void testRedirectAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for {@link seprini.controllers.AircraftController#getTimer()}
+	 * .
+	 */
+	@Test
+	public void testGetTimer() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getPlayerScore()}.
+	 */
+	@Test
+	public void testGetPlayerScore() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getSelectedAircraft()}.
+	 */
+	@Test
+	public void testGetSelectedAircraft() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getAircraftList()}.
+	 */
+	@Test
+	public void testGetAircraftList() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getAirspace()}.
+	 */
+	@Test
+	public void testGetAirspace() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#allowRedirection()}.
+	 */
+	@Test
+	public void testAllowRedirection() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#setAllowRedirection(boolean)}
+	 * .
+	 */
+	@Test
+	public void testSetAllowRedirection() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getGameMode()}.
+	 */
+	@Test
+	public void testGetGameMode() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#getPlayers()}.
+	 */
+	@Test
+	public void testGetPlayers() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#keyDown(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
+	 * .
+	 */
+	@Test
+	public void testKeyDownInputEventInt() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#keyUp(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
+	 * .
+	 */
+	@Test
+	public void testKeyUpInputEventInt() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#takeoff(seprini.models.Aircraft)}
+	 * .
+	 */
+	@Test
+	public void testTakeoff() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#showGameOver()}.
+	 */
+	@Test
+	public void testShowGameOver() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.AircraftController#incrementScore(seprini.models.Aircraft)}
+	 * .
+	 */
+	@Test
+	public void testIncrementScore() {
+		fail("Not yet implemented");
+	}
+
 }

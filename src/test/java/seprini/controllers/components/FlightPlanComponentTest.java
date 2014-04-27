@@ -1,73 +1,85 @@
+/**
+ * 
+ */
 package seprini.controllers.components;
 
-import static org.hamcrest.Matchers.everyItem;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static seprhou.logic.IsDistinct.distinct;
+import static org.junit.Assert.fail;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import seprini.controllers.AircraftController;
+import seprini.ATC;
 import seprini.data.GameDifficulty;
-import seprini.data.GameMode;
-import seprini.models.Airspace;
-import seprini.models.Waypoint;
 
 /**
- * Test class for {@link FlightPlanComponent}
+ * @author Leslie
+ * 
  */
-@RunWith(Parameterized.class)
 public class FlightPlanComponentTest {
-	private FlightPlanComponent flightPlanComponent;
-	private WaypointComponent waypointComponent;
 
-	@Parameterized.Parameters
-	public static Collection<Object[]> data() {
-		// Run tests 10 times
-		return Arrays.asList(new Object[10][0]);
+	FlightPlanComponent flightPlanComponent;
+
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 	}
 
-	/** Setup flight plan generator */
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 */
 	@Before
-	public void setupGenerator() {
-		waypointComponent = new WaypointComponent(new AircraftController(
-				GameDifficulty.EASY, new Airspace(), null), GameMode.SINGLE);
-		flightPlanComponent = new FlightPlanComponent(waypointComponent);
+	public void setUp() throws Exception {
+		ATC atc = new ATC();
+		atc.showGameScreen(GameDifficulty.MEDIUM);
+		// WaypointComponent waypointComponent = new WaypointComponent();
 	}
 
+	/**
+	 * @throws java.lang.Exception
+	 */
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.components.FlightPlanComponent#FlightPlanComponent(seprini.controllers.components.WaypointComponent)}
+	 * .
+	 */
 	@Test
-	public void testValidFlightPlan() {
-		// Generates a flight plan and validates it
-		List<Waypoint> flightPlan = flightPlanComponent.generate();
-		assertThat(flightPlan, is(notNullValue()));
-
-		// Test list size
-		assertThat(flightPlan, hasSize(greaterThanOrEqualTo(3)));
-
-		// Test waypoints are from correct lists
-		// here the toArray is a hack to force covariance of the list (which is
-		// ok as it's never modified)
-		List<Waypoint> waypointList = waypointComponent.getPermanentList();
-		Object[] entryList = waypointComponent.getEntryList().toArray();
-		Object[] exitList = waypointComponent.getExitList().toArray();
-
-		assertThat(flightPlan.get(0), isIn(entryList));
-		assertThat(flightPlan.get(flightPlan.size() - 1), isIn(exitList));
-		assertThat(flightPlan.subList(1, flightPlan.size() - 1),
-				everyItem(isIn(waypointList)));
-
-		// All waypoints must be distinct
-		assertThat(flightPlan, is(distinct()));
+	public void testFlightPlanComponent() {
+		fail("Not yet implemented");
 	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.components.FlightPlanComponent#generate()}.
+	 */
+	@Test
+	public void testGenerate() {
+		fail("Not yet implemented");
+	}
+
+	/**
+	 * Test method for
+	 * {@link seprini.controllers.components.FlightPlanComponent#generate(seprini.models.Waypoint)}
+	 * .
+	 */
+	@Test
+	public void testGenerateWaypoint() {
+		fail("Not yet implemented");
+	}
+
 }
