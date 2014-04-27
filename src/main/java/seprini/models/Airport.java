@@ -89,15 +89,13 @@ public class Airport extends Waypoint {
 	}
 
 	/**
-	 * Forces an aircraft to take off. Selects one from the list randomly.
-	 * Removes it from the list afterwards.
+	 * Forces an aircraft to take off. Removes it from the list afterwards.
 	 * 
 	 * @return Aircraft one of the aircraft that were held in the airport. This
 	 *         aircraft can be used instead of generating a new one.
 	 * @throws IllegalStateException
 	 *             if there are no aircraft in the airport
 	 */
-
 	public Aircraft takeoff(int i) {
 		if (aircraftList.size() == 0)
 			return null;
