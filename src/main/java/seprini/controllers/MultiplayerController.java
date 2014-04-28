@@ -14,7 +14,6 @@ import seprini.models.Airport;
 import seprini.models.Airspace;
 import seprini.models.Map;
 import seprini.models.types.Player;
-import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -35,9 +34,8 @@ public class MultiplayerController extends AircraftController {
 
 	private float scoreTimer;
 
-	public MultiplayerController(GameDifficulty diff, Airspace airspace,
-			ScreenBase screen) {
-		super(diff, airspace, screen);
+	public MultiplayerController(GameDifficulty diff, Airspace airspace) {
+		super(diff, airspace);
 	}
 
 	@Override
@@ -327,7 +325,7 @@ public class MultiplayerController extends AircraftController {
 	 * Enables Keyboard Shortcuts as alternatives to the on screen buttons
 	 */
 	public boolean keyDown(InputEvent event, int keycode) {
-		if (!screen.isPaused()) {
+		if (!paused) {
 
 			for (int i = 0; i < selectedAircraft.length; i++) {
 
@@ -376,11 +374,11 @@ public class MultiplayerController extends AircraftController {
 		}
 
 		if (keycode == Keys.SPACE)
-			screen.setPaused(!screen.isPaused());
+			paused = !paused;
 
 		if (keycode == Keys.ESCAPE) {
 			Art.getSound("ambience").stop();
-			screen.getGame().showMenuScreen();
+			exitToMenu = true;
 		}
 
 		return false;
@@ -425,9 +423,7 @@ public class MultiplayerController extends AircraftController {
 					.getScoreMultiplier() * Config.MULTIPLAYER_CRASH_BONUS);
 		}
 
-		screen.getGame().showMultiEndScreen(timer,
-				playerScore[Player.ONE].getScore(),
-				playerScore[Player.TWO].getScore(), totalScore.getScore());
+		gameHasEnded = true;
 	}
 
 	@Override
@@ -439,18 +435,6 @@ public class MultiplayerController extends AircraftController {
 
 		totalScore.incrementScore((aircraft.getPoints())
 				* difficulty.getScoreMultiplier());
-	}
-
-	/**
-	 * Get the player scores in an array
-	 * 
-	 * @return
-	 */
-	public int[] getPlayerScores() {
-		int[] scores = { playerScore[Player.ONE].getScore(),
-				playerScore[Player.TWO].getScore() };
-
-		return scores;
 	}
 
 	/**
@@ -500,6 +484,18 @@ public class MultiplayerController extends AircraftController {
 		playerScore[Player.TWO].incrementScore(playerTwoAircraft.size());
 		totalScore.incrementScore(playerOneAircraft.size()
 				+ playerTwoAircraft.size());
+	}
+
+	/**
+	 * Get the player scores in an array
+	 * 
+	 * @return player scores
+	 */
+	public int[] getPlayerScores() {
+		int[] scores = {playerScore[Player.ONE].getScore(),
+				playerScore[Player.TWO].getScore()};
+
+		return scores;
 	}
 
 	public int getTotalScore() {

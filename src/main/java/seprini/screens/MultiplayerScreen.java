@@ -8,6 +8,7 @@ import seprini.data.Config;
 import seprini.data.GameDifficulty;
 import seprini.models.Airspace;
 import seprini.models.PauseOverlay;
+import seprini.models.types.Player;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -42,7 +43,7 @@ public class MultiplayerScreen extends AbstractScreen {
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
 
-		controller = new MultiplayerController(diff, airspace, this);
+		controller = new MultiplayerController(diff, airspace);
 
 		airspace.addListener(controller);
 		ui.add(airspace).width(Config.MULTIPLAYER_SIZE.x)
@@ -79,7 +80,16 @@ public class MultiplayerScreen extends AbstractScreen {
 	public void render(float delta) {
 		super.render(delta);
 
-		// temporary drawing of no man's land
+		setPaused(controller.paused);
+
+		if (controller.exitToMenu)
+			getGame().showMenuScreen();
+
+		if (controller.gameHasEnded)
+			getGame().showMultiEndScreen(controller.getTimer(),
+					controller.getPlayerScores()[Player.ONE],
+					controller.getPlayerScores()[Player.TWO],
+					controller.getTotalScore());
 
 		getStage().getSpriteBatch().begin();
 
@@ -93,6 +103,8 @@ public class MultiplayerScreen extends AbstractScreen {
 		}
 
 		int totalScore = controller.getTotalScore();
+
+		// temporary drawing of no man's land
 
 		AbstractScreen.drawString("Total Score: " + totalScore, 600, 715,
 				Color.BLUE, getStage().getSpriteBatch(), true, 1);

@@ -18,9 +18,7 @@ import seprini.models.Map;
 import seprini.models.Waypoint;
 import seprini.models.types.AircraftType;
 import seprini.models.types.Player;
-import seprini.screens.ScreenBase;
 
-import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -48,7 +46,6 @@ public class AircraftController extends InputListener {
 
 	// ui related
 	protected final Airspace airspace;
-	protected final ScreenBase screen;
 
 	private int aircraftId = 0, lastAircraftIndex;
 
@@ -73,11 +70,9 @@ public class AircraftController extends InputListener {
 	 *            added
 	 * @param screen
 	 */
-	public AircraftController(GameDifficulty diff, Airspace airspace,
-			ScreenBase screen) {
+	public AircraftController(GameDifficulty diff, Airspace airspace) {
 		this.difficulty = diff;
 		this.airspace = airspace;
-		this.screen = screen;
 
 		collision.create();
 
@@ -89,11 +84,12 @@ public class AircraftController extends InputListener {
 				.setInitialSpeed(60f));
 
 		this.init();
-
 	}
 
+	/**
+	 * Initialise helpers and main components
+	 */
 	protected void init() {
-
 		this.mode = GameMode.SINGLE;
 
 		// add the background
@@ -343,48 +339,14 @@ public class AircraftController extends InputListener {
 		getSelectedAircraft().insertWaypoint(waypoint);
 	}
 
-	public float getTimer() {
-		return timer;
-	}
-
-	public float getPlayerScore() {
-		return this.playerScore.getScore();
-	}
-
-	public Aircraft getSelectedAircraft() {
-		return selectedAircraft;
-	}
-
-	public ArrayList<Aircraft> getAircraftList() {
-		return aircraftList;
-	}
-
-	public Airspace getAirspace() {
-		return airspace;
-	}
-
-	public boolean allowRedirection() {
-		return allowRedirection;
-	}
-
-	public void setAllowRedirection(boolean value) {
-		allowRedirection = value;
-	}
-
-	public GameMode getGameMode() {
-		return mode;
-	}
-
-	public Player[] getPlayers() {
-		return players;
-	}
+	public boolean paused, exitToMenu, gameHasEnded;
 
 	@Override
 	/**
 	 * Enables Keyboard Shortcuts as alternatives to the on screen buttons
 	 */
 	public boolean keyDown(InputEvent event, int keycode) {
-		if (!screen.isPaused()) {
+		if (!paused) {
 
 			if (selectedAircraft != null) {
 				if (keycode == selectedAircraft.getPlayer().getLeft())
@@ -415,11 +377,11 @@ public class AircraftController extends InputListener {
 		}
 
 		if (keycode == Keys.SPACE)
-			screen.setPaused(!screen.isPaused());
+			paused = !paused;
 
 		if (keycode == Keys.ESCAPE) {
 			Art.getSound("ambience").stop();
-			screen.getGame().showMenuScreen();
+			exitToMenu = true;
 		}
 
 		return false;
@@ -475,7 +437,8 @@ public class AircraftController extends InputListener {
 	}
 
 	protected void showGameOver() {
-		screen.getGame().showEndScreen(timer, this.playerScore.getScore());
+		gameHasEnded = true;
+		// screen.getGame().showEndScreen(timer, this.playerScore.getScore());
 	}
 
 	protected void incrementScore(Aircraft aircraft) {
@@ -540,5 +503,41 @@ public class AircraftController extends InputListener {
 				showGameOver();
 			}
 		}
+	}
+
+	public float getTimer() {
+		return timer;
+	}
+
+	public float getPlayerScore() {
+		return this.playerScore.getScore();
+	}
+
+	public Aircraft getSelectedAircraft() {
+		return selectedAircraft;
+	}
+
+	public ArrayList<Aircraft> getAircraftList() {
+		return aircraftList;
+	}
+
+	public Airspace getAirspace() {
+		return airspace;
+	}
+
+	public boolean allowRedirection() {
+		return allowRedirection;
+	}
+
+	public void setAllowRedirection(boolean value) {
+		allowRedirection = value;
+	}
+
+	public GameMode getGameMode() {
+		return mode;
+	}
+
+	public Player[] getPlayers() {
+		return players;
 	}
 }

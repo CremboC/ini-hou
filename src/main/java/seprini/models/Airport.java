@@ -12,10 +12,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 public class Airport extends Waypoint {
 
 	// Waypoints designating the end of the runway
-	public Waypoint runwayStart;
-	public Waypoint runwayEnd;
-	public Waypoint runwayLeft;
-	public Waypoint runwayRight;
+	public Waypoint runwayStart, runwayEnd, runwayLeft, runwayRight;
 
 	// Maximum number of aircraft that can be in the airport at once. If
 	// exceeded, game ends.
@@ -135,70 +132,5 @@ public class Airport extends Waypoint {
 
 	@Override
 	protected void additionalDraw(SpriteBatch batch) {
-
 	}
-
-	// private void boardingCountdown(int boardingAircraft) {
-	// switch (boardingAircraft) {
-	// case 1:
-	// Timer.schedule(new Task() {
-	// @Override
-	// public void run() {
-	//
-	// countdown[0] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-	// - timeElapsed[0];
-	// timeElapsed[0] = timeElapsed[0] + 1;
-	//
-	// }
-	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-	//
-	// break;
-	// case 2:
-	// Timer.schedule(new Task() {
-	// @Override
-	// public void run() {
-	// countdown[1] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-	// - timeElapsed[1];
-	// timeElapsed[1] = timeElapsed[1] + 1;
-	//
-	// }
-	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-	// break;
-	// case 3:
-	// Timer.schedule(new Task() {
-	// @Override
-	// public void run() {
-	// countdown[2] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-	// - timeElapsed[2];
-	// timeElapsed[2] = timeElapsed[2] + 1;
-	//
-	// }
-	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-	// break;
-	// case 4:
-	// Timer.schedule(new Task() {
-	// @Override
-	// public void run() {
-	//
-	// countdown[3] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-	// - timeElapsed[3];
-	// timeElapsed[3] = timeElapsed[3] + 1;
-	//
-	// }
-	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-	// break;
-	// case 5:
-	// Timer.schedule(new Task() {
-	// @Override
-	// public void run() {
-	//
-	// countdown[4] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-	// - timeElapsed[4];
-	// timeElapsed[4] = timeElapsed[4] + 1;
-	//
-	// }
-	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-	// break;
-	// }
-	// }
 }

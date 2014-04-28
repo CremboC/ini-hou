@@ -42,7 +42,7 @@ public class GameScreen extends AbstractScreen {
 
 		// create and add the Airspace group, contains aircraft and waypoints
 		Airspace airspace = new Airspace();
-		controller = new AircraftController(diff, airspace, this);
+		controller = new AircraftController(diff, airspace);
 		root.setKeyboardFocus(airspace);
 
 		// create sidebar
@@ -91,6 +91,15 @@ public class GameScreen extends AbstractScreen {
 	@Override
 	public void render(float delta) {
 		super.render(delta);
+
+		setPaused(controller.paused);
+
+		if (controller.exitToMenu)
+			getGame().showMenuScreen();
+
+		if (controller.gameHasEnded)
+			getGame().showEndScreen(controller.getTimer(),
+					controller.getPlayerScore());
 
 		// debug the ui and draw fps
 		if (Config.DEBUG_UI) {

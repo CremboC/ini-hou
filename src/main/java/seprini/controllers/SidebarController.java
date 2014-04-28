@@ -206,11 +206,12 @@ public final class SidebarController extends ChangeListener {
 		String speedText;
 
 		// update timer
-		labels.get("timer").setText("" + Math.round(controller.getTimer()));
+		labels.get("timer").setText(
+				"" + (int) Math.round(controller.getTimer()));
 
 		// update score
 		labels.get("score").setText(
-				"" + Math.round(controller.getPlayerScore()));
+				"" + (int) Math.round(controller.getPlayerScore()));
 
 		// if there is no selected aircraft, return immediately to avoid errors
 		// otherwise set it to the local selectedAircraft variable and update
