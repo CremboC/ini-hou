@@ -5,18 +5,19 @@ package seprini.models;
 
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import seprini.ATC;
-import seprini.controllers.AircraftController;
+import seprini.controllers.components.FlightPlanComponent;
 import seprini.data.Art;
 import seprini.data.GameDifficulty;
+import seprini.data.GameMode;
 import seprini.models.types.AircraftType;
-import seprini.screens.GameScreen;
 
 /**
  * @author Leslie
@@ -47,11 +48,20 @@ public class AircraftTest {
 	public void setUp() throws Exception {
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
 				5);
-		ATC atc = new ATC();
-		GameScreen gameScreen = new GameScreen(atc, gameDifficulty);
-		Airspace airspace = new Airspace();
-		AircraftController aircraftController = new AircraftController(
-				gameDifficulty, airspace, gameScreen);
+
+		ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
+		waypoints.add(new Waypoint(200, 200, true));
+
+		ArrayList<Waypoint> exitpoints = new ArrayList<Waypoint>();
+		exitpoints.add(new Waypoint(500, 500, true));
+
+		ArrayList<Entrypoint> entrypoints = new ArrayList<Entrypoint>();
+		entrypoints.add(new Entrypoint(0, 0));
+
+		// helper for creating the flight plan of an aircraft
+		FlightPlanComponent flightplan = new FlightPlanComponent(waypoints,
+				exitpoints, entrypoints);
+
 		AircraftType aircraftType = new AircraftType().setMaxClimbRate(600)
 				.setMinSpeed(30f).setMaxSpeed(90f).setMaxTurningSpeed(48f)
 				.setRadius(15)
@@ -59,8 +69,7 @@ public class AircraftTest {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(60f);
 
-		aircraft = new Aircraft(aircraftType,
-				aircraftController.flightplan.generate(), 0, aircraftController);
+		aircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.SINGLE);
 
 	}
 

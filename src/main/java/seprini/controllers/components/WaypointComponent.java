@@ -120,7 +120,7 @@ public class WaypointComponent {
 	 * @param x
 	 * @param y
 	 */
-	public boolean createWaypoint(float x, float y, boolean visible) {
+	public void createWaypoint(float x, float y, boolean visible) {
 		Debug.msg("Creating waypoint at: " + x + ":" + y);
 
 		final Waypoint waypoint = new Waypoint(x, y, visible);
@@ -147,11 +147,10 @@ public class WaypointComponent {
 					controller.redirectAircraft(waypoint);
 					return true;
 				}
+
 				return true;
 			}
 		});
-
-		return true;
 	}
 
 	/**

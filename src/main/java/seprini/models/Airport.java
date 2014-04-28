@@ -1,12 +1,10 @@
 package seprini.models;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import seprini.data.Art;
 import seprini.data.Config;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -19,24 +17,25 @@ public class Airport extends Waypoint {
 	public Waypoint runwayLeft;
 	public Waypoint runwayRight;
 
-	private final boolean visible;
-	private Random rand = new Random();
 	// Maximum number of aircraft that can be in the airport at once. If
 	// exceeded, game ends.
 	private final static int MAX_AIRCRAFT_NUMBER = 5;
+
 	// Required altitude for an aircraft to land
 	public final static int MIN_ALTITUDE = 5000;
+
 	// Time remaining before an aircraft can take off.
 	public int timeTillFreeRunway = 5;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
-	private static final Color COLOR = new Color(1, 0, 0, 0);
+
 	public int[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway };
+
 	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
 	public boolean takeoffReady = true;
 
@@ -47,7 +46,6 @@ public class Airport extends Waypoint {
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
 		runwayRight = new Waypoint(x - 77, y - 140, false);
-		this.visible = visible;
 		this.texture = Art.getTextureRegion("airport");
 		this.size = Config.AIRPORT_SIZE;
 

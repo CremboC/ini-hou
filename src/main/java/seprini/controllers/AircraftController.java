@@ -20,7 +20,9 @@ import seprini.models.types.AircraftType;
 import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -239,8 +241,12 @@ public class AircraftController extends InputListener {
 	 */
 	protected Aircraft generateAircraft() {
 
-		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightplan.generate(), aircraftId++, this);
+		Aircraft newAircraft = new Aircraft(randomAircraftType(), flightplan,
+				aircraftId++, getGameMode());
+
+		newAircraft.setPlayer(players[Player.ONE]);
+		newAircraft.setScreenBoundaries(-10, -10, -190, 10);
+		newAircraft.setLineColor(Color.RED);
 
 		aircraftList.add(newAircraft);
 
@@ -493,6 +499,11 @@ public class AircraftController extends InputListener {
 
 			planeI.setBreaching(false);
 
+			if (planeI.hasEnteredFullAirport()) {
+				collisionHasOccured(planeI, planeI);
+				return;
+			}
+
 			// Collision Detection + Separation breach detection.
 			for (Aircraft planeJ : aircraftList) {
 
@@ -521,14 +532,49 @@ public class AircraftController extends InputListener {
 
 					separationRulesBreached(planeI, planeJ);
 				}
-			}// Remove inactive aircraft.
+			}
+
+			// Remove inactive aircraft.
 			if (!planeI.isActive()) {
 				removeAircraft(i);
 			}
+
 			// This should never happen but...
 			if (planeI.getAltitude() < 0) {
 				showGameOver();
 			}
+		}
+	}
+	
+	/**
+	 * Handles what happens once a waypoint is clicked or otherwise interacted
+	 * by the user
+	 * 
+	 * @author Crembo
+	 * 
+	 */
+	public class WaypointHandler extends ClickListener {
+
+		Waypoint waypoint;
+
+		public WaypointHandler(Waypoint waypoint) {
+			this.waypoint = waypoint;
+		}
+
+		/**
+		 * Call redirection method.
+		 */
+		@Override
+		public boolean touchDown(InputEvent event, float tX, float tY,
+				int pointer, int button) {
+
+			if (button == Buttons.LEFT
+					&& AircraftController.this.allowRedirection()) {
+				AircraftController.this.redirectAircraft(waypoint);
+				return true;
+			}
+
+			return true;
 		}
 	}
 }

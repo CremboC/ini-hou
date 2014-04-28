@@ -5,6 +5,7 @@ import java.util.Random;
 
 import seprini.data.Config;
 import seprini.models.Airport;
+import seprini.models.Entrypoint;
 import seprini.models.Waypoint;
 
 import com.badlogic.gdx.math.Vector2;
@@ -12,12 +13,25 @@ import com.badlogic.gdx.math.Vector2;
 public class FlightPlanComponent {
 
 	static Random rand = new Random();
-	private WaypointComponent waypoints;
 	private final static double airportGradient = 1.3;
 
-	public FlightPlanComponent(WaypointComponent waypoints) {
-		this.waypoints = waypoints;
+	private final ArrayList<Waypoint> permanentWaypoints, exitPointList;
+	private final ArrayList<Entrypoint> entryPointList;
 
+	public FlightPlanComponent(WaypointComponent waypoints) {
+
+		permanentWaypoints = waypoints.getPermanentList();
+		exitPointList = waypoints.getExitList();
+		entryPointList = waypoints.getEntryList();
+	}
+
+	public FlightPlanComponent(ArrayList<Waypoint> permanentWaypoints,
+			ArrayList<Waypoint> exitPointList,
+			ArrayList<Entrypoint> entryPointList) {
+
+		this.permanentWaypoints = permanentWaypoints;
+		this.exitPointList = exitPointList;
+		this.entryPointList = entryPointList;
 	}
 
 	/**
@@ -108,7 +122,7 @@ public class FlightPlanComponent {
 			// including the final waypoint so that the base case can be
 			// satisfied;
 			ArrayList<Waypoint> waypointSelectionList = new ArrayList<Waypoint>(
-					waypoints.getPermanentList());
+					permanentWaypoints);
 			waypointSelectionList.add(lastWaypoint);
 
 			// Call selectNextWaypoint.
@@ -189,8 +203,7 @@ public class FlightPlanComponent {
 	 * @return Waypoint
 	 */
 	private Waypoint setStartpoint() {
-		return waypoints.getEntryList().get(
-				rand.nextInt(waypoints.getEntryList().size()));
+		return entryPointList.get(rand.nextInt(entryPointList.size()));
 	}
 
 	/**
@@ -206,8 +219,8 @@ public class FlightPlanComponent {
 	 * @return Waypoint
 	 */
 	private Waypoint setEndpoint(Waypoint entryWaypoint, int minDistance) {
-		Waypoint chosenExitPoint = waypoints.getExitList().get(
-				rand.nextInt(waypoints.getExitList().size()));
+		Waypoint chosenExitPoint = exitPointList.get(rand.nextInt(exitPointList
+				.size()));
 		if (chosenExitPoint.getCoords().dst(entryWaypoint.getCoords()) < minDistance
 				|| chosenExitPoint.getCoords().x == entryWaypoint.getCoords().x
 				|| chosenExitPoint.getCoords().y == entryWaypoint.getCoords().y) {

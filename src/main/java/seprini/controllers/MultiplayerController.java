@@ -17,6 +17,7 @@ import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -206,6 +207,16 @@ public class MultiplayerController extends AircraftController {
 		if (aircraft == null)
 			return null;
 
+		if (aircraft.getEntryPoint().getCoords().x < Config.NO_MAN_LAND[0]) {
+			aircraft.setPlayer(players[Player.ONE]);
+			aircraft.setLineColor(Color.RED);
+		} else {
+			aircraft.setPlayer(players[Player.TWO]);
+			aircraft.setLineColor(Color.BLUE);
+		}
+
+		aircraft.setScreenBoundaries(-10, -10, 10, 10);
+
 		addToListByPlayer(aircraft);
 
 		return aircraft;
@@ -341,20 +352,25 @@ public class MultiplayerController extends AircraftController {
 					if (keycode == selectedAircraft[i].getPlayer()
 							.getReturnToPath())
 						selectedAircraft[i].returnToPath();
-
-					if (keycode == selectedAircraft[i].getPlayer().getTakeoff())
-						takeoff(waypoints.getAirportList().get(i).takeoff(0));
 				}
 
 			}
 
+			if (keycode == players[Player.ONE].getTakeoff()) {
+				takeoff(waypoints.getAirportList().get(Player.ONE).takeoff(0));
+			} else if (keycode == players[Player.TWO].getTakeoff()) {
+				takeoff(waypoints.getAirportList().get(Player.TWO).takeoff(0));
+			}
+
+			if (keycode == players[Player.ONE].getSwitchPlane()) {
+				switchAircraft(Player.ONE);
+			} else if (keycode == players[Player.TWO].getSwitchPlane()) {
+				switchAircraft(Player.TWO);
+			}
+
+
 		}
 
-		if (keycode == players[Player.ONE].getSwitchPlane()) {
-			switchAircraft(Player.ONE);
-		} else if (keycode == players[Player.TWO].getSwitchPlane()) {
-			switchAircraft(Player.TWO);
-		}
 
 		if (keycode == Keys.SPACE)
 			screen.setPaused(!screen.isPaused());
