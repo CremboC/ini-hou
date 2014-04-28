@@ -34,7 +34,7 @@ public class AircraftController extends InputListener {
 	protected final ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 
 	private float lastGenerated, lastWarned;
-	private boolean breachingSound, breachingIsPlaying;
+	private boolean breachingSound, breachingIsPlaying, allowRedirection;
 
 	protected Aircraft selectedAircraft;
 
@@ -48,17 +48,13 @@ public class AircraftController extends InputListener {
 	protected final Airspace airspace;
 	protected final ScreenBase screen;
 
-	private boolean allowRedirection;
-
-	private int aircraftId = 0;
+	private int aircraftId = 0, lastAircraftIndex;
 
 	// game timer
 	protected float timer = 0;
 	Animator collision = new Animator();
 	// game score
 	private ScoreComponent playerScore = new ScoreComponent();
-
-	protected int lastAircraftIndex;
 
 	protected final Player[] players = { new Player(Player.ONE),
 			new Player(Player.TWO) };
