@@ -486,7 +486,6 @@ public final class Aircraft extends Entity {
 		waypoints.clear();
 		waypoints = newFlightPlan;
 		this.isActive = false;
-		this.targetAltitudeIndex = rand.nextInt(3) + 3;
 		return;
 	}
 
@@ -635,8 +634,9 @@ public final class Aircraft extends Entity {
 		this.isActive = true;
 		this.landed = false;
 		this.altitude = 0;
-		this.desiredAltitude = Config.ALTITUDES[1];
-		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+		this.targetAltitudeIndex = rand.nextInt(3) + 3;
+		desiredAltitude = Config.ALTITUDES[targetAltitudeIndex];
+		this.setSpeed(800 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 	}
 
 	public boolean isTurningRight() {
