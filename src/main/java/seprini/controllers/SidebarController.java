@@ -262,7 +262,8 @@ public final class SidebarController extends ChangeListener {
 
 		for (int i = 0; i < airportList.get(0).boardingAircraft; i++) {
 			buttons.get("leftAircraft" + Integer.toString(i)).setText(
-					"Aircraft boarding: " + airportList.get(0).countdown[i]);
+					"Aircraft boarding: "
+							+ (int) airportList.get(0).countdown[i]);
 		}
 
 		for (int i = 0; i < airportList.get(0).aircraftList.size(); i++) {

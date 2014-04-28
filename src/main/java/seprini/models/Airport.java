@@ -29,8 +29,7 @@ public class Airport extends Waypoint {
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
-
-	public int[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
+	public float[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
@@ -49,6 +48,15 @@ public class Airport extends Waypoint {
 		this.texture = Art.getTextureRegion("airport");
 		this.size = Config.AIRPORT_SIZE;
 
+	}
+
+	public void act(float delta) {
+		for (int i = 0; i < boardingAircraft; i++) {
+			countdown[i] -= delta;
+			if (countdown[i] <= 0) {
+				countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+			}
+		}
 	}
 
 	public void setTimeLeft(int timeTillFreeRunway) {
@@ -81,9 +89,6 @@ public class Airport extends Waypoint {
 				aircraftList.add(aircraft);
 			}
 		}, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-
-		boardingCountdown(boardingAircraft);
-
 	}
 
 	/**
@@ -125,8 +130,6 @@ public class Airport extends Waypoint {
 			}
 		}, this.timeTillFreeRunway);
 
-		boardingCountdown(boardingAircraft);
-
 		return aircraft;
 	}
 
@@ -135,67 +138,67 @@ public class Airport extends Waypoint {
 
 	}
 
-	private void boardingCountdown(int boardingAircraft) {
-		switch (boardingAircraft) {
-		case 1:
-			Timer.schedule(new Task() {
-				@Override
-				public void run() {
-
-					countdown[0] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-							- timeElapsed[0];
-					timeElapsed[0] = timeElapsed[0] + 1;
-
-				}
-			}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-
-			break;
-		case 2:
-			Timer.schedule(new Task() {
-				@Override
-				public void run() {
-					countdown[1] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-							- timeElapsed[1];
-					timeElapsed[1] = timeElapsed[1] + 1;
-
-				}
-			}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-			break;
-		case 3:
-			Timer.schedule(new Task() {
-				@Override
-				public void run() {
-					countdown[2] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-							- timeElapsed[2];
-					timeElapsed[2] = timeElapsed[2] + 1;
-
-				}
-			}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-			break;
-		case 4:
-			Timer.schedule(new Task() {
-				@Override
-				public void run() {
-
-					countdown[3] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-							- timeElapsed[3];
-					timeElapsed[3] = timeElapsed[3] + 1;
-
-				}
-			}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-			break;
-		case 5:
-			Timer.schedule(new Task() {
-				@Override
-				public void run() {
-
-					countdown[4] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
-							- timeElapsed[4];
-					timeElapsed[4] = timeElapsed[4] + 1;
-
-				}
-			}, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
-			break;
-		}
-	}
+	// private void boardingCountdown(int boardingAircraft) {
+	// switch (boardingAircraft) {
+	// case 1:
+	// Timer.schedule(new Task() {
+	// @Override
+	// public void run() {
+	//
+	// countdown[0] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+	// - timeElapsed[0];
+	// timeElapsed[0] = timeElapsed[0] + 1;
+	//
+	// }
+	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+	//
+	// break;
+	// case 2:
+	// Timer.schedule(new Task() {
+	// @Override
+	// public void run() {
+	// countdown[1] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+	// - timeElapsed[1];
+	// timeElapsed[1] = timeElapsed[1] + 1;
+	//
+	// }
+	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+	// break;
+	// case 3:
+	// Timer.schedule(new Task() {
+	// @Override
+	// public void run() {
+	// countdown[2] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+	// - timeElapsed[2];
+	// timeElapsed[2] = timeElapsed[2] + 1;
+	//
+	// }
+	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+	// break;
+	// case 4:
+	// Timer.schedule(new Task() {
+	// @Override
+	// public void run() {
+	//
+	// countdown[3] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+	// - timeElapsed[3];
+	// timeElapsed[3] = timeElapsed[3] + 1;
+	//
+	// }
+	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+	// break;
+	// case 5:
+	// Timer.schedule(new Task() {
+	// @Override
+	// public void run() {
+	//
+	// countdown[4] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY
+	// - timeElapsed[4];
+	// timeElapsed[4] = timeElapsed[4] + 1;
+	//
+	// }
+	// }, 0, 1, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+	// break;
+	// }
+	// }
 }
