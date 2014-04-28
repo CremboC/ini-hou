@@ -84,7 +84,7 @@ public final class Aircraft extends Entity {
 
 		// set the coords to the entry point, remove it from the flight plan
 		entryPoint = waypoints.get(0);
-
+		waypoints.remove(0);
 		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
 
 		// set origin to center of the aircraft, makes rotation more intuitive
