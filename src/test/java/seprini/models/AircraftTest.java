@@ -3,7 +3,9 @@
  */
 package seprini.models;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,7 @@ import seprini.data.Art;
 import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.types.AircraftType;
+import seprini.models.types.Player;
 
 /**
  * @author Leslie
@@ -26,6 +29,12 @@ import seprini.models.types.AircraftType;
 public class AircraftTest {
 
 	Aircraft aircraft;
+
+	ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
+
+	ArrayList<Waypoint> exitpoints = new ArrayList<Waypoint>();
+
+	ArrayList<Entrypoint> entrypoints = new ArrayList<Entrypoint>();
 
 	/**
 	 * @throws java.lang.Exception
@@ -49,13 +58,10 @@ public class AircraftTest {
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
 				5);
 
-		ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
 		waypoints.add(new Waypoint(200, 200, true));
 
-		ArrayList<Waypoint> exitpoints = new ArrayList<Waypoint>();
 		exitpoints.add(new Waypoint(500, 500, true));
 
-		ArrayList<Entrypoint> entrypoints = new ArrayList<Entrypoint>();
 		entrypoints.add(new Entrypoint(0, 0));
 
 		// helper for creating the flight plan of an aircraft
@@ -110,7 +116,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetPoints() {
-		System.out.println(aircraft.getPoints());
+		assertEquals(aircraft.getPoints(), 20, 0);
 	}
 
 	/**
@@ -119,7 +125,11 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testInsertWaypoint() {
-		fail("Not yet implemented");
+		Waypoint testWaypoint = new Waypoint(0, 0, false);
+
+		aircraft.insertWaypoint(testWaypoint);
+
+		assertEquals(aircraft.waypoints.get(0), testWaypoint);
 	}
 
 	/**
@@ -127,7 +137,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetNextWaypoint() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getNextWaypoint(), entrypoints.get(0));
 	}
 
 	/**
@@ -135,7 +145,9 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIncreaseSpeed() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getSpeed(), 60f, 0);
+		aircraft.increaseSpeed();
+		assertEquals(aircraft.getSpeed(), 66f, 0);
 	}
 
 	/**
@@ -143,7 +155,9 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testDecreaseSpeed() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getSpeed(), 60f, 0);
+		aircraft.decreaseSpeed();
+		assertEquals(aircraft.getSpeed(), 54f, 0);
 	}
 
 	/**
@@ -151,7 +165,19 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testDecreaseAltitude() {
-		fail("Not yet implemented");
+		int previousAlt = aircraft.getAltitude();
+
+		if (previousAlt == 5000) {
+			aircraft.increaseAltitude();
+			aircraft.act(5f);
+			previousAlt = aircraft.getAltitude();
+		}
+
+		aircraft.decreaseAltitude();
+
+		aircraft.act(5f);
+
+		assertTrue(aircraft.getAltitude() < previousAlt);
 	}
 
 	/**
@@ -159,7 +185,19 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIncreaseAltitude() {
-		fail("Not yet implemented");
+		int previousAlt = aircraft.getAltitude();
+
+		if (previousAlt == 15000) {
+			aircraft.decreaseAltitude();
+			aircraft.act(5f);
+			previousAlt = aircraft.getAltitude();
+		}
+
+		aircraft.increaseAltitude();
+
+		aircraft.act(5f);
+
+		assertTrue(aircraft.getAltitude() > previousAlt);
 	}
 
 	/**
@@ -167,7 +205,10 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testTurnRight() {
-		fail("Not yet implemented");
+		aircraft.turnRight(true);
+
+		assertTrue(aircraft.isTurningRight());
+		assertFalse(aircraft.isTurningLeft());
 	}
 
 	/**
@@ -175,7 +216,10 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testTurnLeft() {
-		fail("Not yet implemented");
+		aircraft.turnLeft(true);
+
+		assertTrue(aircraft.isTurningLeft());
+		assertFalse(aircraft.isTurningRight());
 	}
 
 	/**
@@ -183,7 +227,10 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testReturnToPath() {
-		fail("Not yet implemented");
+		aircraft.returnToPath();
+
+		assertFalse(aircraft.isTurningRight());
+		assertFalse(aircraft.isTurningLeft());
 	}
 
 	/**
@@ -191,7 +238,8 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testSelected() {
-		fail("Not yet implemented");
+		assertTrue(aircraft.selected(true));
+		assertFalse(aircraft.selected(false));
 	}
 
 	/**
@@ -199,7 +247,6 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testCheckBreaching() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -207,7 +254,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetPlayer() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getPlayer(), null);
 	}
 
 	/**
@@ -215,7 +262,11 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testTakingOff() {
-		fail("Not yet implemented");
+		aircraft.takingOff();
+
+		assertEquals(aircraft.getAltitude(), 0);
+		assertEquals(aircraft.getSpeed(), 60f, 0);
+
 	}
 
 	/**
@@ -223,7 +274,13 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIsTurningRight() {
-		fail("Not yet implemented");
+		assertFalse(aircraft.isTurningRight());
+		assertFalse(aircraft.isTurningLeft());
+
+		aircraft.turnRight(true);
+
+		assertTrue(aircraft.isTurningRight());
+		assertFalse(aircraft.isTurningLeft());
 	}
 
 	/**
@@ -231,7 +288,13 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIsTurningLeft() {
-		fail("Not yet implemented");
+		assertFalse(aircraft.isTurningRight());
+		assertFalse(aircraft.isTurningLeft());
+
+		aircraft.turnLeft(true);
+
+		assertTrue(aircraft.isTurningLeft());
+		assertFalse(aircraft.isTurningRight());
 	}
 
 	/**
@@ -239,7 +302,9 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetFlightPlan() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getFlightPlan().get(0), entrypoints.get(0));
+		assertEquals(aircraft.getFlightPlan().get(1), waypoints.get(0));
+		assertEquals(aircraft.getFlightPlan().get(2), exitpoints.get(0));
 	}
 
 	/**
@@ -247,7 +312,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetRadius() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getRadius(), 15f, 0);
 	}
 
 	/**
@@ -255,7 +320,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetSeparationRadius() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getSeparationRadius(), 100f, 0);
 	}
 
 	/**
@@ -263,7 +328,15 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIsBreaching() {
-		fail("Not yet implemented");
+		assertFalse(aircraft.isBreaching());
+
+		aircraft.setBreaching(true);
+
+		assertTrue(aircraft.isBreaching());
+
+		aircraft.setBreaching(false);
+
+		assertFalse(aircraft.isBreaching());
 	}
 
 	/**
@@ -271,7 +344,15 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testSetBreaching() {
-		fail("Not yet implemented");
+		assertFalse(aircraft.isBreaching());
+
+		aircraft.setBreaching(true);
+
+		assertTrue(aircraft.isBreaching());
+
+		aircraft.setBreaching(false);
+
+		assertFalse(aircraft.isBreaching());
 	}
 
 	/**
@@ -279,7 +360,15 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetAltitude() {
-		fail("Not yet implemented");
+		if (aircraft.getAltitude() == 5000) {
+			assertEquals(aircraft.getAltitude(), 5000);
+		}
+		if (aircraft.getAltitude() == 10000) {
+			assertEquals(aircraft.getAltitude(), 10000);
+		}
+		if (aircraft.getAltitude() == 15000) {
+			assertEquals(aircraft.getAltitude(), 15000);
+		}
 	}
 
 	/**
@@ -287,7 +376,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetSpeed() {
-		fail("Not yet implemented");
+		assertEquals(aircraft.getSpeed(), 60f, 0);
 	}
 
 	/**
@@ -296,7 +385,10 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testSetPlayer() {
-		fail("Not yet implemented");
+		Player testPlayer = new Player(0);
+		aircraft.setPlayer(testPlayer);
+
+		assertEquals(aircraft.getPlayer(), testPlayer);
 	}
 
 	/**
@@ -304,7 +396,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testIsActive() {
-		fail("Not yet implemented");
+		assertTrue(aircraft.isActive());
 	}
 
 	/**
@@ -312,7 +404,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testEqualsObject() {
-		fail("Not yet implemented");
+
 	}
 
 	/**
@@ -320,7 +412,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+
 	}
 
 }
