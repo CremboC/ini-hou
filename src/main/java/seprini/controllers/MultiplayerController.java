@@ -368,9 +368,7 @@ public class MultiplayerController extends AircraftController {
 				switchAircraft(Player.TWO);
 			}
 
-
 		}
-
 
 		if (keycode == Keys.SPACE)
 			screen.setPaused(!screen.isPaused());
@@ -495,10 +493,10 @@ public class MultiplayerController extends AircraftController {
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
-				playerScore[Player.ONE].decrementScore(playerOneAircraft.size());
+				playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
 				playerScore[Player.TWO]
-						.decrementScore(playerTwoAircraft.size());
-				totalScore.decrementScore(playerOneAircraft.size()
+						.incrementScore(playerTwoAircraft.size());
+				totalScore.incrementScore(playerOneAircraft.size()
 						+ playerTwoAircraft.size());
 			}
 		}, 0, timeInterval);
