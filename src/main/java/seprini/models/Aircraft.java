@@ -64,15 +64,14 @@ public final class Aircraft extends Entity {
 		this.flightPlanner = flightPlanner;
 
 		rand = new Random();
-
+		// number of points the aircraft enters the airspace with.
 		points = Config.AIRCRAFT_POINTS;
 
-		// initialize entity
+		// initialize aircraft texture
 		texture = aircraftType.getTexture();
 
 		// initialize velocity and altitude
 		velocity = new Vector2(aircraftType.getInitialSpeed(), 0);
-
 		targetAltitudeIndex = rand.nextInt(3) + 3;
 		altitude = Config.ALTITUDES[targetAltitudeIndex];
 		desiredAltitude = altitude;
@@ -87,7 +86,6 @@ public final class Aircraft extends Entity {
 		entryPoint = waypoints.get(0);
 
 		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
-		waypoints.remove(0);
 
 		// set origin to center of the aircraft, makes rotation more intuitive
 		this.setOrigin(size.x / 2, size.y / 2);
@@ -462,7 +460,6 @@ public final class Aircraft extends Entity {
 		waypoints.clear();
 		waypoints = newFlightPlan;
 		isActive = false;
-		targetAltitudeIndex = rand.nextInt(3) + 3;
 	}
 
 	/**
@@ -610,8 +607,9 @@ public final class Aircraft extends Entity {
 		this.isActive = true;
 		this.landed = false;
 		this.altitude = 0;
-		this.desiredAltitude = Config.ALTITUDES[1];
-		this.setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);
+		this.targetAltitudeIndex = rand.nextInt(3) + 3;
+		desiredAltitude = Config.ALTITUDES[targetAltitudeIndex];
+		this.setSpeed(800 / Config.AIRCRAFT_SPEED_MULTIPLIER);
 	}
 
 	public boolean isTurningRight() {

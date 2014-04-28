@@ -36,7 +36,7 @@ public class AircraftController extends InputListener {
 	protected final ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 
 	private float lastGenerated, lastWarned;
-	private boolean breachingSound, breachingIsPlaying;
+	private boolean breachingSound, breachingIsPlaying, allowRedirection;
 
 	protected Aircraft selectedAircraft;
 
@@ -50,17 +50,13 @@ public class AircraftController extends InputListener {
 	protected final Airspace airspace;
 	protected final ScreenBase screen;
 
-	private boolean allowRedirection;
-
-	private int aircraftId = 0;
+	private int aircraftId = 0, lastAircraftIndex;
 
 	// game timer
 	protected float timer = 0;
 	Animator collision = new Animator();
 	// game score
 	private ScoreComponent playerScore = new ScoreComponent();
-
-	protected int lastAircraftIndex;
 
 	protected final Player[] players = { new Player(Player.ONE),
 			new Player(Player.TWO) };
@@ -543,38 +539,6 @@ public class AircraftController extends InputListener {
 			if (planeI.getAltitude() < 0) {
 				showGameOver();
 			}
-		}
-	}
-	
-	/**
-	 * Handles what happens once a waypoint is clicked or otherwise interacted
-	 * by the user
-	 * 
-	 * @author Crembo
-	 * 
-	 */
-	public class WaypointHandler extends ClickListener {
-
-		Waypoint waypoint;
-
-		public WaypointHandler(Waypoint waypoint) {
-			this.waypoint = waypoint;
-		}
-
-		/**
-		 * Call redirection method.
-		 */
-		@Override
-		public boolean touchDown(InputEvent event, float tX, float tY,
-				int pointer, int button) {
-
-			if (button == Buttons.LEFT
-					&& AircraftController.this.allowRedirection()) {
-				AircraftController.this.redirectAircraft(waypoint);
-				return true;
-			}
-
-			return true;
 		}
 	}
 }
