@@ -19,8 +19,6 @@ import seprini.screens.ScreenBase;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 public class MultiplayerController extends AircraftController {
 
@@ -35,11 +33,11 @@ public class MultiplayerController extends AircraftController {
 
 	private int[] lastIndex = { 0, 0 };
 
+	private float scoreTimer;
+
 	public MultiplayerController(GameDifficulty diff, Airspace airspace,
 			ScreenBase screen) {
 		super(diff, airspace, screen);
-
-		decrementScoresTimer(diff.getTimeBetweenScoreDecrement());
 	}
 
 	@Override
@@ -112,6 +110,13 @@ public class MultiplayerController extends AircraftController {
 				addToListByPlayer(aircraft);
 			}
 
+		}
+
+		scoreTimer += delta;
+
+		if (scoreTimer >= 5f) {
+			scoreTimer = 0f;
+			decrementScores();
 		}
 	}
 
@@ -489,17 +494,12 @@ public class MultiplayerController extends AircraftController {
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
 	}
 
-	private void decrementScoresTimer(int timeInterval) {
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
-				playerScore[Player.TWO]
-						.incrementScore(playerTwoAircraft.size());
-				totalScore.incrementScore(playerOneAircraft.size()
-						+ playerTwoAircraft.size());
-			}
-		}, 0, timeInterval);
+	private void decrementScores() {
+
+		playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
+		playerScore[Player.TWO].incrementScore(playerTwoAircraft.size());
+		totalScore.incrementScore(playerOneAircraft.size()
+				+ playerTwoAircraft.size());
 	}
 
 	public int getTotalScore() {
