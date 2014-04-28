@@ -284,7 +284,7 @@ public final class SidebarController extends ChangeListener {
 
 		for (int i = 0; i < airportList.get(1).boardingAircraft; i++) {
 			buttons.get("rightAircraft" + Integer.toString(i)).setText(
-					"Aircraft boarding: " + airportList.get(0).countdown[i]);
+					"Aircraft boarding: " + airportList.get(1).countdown[i]);
 		}
 
 		for (int i = 0; i < airportList.get(1).aircraftList.size(); i++) {
@@ -292,7 +292,7 @@ public final class SidebarController extends ChangeListener {
 					"Ready for take off");
 		}
 
-		if (airportList.get(0).countdown[5] == 5) {
+		if (airportList.get(1).countdown[5] == 5) {
 			labels.get("rightTakeoffTimer")
 					.setText(" Right Airport: 0 seconds");
 		} else {
