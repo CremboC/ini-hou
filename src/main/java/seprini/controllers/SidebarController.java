@@ -275,7 +275,7 @@ public final class SidebarController extends ChangeListener {
 			labels.get("leftTakeoffTimer").setText(" Left Airport: 0 seconds");
 		} else {
 			labels.get("leftTakeoffTimer").setText(
-					" Left Airport: " + airportList.get(0).countdown[5]
+					" Left Airport: " + (int) airportList.get(0).countdown[5]
 							+ " seconds");
 		}
 
@@ -285,7 +285,8 @@ public final class SidebarController extends ChangeListener {
 
 		for (int i = 0; i < airportList.get(1).boardingAircraft; i++) {
 			buttons.get("rightAircraft" + Integer.toString(i)).setText(
-					"Aircraft boarding: " + airportList.get(1).countdown[i]);
+					"Aircraft boarding: "
+							+ (int) airportList.get(1).countdown[i]);
 		}
 
 		for (int i = 0; i < airportList.get(1).aircraftList.size(); i++) {
@@ -298,7 +299,7 @@ public final class SidebarController extends ChangeListener {
 					.setText(" Right Airport: 0 seconds");
 		} else {
 			labels.get("rightTakeoffTimer").setText(
-					" Right Aiport: " + airportList.get(1).countdown[5]
+					" Right Aiport: " + (int) airportList.get(1).countdown[5]
 							+ " seconds");
 		}
 
@@ -414,6 +415,7 @@ public final class SidebarController extends ChangeListener {
 
 		if (actor.equals(buttons.get("pause"))) {
 			screen.setPaused(!screen.isPaused());
+
 		}
 
 	}

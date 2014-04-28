@@ -6,8 +6,6 @@ import seprini.data.Art;
 import seprini.data.Config;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 public class Airport extends Waypoint {
 
@@ -25,7 +23,7 @@ public class Airport extends Waypoint {
 	public final static int MIN_ALTITUDE = 5000;
 
 	// Time remaining before an aircraft can take off.
-	public int timeTillFreeRunway = 5;
+	public float timeTillFreeRunway = 5;
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
@@ -37,6 +35,8 @@ public class Airport extends Waypoint {
 
 	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
 	public boolean takeoffReady = true;
+
+	private Aircraft waitingAircraft;
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -55,8 +55,18 @@ public class Airport extends Waypoint {
 			countdown[i] -= delta;
 			if (countdown[i] <= 0) {
 				countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
+				aircraftList.add(waitingAircraft);
 			}
 		}
+
+		if (takeoffReady == false) {
+			countdown[5] -= delta;
+			if (countdown[5] <= 0) {
+				countdown[5] = timeTillFreeRunway;
+				takeoffReady = true;
+			}
+		}
+
 	}
 
 	public void setTimeLeft(int timeTillFreeRunway) {
@@ -83,12 +93,14 @@ public class Airport extends Waypoint {
 		}
 		boardingAircraft += 1;
 
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				aircraftList.add(aircraft);
-			}
-		}, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
+		waitingAircraft = aircraft;
+
+		// Timer.schedule(new Task() {
+		// @Override
+		// public void run() {
+		// aircraftList.add(aircraft);
+		// }
+		// }, Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY);
 	}
 
 	/**
@@ -107,28 +119,28 @@ public class Airport extends Waypoint {
 			countdown[j] = countdown[j + 1];
 		}
 
+		takeoffReady = false;
+
 		Aircraft aircraft = aircraftList.get(i);
 		aircraftList.remove(i);
 		boardingAircraft -= 1;
 
-		takeoffReady = false;
+		// Timer.schedule(new Task() {
+		// @Override
+		// public void run() {
+		// countdown[5] = timeTillFreeRunway - timeElapsed[5];
+		// timeElapsed[5] = timeElapsed[5] + 1;
 
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				countdown[5] = timeTillFreeRunway - timeElapsed[5];
-				timeElapsed[5] = timeElapsed[5] + 1;
+		// }
+		// }, 0, 1, this.timeTillFreeRunway);
 
-			}
-		}, 0, 1, this.timeTillFreeRunway);
-
-		Timer.schedule(new Task() {
-			@Override
-			public void run() {
-				timeElapsed[5] = 0;
-				takeoffReady = true;
-			}
-		}, this.timeTillFreeRunway);
+		// Timer.schedule(new Task() {
+		// @Override
+		// public void run() {
+		// timeElapsed[5] = 0;
+		// takeoffReady = true;
+		// }
+		// }, this.timeTillFreeRunway);
 
 		return aircraft;
 	}
