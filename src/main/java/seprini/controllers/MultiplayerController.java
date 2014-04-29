@@ -12,7 +12,7 @@ import seprini.data.GameMode;
 import seprini.models.Aircraft;
 import seprini.models.Airport;
 import seprini.models.Airspace;
-import seprini.models.Map;
+import seprini.models.GameMap;
 import seprini.models.types.Player;
 
 import com.badlogic.gdx.Input.Keys;
@@ -44,7 +44,7 @@ public class MultiplayerController extends AircraftController {
 		this.mode = GameMode.MULTI;
 
 		// add the background
-		airspace.addActor(new Map(mode));
+		airspace.addActor(new GameMap(mode));
 
 		// manages the waypoints
 		this.waypoints = new WaypointComponent(this, mode);

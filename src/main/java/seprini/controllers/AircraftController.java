@@ -1,6 +1,8 @@
 package seprini.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import seprini.controllers.components.FlightPlanComponent;
@@ -14,7 +16,7 @@ import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.Aircraft;
 import seprini.models.Airspace;
-import seprini.models.Map;
+import seprini.models.GameMap;
 import seprini.models.Waypoint;
 import seprini.models.types.AircraftType;
 import seprini.models.types.Player;
@@ -93,7 +95,7 @@ public class AircraftController extends InputListener {
 		this.mode = GameMode.SINGLE;
 
 		// add the background
-		airspace.addActor(new Map(GameMode.SINGLE));
+		airspace.addActor(new GameMap(GameMode.SINGLE));
 
 		// manages the waypoints
 		this.waypoints = new WaypointComponent(this, GameMode.SINGLE);
@@ -233,8 +235,26 @@ public class AircraftController extends InputListener {
 	 */
 	protected Aircraft generateAircraft() {
 
+		// to prevent more than x aircraft in the airspace having the same
+		// destination waypoint; the intent is to prevent the frequent traffic
+		// jams occuring at airports
+		Map<Waypoint, Integer> currentFinalWaypoints = new HashMap<Waypoint, Integer>();
+		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
+		for (Aircraft aircraft : aircraftList) {
+			if (currentFinalWaypoints.containsKey(aircraft.getLastWaypoint())) {
+				currentFinalWaypoints
+						.put(aircraft.getLastWaypoint(), currentFinalWaypoints
+								.get(aircraft.getLastWaypoint()) + 1);
+				if (currentFinalWaypoints.get(aircraft.getLastWaypoint()) > Config.MAX_NUMBER_OF_AIRCRAFT_TO_EXIT_WAYPOINT) {
+					excludedWaypoints.add(aircraft.getLastWaypoint());
+				}
+			} else {
+				currentFinalWaypoints.put(aircraft.getLastWaypoint(), 0);
+			}
+		}
+
 		Aircraft newAircraft = new Aircraft(randomAircraftType(), flightplan,
-				aircraftId++, getGameMode());
+				excludedWaypoints, aircraftId++, getGameMode());
 
 		newAircraft.setPlayer(players[Player.ONE]);
 		newAircraft.setScreenBoundaries(-10, -10, -190, 10);

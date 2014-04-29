@@ -43,6 +43,10 @@ public final class Config {
 	// lump sum given to player who didn't crash, when a crash occurs.
 	public static final int MULTIPLAYER_CRASH_BONUS = 200;
 	public static final int MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS = 300;
+	// defines the maximum number of aircraft that can have the same exit
+	// waypoint. To ensure that no crash occurs, this number should be at least
+	// as large as the maximum number of aircraft/no. of Exit waypoints.
+	public static final int MAX_NUMBER_OF_AIRCRAFT_TO_EXIT_WAYPOINT = 3;
 
 	// other
 	public final static String COPYRIGHT_NOTICE = "Copyright Disclaimer Under Section 107 of the Copyright Act 1976, allowance is made "
