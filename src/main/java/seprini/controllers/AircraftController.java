@@ -189,9 +189,22 @@ public class AircraftController extends InputListener {
 	protected boolean collisionHasOccured(Aircraft a, Aircraft b)
 			throws InterruptedException {
 
-		if (lives[Player.ONE] - 1 > 0) {
-			lives[Player.ONE]--;
+		// if both aircraft have collided it (probably) means they both have
+		// collided last few frames, so do nothing.
+		if (a.hasCollided() && b.hasCollided()) {
 			return false;
+		}
+
+		// if both are yet to collide, the regular procedure
+		if (!a.hasCollided() || !b.hasCollided()) {
+
+			a.setHasCollided(true);
+			b.setHasCollided(true);
+
+			if (lives[Player.ONE] - 1 > 0) {
+				lives[Player.ONE]--;
+				return false;
+			}
 		}
 
 		// stop the ambience sound and play the crash sound
@@ -255,6 +268,7 @@ public class AircraftController extends InputListener {
 		// jams occuring at airports
 		Map<Waypoint, Integer> currentFinalWaypoints = new HashMap<Waypoint, Integer>();
 		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
+
 		for (Aircraft aircraft : aircraftList) {
 			if (currentFinalWaypoints.containsKey(aircraft.getLastWaypoint())) {
 				currentFinalWaypoints

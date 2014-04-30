@@ -126,14 +126,28 @@ public class MultiplayerController extends AircraftController {
 			return false;
 		}
 
-		if (withinPlayerZone(a, Player.ONE) && lives[Player.ONE] - 1 != 0) {
-			lives[Player.ONE]--;
-			return false;
-		} else if (withinPlayerZone(a, Player.TWO)
-				&& lives[Player.TWO] - 1 != 0) {
-			lives[Player.TWO]--;
+		// if both aircraft have collided it (probably) means they both have
+		// collided last few frames, so do nothing.
+		if (a.hasCollided() && b.hasCollided()) {
 			return false;
 		}
+
+		// if both are yet to collide, the regular procedure
+		if (!a.hasCollided() || !b.hasCollided()) {
+
+			a.setHasCollided(true);
+			b.setHasCollided(true);
+
+			if (withinPlayerZone(a, Player.ONE) && lives[Player.ONE] - 1 != 0) {
+				lives[Player.ONE]--;
+				return false;
+			} else if (withinPlayerZone(a, Player.TWO)
+					&& lives[Player.TWO] - 1 != 0) {
+				lives[Player.TWO]--;
+				return false;
+			}
+		}
+
 
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();

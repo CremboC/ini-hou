@@ -34,7 +34,7 @@ public final class Aircraft extends Entity {
 	private Vector2 velocity = new Vector2(0, 0);
 	private boolean breaching, isActive, ignorePath, selected, landed,
 			turnRight, turnLeft, rotateRight, breachingLastFrame,
-			enteredFullAirport;
+			enteredFullAirport, hasCollided;
 
 	// used for smooth turning - remember last angle to check if it's increasing
 	// or not.
@@ -110,6 +110,7 @@ public final class Aircraft extends Entity {
 
 		landed = false;
 		isActive = true;
+		hasCollided = false;
 
 		Debug.msg("||\nGenerated aircraft id " + id + "\nEntry point: "
 				+ getCoords() + "\nRelative angle to first waypoint: "
@@ -696,6 +697,14 @@ public final class Aircraft extends Entity {
 
 	public boolean hasEnteredFullAirport() {
 		return enteredFullAirport;
+	}
+
+	public boolean hasCollided() {
+		return hasCollided;
+	}
+
+	public void setHasCollided(boolean collided) {
+		this.hasCollided = collided;
 	}
 
 	/**
