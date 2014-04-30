@@ -52,6 +52,7 @@ public class AircraftController extends InputListener {
 	// game timer
 	protected float timer = 0;
 	Animator collision = new Animator();
+
 	// game score
 	private ScoreComponent playerScore = new ScoreComponent();
 
@@ -59,6 +60,12 @@ public class AircraftController extends InputListener {
 			new Player(Player.TWO) };
 
 	protected GameMode mode;
+
+	// public variables to keep track of game state
+	public boolean paused, exitToMenu, gameHasEnded;
+
+	// lives until the game ends
+	protected int[] lives = {2, 2};
 
 	/**
 	 * 
@@ -177,8 +184,14 @@ public class AircraftController extends InputListener {
 	 *            second aircraft that collided
 	 * @throws InterruptedException
 	 */
-	public void collisionHasOccured(Aircraft a, Aircraft b)
+	protected boolean collisionHasOccured(Aircraft a, Aircraft b)
 			throws InterruptedException {
+
+		if (lives[Player.ONE] - 1 > 0) {
+			lives[Player.ONE]--;
+			return false;
+		}
+
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();
 		Art.getSound("crash").play(0.6f);
@@ -190,6 +203,8 @@ public class AircraftController extends InputListener {
 		Thread.sleep(3000);
 
 		showGameOver();
+
+		return true;
 	}
 
 	/**
@@ -339,8 +354,6 @@ public class AircraftController extends InputListener {
 		getSelectedAircraft().insertWaypoint(waypoint);
 	}
 
-	public boolean paused, exitToMenu, gameHasEnded;
-
 	@Override
 	/**
 	 * Enables Keyboard Shortcuts as alternatives to the on screen buttons
@@ -459,8 +472,8 @@ public class AircraftController extends InputListener {
 			planeI.setBreaching(false);
 
 			if (planeI.hasEnteredFullAirport()) {
-				collisionHasOccured(planeI, planeI);
-				return;
+				if (collisionHasOccured(planeI, planeI))
+					return;
 			}
 
 			// Collision Detection + Separation breach detection.
@@ -476,8 +489,8 @@ public class AircraftController extends InputListener {
 						// Check difference in horizontal 2d plane.
 						&& planeI.getCoords().dst(planeJ.getCoords()) < planeI
 								.getRadius() + planeJ.getRadius()) {
-					collisionHasOccured(planeI, planeJ);
-					return;
+					if (collisionHasOccured(planeI, planeJ))
+						return;
 				}
 
 				// Checking for breach of separation.
@@ -539,5 +552,9 @@ public class AircraftController extends InputListener {
 
 	public Player[] getPlayers() {
 		return players;
+	}
+
+	public int[] getPlayerLives() {
+		return lives;
 	}
 }

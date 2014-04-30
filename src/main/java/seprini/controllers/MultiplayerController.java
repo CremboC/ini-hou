@@ -119,11 +119,20 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	@Override
-	public void collisionHasOccured(Aircraft a, Aircraft b)
+	protected boolean collisionHasOccured(Aircraft a, Aircraft b)
 			throws InterruptedException {
 		// prevents game from ending if collision occurs in no-mans land.
 		if (withinNoMansLand(a) && withinNoMansLand(b)) {
-			return;
+			return false;
+		}
+
+		if (withinPlayerZone(a, Player.ONE) && lives[Player.ONE] - 1 != 0) {
+			lives[Player.ONE]--;
+			return false;
+		} else if (withinPlayerZone(a, Player.TWO)
+				&& lives[Player.TWO] - 1 != 0) {
+			lives[Player.TWO]--;
+			return false;
 		}
 
 		// stop the ambience sound and play the crash sound
@@ -137,6 +146,8 @@ public class MultiplayerController extends AircraftController {
 		Thread.sleep(3000);
 
 		showGameOverMulti(a);
+
+		return true;
 	}
 
 	/**
