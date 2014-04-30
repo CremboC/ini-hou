@@ -75,7 +75,9 @@ public class AircraftTest {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(60f);
 
-		aircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.SINGLE);
+		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
+		aircraft = new Aircraft(aircraftType, flightplan, excludedWaypoints, 0,
+				GameMode.SINGLE);
 
 	}
 
@@ -137,7 +139,7 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetNextWaypoint() {
-		assertEquals(aircraft.getNextWaypoint(), entrypoints.get(0));
+		assertEquals(aircraft.getNextWaypoint(), waypoints.get(0));
 	}
 
 	/**
@@ -302,9 +304,8 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetFlightPlan() {
-		assertEquals(aircraft.getFlightPlan().get(0), entrypoints.get(0));
-		assertEquals(aircraft.getFlightPlan().get(1), waypoints.get(0));
-		assertEquals(aircraft.getFlightPlan().get(2), exitpoints.get(0));
+		assertEquals(aircraft.getFlightPlan().get(0), waypoints.get(0));
+		assertEquals(aircraft.getFlightPlan().get(1), exitpoints.get(0));
 	}
 
 	/**
