@@ -40,13 +40,13 @@ public class FlightPlanComponent {
 	 * 
 	 * @return completeFlightPlan
 	 */
-	public ArrayList<Waypoint> generate() {
+	public ArrayList<Waypoint> generate(ArrayList<Waypoint> excludedWaypoints) {
 
 		// Initialisation of parameters required by flightPlanWaypointGenerator.
 		ArrayList<Waypoint> flightPlan = new ArrayList<Waypoint>();
 		Waypoint entryWaypoint = setStartpoint();
 		Waypoint lastWaypoint = setEndpoint(entryWaypoint,
-				Config.MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS);
+				Config.MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS, excludedWaypoints);
 		// entryWaypoint immediately added to aircrafts flightPlan.
 		flightPlan.add(entryWaypoint);
 		return flightPlanWaypointGenerator(flightPlan, entryWaypoint,
@@ -215,8 +215,38 @@ public class FlightPlanComponent {
 	 *            - where this aircraft entered the game
 	 * @param minDistance
 	 *            - desired minimum distance between aircraft's entryWaypoint
-	 *            and its exitWaypoint.
+	 *            and its exitWaypoint. If this is too low, then this may cause
+	 *            a crash as the function will not be able to find a suitable
+	 *            exit point.
+	 * @param excludedWaypoints
+	 *            - A list of waypoints that must not be chosen as the exit
+	 *            point. This may cause a crash as the function will not be able
+	 *            to find a suitable exit point if there are no exit points not
+	 *            on this list!
 	 * @return Waypoint
+	 */
+	private Waypoint setEndpoint(Waypoint entryWaypoint, int minDistance,
+			ArrayList<Waypoint> excludedWaypoints) {
+		Waypoint chosenExitPoint = exitPointList.get(rand.nextInt(exitPointList
+				.size()));
+		if (chosenExitPoint.getCoords().dst(entryWaypoint.getCoords()) < minDistance
+				|| chosenExitPoint.getCoords().x == entryWaypoint.getCoords().x
+				|| chosenExitPoint.getCoords().y == entryWaypoint.getCoords().y
+				|| excludedWaypoints.contains(chosenExitPoint)) {
+			chosenExitPoint = setEndpoint(entryWaypoint, minDistance,
+					excludedWaypoints);
+		}
+
+		return chosenExitPoint;
+	}
+
+	/**
+	 * Same as above function, except does not take an argument of excluded
+	 * waypoints.
+	 * 
+	 * @param entryWaypoint
+	 * @param minDistance
+	 * @return
 	 */
 	private Waypoint setEndpoint(Waypoint entryWaypoint, int minDistance) {
 		Waypoint chosenExitPoint = exitPointList.get(rand.nextInt(exitPointList
@@ -229,5 +259,4 @@ public class FlightPlanComponent {
 
 		return chosenExitPoint;
 	}
-
 }
