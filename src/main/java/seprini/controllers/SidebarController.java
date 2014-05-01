@@ -7,6 +7,7 @@ import seprini.data.Art;
 import seprini.data.Config;
 import seprini.models.Aircraft;
 import seprini.models.Airport;
+import seprini.models.types.Player;
 import seprini.screens.ScreenBase;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -142,7 +143,13 @@ public final class SidebarController extends ChangeListener {
 		createButton("down", "Down (S)", aircraftControls, false).width(100)
 				.colspan(2);
 
+
 		aircraftControls.row();
+
+		createLabel("", " Lives:", bottomButtons).width(100);
+		createLabel("lives", "..", bottomButtons).width(100);
+
+		bottomButtons.row();
 
 		createLabel("", " Time:", bottomButtons).width(100);
 		createLabel("timer", "..", bottomButtons).width(100);
@@ -212,6 +219,10 @@ public final class SidebarController extends ChangeListener {
 		// update score
 		labels.get("score").setText(
 				"" + (int) Math.round(controller.getPlayerScore()));
+
+		// update lives
+		labels.get("lives").setText(
+				"" + controller.getPlayerLives()[Player.ONE]);
 
 		// if there is no selected aircraft, return immediately to avoid errors
 		// otherwise set it to the local selectedAircraft variable and update

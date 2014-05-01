@@ -19,8 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class MultiplayerScreen extends AbstractScreen {
 
 	// position of the score texts for both player
-	private final static Vector2[] SCORE_POS = { new Vector2(230, 715),
-			new Vector2(1010, 715) };
+	private final static Vector2[] SCORE_POS = {new Vector2(200, 715),
+			new Vector2(960, 715)};
+
+	// position of the score texts for both player
+	private final static Vector2[] LIVES_POS = {
+			new Vector2(SCORE_POS[0].x + 70, SCORE_POS[0].y),
+			new Vector2(SCORE_POS[1].x + 70, SCORE_POS[1].y)};
 
 	private final MultiplayerController controller;
 	private final PauseOverlay overlay;
@@ -93,10 +98,11 @@ public class MultiplayerScreen extends AbstractScreen {
 
 		getStage().getSpriteBatch().begin();
 		
+		// draw NML
 		drawNoMansLand();
 
+		// draw the player scores
 		int[] scores = controller.getPlayerScores();
-
 		for (int i = 0; i < scores.length; i++) {
 
 			drawString("Score: " + scores[i], SCORE_POS[i].x,
@@ -104,10 +110,15 @@ public class MultiplayerScreen extends AbstractScreen {
 					true, 1);
 		}
 
+		// draw player lives
+		int[] lives = controller.getPlayerLives();
+		for (int i = 0; i < lives.length; i++) {
+			drawString("Lives: " + lives[i], LIVES_POS[i].x, LIVES_POS[i].y,
+					Color.BLUE, getStage().getSpriteBatch(), true, 1);
+		}
+
+		// draw the total score
 		int totalScore = controller.getTotalScore();
-
-		// temporary drawing of no man's land
-
 		drawString("Total Score: " + totalScore, 600, 715,
 				Color.BLUE, getStage().getSpriteBatch(), true, 1);
 
