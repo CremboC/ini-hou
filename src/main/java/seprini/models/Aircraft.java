@@ -43,7 +43,7 @@ public final class Aircraft extends Entity {
 	// Set and store aircrafts points.
 	private int points;
 	private Random rand;
-	private Player player;
+	private Player player, previousPlayer;
 
 	// player colours
 	private Color lineColor;
@@ -670,6 +670,24 @@ public final class Aircraft extends Entity {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public void setPreviousPlayer(Player player) {
+		this.previousPlayer = player;
+	}
+
+	public void changePreviousPlayer(Player[] players) {
+		if (player.getNumber() == players[Player.ONE].getNumber()) {
+			previousPlayer = players[Player.ONE];
+		}
+
+		if (player.getNumber() == players[Player.TWO].getNumber()) {
+			previousPlayer = players[Player.TWO];
+		}
+	}
+
+	public Player getPreviousPlayer() {
+		return previousPlayer;
 	}
 
 	public void setScreenBoundaries(int leftX, int leftY, int rightX, int rightY) {

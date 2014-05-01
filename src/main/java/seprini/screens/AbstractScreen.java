@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class AbstractScreen implements ScreenBase {
@@ -149,7 +150,7 @@ public class AbstractScreen implements ScreenBase {
 		if (!isNative)
 			batch.end();
 	}
-	
+
 	/**
 	 * Convenience method to draw circles
 	 * 
@@ -170,7 +171,7 @@ public class AbstractScreen implements ScreenBase {
 
 		batch.begin();
 	}
-	
+
 	/**
 	 * Convenience method to draw lines
 	 * 
@@ -185,10 +186,42 @@ public class AbstractScreen implements ScreenBase {
 			float yTo, SpriteBatch batch) {
 		if (batch != null)
 			batch.end();
-		
+
 		shapeRenderer.begin(ShapeType.Line);
 		shapeRenderer.setColor(color);
 		shapeRenderer.line(x, y, xTo, yTo);
+		shapeRenderer.end();
+
+		if (batch != null)
+			batch.begin();
+	}
+
+	/**
+	 * Draws a dotted line between to points (x1,y1) and (x2,y2).
+	 * 
+	 * @param shapeRenderer
+	 * @param dotDist
+	 *            (distance between dots)
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 */
+	protected static void drawDottedLine(int dotDist, float x1, float y1,
+			float x2, float y2, SpriteBatch batch) {
+
+		if (batch != null)
+			batch.end();
+
+		shapeRenderer.begin(ShapeType.Point);
+
+		Vector2 vec2 = new Vector2(x2, y2).sub(new Vector2(x1, y1));
+		float length = vec2.len();
+		for (int i = 0; i < length; i += dotDist) {
+			vec2.clamp(length - i, length - i);
+			shapeRenderer.point(x1 + vec2.x, y1 + vec2.y, 0);
+		}
+
 		shapeRenderer.end();
 
 		if (batch != null)

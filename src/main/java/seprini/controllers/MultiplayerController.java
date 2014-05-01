@@ -21,16 +21,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class MultiplayerController extends AircraftController {
 
-	private final Aircraft[] selectedAircraft = { null, null };
+	private final Aircraft[] selectedAircraft = {null, null};
 	// One is the left player
-	private final ScoreComponent[] playerScore = { new ScoreComponent(),
-			new ScoreComponent() };
+	private final ScoreComponent[] playerScore = {new ScoreComponent(),
+			new ScoreComponent()};
 	private final ScoreComponent totalScore = new ScoreComponent();
 
 	private ArrayList<Aircraft> playerOneAircraft = new ArrayList<Aircraft>();
 	private ArrayList<Aircraft> playerTwoAircraft = new ArrayList<Aircraft>();
 
-	private int[] lastIndex = { 0, 0 };
+	private int[] lastIndex = {0, 0};
 
 	private float scoreTimer;
 
@@ -75,36 +75,28 @@ public class MultiplayerController extends AircraftController {
 		// go over the aircraft list, deselect aircraft in no man's land, hand
 		// over aircraft if they passed the midline
 		for (Aircraft aircraft : aircraftList) {
-			if (withinNoMansLand(aircraft)) {
-
-				Aircraft selected = selectedAircraft[aircraft.getPlayer()
-						.getNumber()];
-
-				if (selected != null && selected.equals(aircraft)) {
-					// if the aircraft is in no man's land and it is selected,
-					// deselect it
-					deselectAircraft(aircraft);
-				}
-
-				aircraft.returnToPath();
-			}
 
 			// Handing over control from player one to player two
 			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
-				// remove it from player two's list
-				removeFromListByPlayer(aircraft);
-
 				aircraft.setPlayer(getPlayers()[Player.ONE]);
+			} else {
+				aircraft.setPlayer(getPlayers()[Player.TWO]);
+			}
+
+			if (aircraft.getPreviousPlayer().getNumber() != aircraft
+					.getPlayer().getNumber()) {
+
+				// remove it from player two's list
+				removeFromListByPlayer(aircraft, aircraft.getPreviousPlayer()
+						.getNumber());
+
+				deselectAircraft(aircraft, aircraft.getPreviousPlayer()
+						.getNumber());
+
+				aircraft.changePreviousPlayer(getPlayers());
+				aircraft.returnToPath();
 
 				// add it to player one's list
-				addToListByPlayer(aircraft);
-			} else {
-				// remove it from player one's list and
-				removeFromListByPlayer(aircraft);
-
-				aircraft.setPlayer(getPlayers()[Player.TWO]);
-
-				// add it to player two's list
 				addToListByPlayer(aircraft);
 			}
 
@@ -148,7 +140,6 @@ public class MultiplayerController extends AircraftController {
 			}
 		}
 
-
 		// stop the ambience sound and play the crash sound
 		Art.getSound("ambience").stop();
 		Art.getSound("crash").play(0.6f);
@@ -172,25 +163,14 @@ public class MultiplayerController extends AircraftController {
 	@Override
 	protected void selectAircraft(Aircraft aircraft) {
 
-		// Cannot select in the No Man's Land
-		if (withinNoMansLand(aircraft) || aircraft == null) {
-			return;
-		}
-
-		// make sure old selected aircraft is no longer selected in its own
-		// object
 		Aircraft playerAircraft = selectedAircraft[aircraft.getPlayer()
 				.getNumber()];
 
+		// deselect old aircraft so it knows it's no longer selected and stop it
+		// from turning if they user holds the turning key and chooses another
+		// aircraft
 		if (playerAircraft != null) {
-
-			playerAircraft.selected(false);
-
-			// make sure the old aircraft stops turning after selecting a new
-			// aircraft; prevents it from going in circles
-			playerAircraft.turnLeft(false);
-			playerAircraft.turnRight(false);
-
+			deselectAircraft(playerAircraft);
 		}
 
 		// set new selected aircraft in this controller
@@ -207,25 +187,37 @@ public class MultiplayerController extends AircraftController {
 	 * @param aircraft
 	 */
 	protected void deselectAircraft(Aircraft aircraft) {
+		deselectAircraft(aircraft, aircraft.getPlayer().getNumber());
+	}
 
-		Aircraft selected = selectedAircraft[aircraft.getPlayer().getNumber()];
+	/**
+	 * 
+	 * @param aircraft
+	 * @param playerNumber
+	 */
+	protected void deselectAircraft(Aircraft aircraft, int playerNumber) {
+		Aircraft selected = selectedAircraft[playerNumber];
 
-		// only select if passed aircraft is the same as the currently selected
-		// aircraft, otherwise it doesn't allow selecting an aircraft while
-		// there is one in no man's land (another check is done in
-		// Aircraft.java)
-		if (!selected.equals(aircraft)) {
+		if (selected == null)
 			return;
-		}
 
-		if (selected != null) {
-			selected.selected(false);
+		// only deselect if passed aircraft is the same as the currently
+		// selected aircraft, otherwise it doesn't allow selecting an aircraft
+		// while there is one in no man's land
+		if (!selected.equals(aircraft))
+			return;
 
-			selected.turnLeft(false);
-			selected.turnRight(false);
+		// make sure old selected aircraft is no longer selected in its own
+		// object
+		selected.selected(false);
 
-			selectedAircraft[aircraft.getPlayer().getNumber()] = null;
-		}
+		// stop it from spinning if the aircraft is deselected while a
+		// turning key is pressed
+		selected.turnLeft(false);
+		selected.turnRight(false);
+
+		// actually deselect the aircraft in this object
+		selectedAircraft[playerNumber] = null;
 	}
 
 	@Override
@@ -237,9 +229,11 @@ public class MultiplayerController extends AircraftController {
 
 		if (aircraft.getEntryPoint().getCoords().x < Config.NO_MAN_LAND[0]) {
 			aircraft.setPlayer(players[Player.ONE]);
+			aircraft.setPreviousPlayer(players[Player.ONE]);
 			aircraft.setLineColor(Color.RED);
 		} else {
 			aircraft.setPlayer(players[Player.TWO]);
+			aircraft.setPreviousPlayer(players[Player.TWO]);
 			aircraft.setLineColor(Color.BLUE);
 		}
 
@@ -268,14 +262,14 @@ public class MultiplayerController extends AircraftController {
 		ArrayList<Aircraft> aircraftList;
 
 		switch (playerNumber) {
-		default:
-		case Player.ONE:
-			aircraftList = playerOneAircraft;
-			break;
+			default :
+			case Player.ONE :
+				aircraftList = playerOneAircraft;
+				break;
 
-		case Player.TWO:
-			aircraftList = playerTwoAircraft;
-			break;
+			case Player.TWO :
+				aircraftList = playerTwoAircraft;
+				break;
 
 		}
 
@@ -312,17 +306,26 @@ public class MultiplayerController extends AircraftController {
 	 * @param aircraft
 	 */
 	private void addToListByPlayer(Aircraft aircraft) {
-		switch (aircraft.getPlayer().getNumber()) {
-		case Player.ONE:
-			playerOneAircraft.add(aircraft);
-			break;
+		addToListByPlayer(aircraft, aircraft.getPlayer().getNumber());
+	}
 
-		case Player.TWO:
-			playerTwoAircraft.add(aircraft);
-			break;
+	/**
+	 * 
+	 * @param aircraft
+	 * @param playerNumber
+	 */
+	private void addToListByPlayer(Aircraft aircraft, int playerNumber) {
+		switch (playerNumber) {
+			case Player.ONE :
+				playerOneAircraft.add(aircraft);
+				break;
 
-		default:
-			break;
+			case Player.TWO :
+				playerTwoAircraft.add(aircraft);
+				break;
+
+			default :
+				break;
 		}
 	}
 
@@ -331,17 +334,26 @@ public class MultiplayerController extends AircraftController {
 	 * @param aircraft
 	 */
 	private void removeFromListByPlayer(Aircraft aircraft) {
-		switch (aircraft.getPlayer().getNumber()) {
-		case Player.ONE:
-			playerOneAircraft.remove(aircraft);
-			break;
+		removeFromListByPlayer(aircraft, aircraft.getPlayer().getNumber());
+	}
 
-		case Player.TWO:
-			playerTwoAircraft.remove(aircraft);
-			break;
+	/**
+	 * 
+	 * @param aircraft
+	 * @param playerNumber
+	 */
+	private void removeFromListByPlayer(Aircraft aircraft, int playerNumber) {
+		switch (playerNumber) {
+			case Player.ONE :
+				playerOneAircraft.remove(aircraft);
+				break;
 
-		default:
-			break;
+			case Player.TWO :
+				playerTwoAircraft.remove(aircraft);
+				break;
+
+			default :
+				break;
 		}
 	}
 
@@ -458,7 +470,7 @@ public class MultiplayerController extends AircraftController {
 		playerScore[Player.TWO].incrementScore((aircraft.getPoints() / 2)
 				* difficulty.getScoreMultiplier());
 
-		totalScore.incrementScore((aircraft.getPoints())
+		totalScore.incrementScore(aircraft.getPoints()
 				* difficulty.getScoreMultiplier());
 	}
 
@@ -476,16 +488,12 @@ public class MultiplayerController extends AircraftController {
 		if (playerNumber == Player.ONE) {
 			if (aircraft.getCoords().x < Config.NO_MAN_LAND[1]) {
 				return true;
-			} else {
-				return false;
 			}
 		}
 
 		if (playerNumber == Player.TWO) {
 			if (aircraft.getCoords().x > Config.NO_MAN_LAND[1]) {
 				return true;
-			} else {
-				return false;
 			}
 		}
 

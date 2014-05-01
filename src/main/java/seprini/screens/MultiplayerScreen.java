@@ -92,12 +92,14 @@ public class MultiplayerScreen extends AbstractScreen {
 					controller.getTotalScore());
 
 		getStage().getSpriteBatch().begin();
+		
+		drawNoMansLand();
 
 		int[] scores = controller.getPlayerScores();
 
 		for (int i = 0; i < scores.length; i++) {
 
-			AbstractScreen.drawString("Score: " + scores[i], SCORE_POS[i].x,
+			drawString("Score: " + scores[i], SCORE_POS[i].x,
 					SCORE_POS[i].y, Color.BLUE, getStage().getSpriteBatch(),
 					true, 1);
 		}
@@ -106,18 +108,10 @@ public class MultiplayerScreen extends AbstractScreen {
 
 		// temporary drawing of no man's land
 
-		AbstractScreen.drawString("Total Score: " + totalScore, 600, 715,
+		drawString("Total Score: " + totalScore, 600, 715,
 				Color.BLUE, getStage().getSpriteBatch(), true, 1);
 
-		AbstractScreen.drawLine(Color.RED, 540, 0, 540, 720, getStage()
-				.getSpriteBatch());
-
-		AbstractScreen.drawLine(Color.RED, 740, 0, 740, 720, getStage()
-				.getSpriteBatch());
-
 		getStage().getSpriteBatch().end();
-
-		// end temporary drawing of no man's land
 
 		if (Config.DEBUG_UI) {
 			Table.drawDebug(getStage());
@@ -133,5 +127,18 @@ public class MultiplayerScreen extends AbstractScreen {
 		} else {
 			overlay.remove();
 		}
+	}
+
+	private void drawNoMansLand() {
+		// draw left edge of of NML
+		drawLine(Color.RED, 540, 0, 540, 720, getStage()
+				.getSpriteBatch());
+
+		// draw midline
+		drawDottedLine(3, 640, 0, 640, 720, getStage().getSpriteBatch());
+
+		// draw right edge of NML
+		drawLine(Color.RED, 740, 0, 740, 720, getStage()
+				.getSpriteBatch());
 	}
 }
