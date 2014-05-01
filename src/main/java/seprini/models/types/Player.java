@@ -24,44 +24,44 @@ public class Player {
 
 	public Player(int playerNumber) {
 		switch (playerNumber) {
-		default:
-		case ONE:
-			LEFT = Keys.A;
-			RIGHT = Keys.D;
+			default :
+			case ONE :
+				LEFT = Keys.A;
+				RIGHT = Keys.D;
 
-			ALT_INC = Keys.W;
-			ALT_DEC = Keys.S;
+				ALT_INC = Keys.W;
+				ALT_DEC = Keys.S;
 
-			SPEED_INC = Keys.E;
-			SPEED_DEC = Keys.Q;
+				SPEED_INC = Keys.E;
+				SPEED_DEC = Keys.Q;
 
-			RETURN_TO_PATH = Keys.R;
-			SWITCH_PLANE = Keys.TAB;
+				RETURN_TO_PATH = Keys.R;
+				SWITCH_PLANE = Keys.TAB;
 
-			TAKEOFF = Keys.F;
+				TAKEOFF = Keys.F;
 
-			number = Player.ONE;
-			circleColor = Color.RED;
-			break;
+				number = Player.ONE;
+				circleColor = Color.RED;
+				break;
 
-		case TWO:
-			LEFT = Keys.LEFT;
-			RIGHT = Keys.RIGHT;
+			case TWO :
+				LEFT = Keys.NUMPAD_4;
+				RIGHT = Keys.NUMPAD_6;
 
-			ALT_INC = Keys.UP;
-			ALT_DEC = Keys.DOWN;
+				ALT_INC = Keys.NUMPAD_8;
+				ALT_DEC = Keys.NUMPAD_2;
 
-			SPEED_INC = Keys.NUMPAD_8;
-			SPEED_DEC = Keys.NUMPAD_2;
+				SPEED_INC = Keys.NUMPAD_7;
+				SPEED_DEC = Keys.NUMPAD_9;
 
-			RETURN_TO_PATH = Keys.NUMPAD_0;
-			SWITCH_PLANE = Keys.NUMPAD_5;
+				RETURN_TO_PATH = Keys.NUMPAD_0;
+				SWITCH_PLANE = Keys.NUMPAD_5;
 
-			TAKEOFF = Keys.NUMPAD_1;
+				TAKEOFF = Keys.NUMPAD_1;
 
-			number = Player.TWO;
-			circleColor = Color.BLUE;
-			break;
+				number = Player.TWO;
+				circleColor = Color.BLUE;
+				break;
 		}
 	}
 
