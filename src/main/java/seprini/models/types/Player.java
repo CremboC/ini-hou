@@ -55,7 +55,7 @@ public class Player {
 				SPEED_DEC = Keys.NUMPAD_9;
 
 				RETURN_TO_PATH = Keys.NUMPAD_0;
-				SWITCH_PLANE = Keys.NUMPAD_5;
+				SWITCH_PLANE = Keys.ENTER;
 
 				TAKEOFF = Keys.NUMPAD_1;
 
