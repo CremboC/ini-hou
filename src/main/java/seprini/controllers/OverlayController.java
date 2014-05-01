@@ -91,7 +91,7 @@ public class OverlayController extends ChangeListener {
 			for (int j = 0; j < airport.boardingAircraft; j++) {
 				buttons.get("aircraft" + i + "_" + j).setVisible(true);
 				buttons.get("aircraft" + i + "_" + j).setText(
-						"B: " + airport.countdown[j]);
+						"B: " + (int) airport.countdown[j]);
 			}
 
 			for (int j = 0; j < airport.aircraftList.size(); j++) {
@@ -104,13 +104,13 @@ public class OverlayController extends ChangeListener {
 			labels.get("leftTakeoffCountdown").setText(" 0");
 		} else {
 			labels.get("leftTakeoffCountdown").setText(
-					" " + airportList.get(0).countdown[5]);
+					" " + (int) airportList.get(0).countdown[5]);
 		}
 		if (airportList.get(1).countdown[5] == 5) {
 			labels.get("rightTakeoffCountdown").setText(" 0");
 		} else {
 			labels.get("rightTakeoffCountdown").setText(
-					" " + airportList.get(1).countdown[5]);
+					" " + (int) airportList.get(1).countdown[5]);
 		}
 
 	}
