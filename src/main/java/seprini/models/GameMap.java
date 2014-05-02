@@ -18,19 +18,19 @@ public final class GameMap extends Entity {
 		switch (mode) {
 			case SINGLE :
 
-				this.texture = Art.getTextureRegion(SP_AIRSPACE);
-				this.coords = new Vector2(Config.AIRSPACE_SIZE.x / 2,
+				texture = Art.getTextureRegion(SP_AIRSPACE);
+				coords = new Vector2(Config.AIRSPACE_SIZE.x / 2,
 						Config.AIRSPACE_SIZE.y / 2);
-				this.size = Config.AIRSPACE_SIZE;
+				size = Config.AIRSPACE_SIZE;
 
 				break;
 
 			case MULTI :
 
-				this.texture = Art.getTextureRegion(MP_AIRSPACE);
-				this.coords = new Vector2(Config.MULTIPLAYER_SIZE.x / 2,
+				texture = Art.getTextureRegion(MP_AIRSPACE);
+				coords = new Vector2(Config.MULTIPLAYER_SIZE.x / 2,
 						Config.MULTIPLAYER_SIZE.y / 2);
-				this.size = Config.MULTIPLAYER_SIZE;
+				size = Config.MULTIPLAYER_SIZE;
 
 				break;
 
