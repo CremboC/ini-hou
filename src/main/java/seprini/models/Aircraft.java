@@ -64,6 +64,7 @@ public final class Aircraft extends Entity {
 		this.flightPlanner = flightPlan;
 
 		rand = new Random();
+
 		// number of points the aircraft enters the airspace with.
 		points = Config.AIRCRAFT_POINTS;
 
@@ -88,19 +89,19 @@ public final class Aircraft extends Entity {
 		coords = new Vector2(entryPoint.getX(), entryPoint.getY());
 
 		// set origin to center of the aircraft, makes rotation more intuitive
-		this.setOrigin(size.x / 2, size.y / 2);
+		setOrigin(size.x / 2, size.y / 2);
 
-		this.setScale(SCALE);
+		setScale(SCALE);
 
 		// set bounds so the aircraft is clickable
-		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,
-				getWidth(), getHeight());
+		setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2, getWidth(),
+				getHeight());
 
 		// set rotation & velocity angle to fit next waypoint
 		float relativeAngle = relativeAngleToWaypoint();
 
-		this.velocity.setAngle(relativeAngle);
-		this.setRotation(relativeAngle);
+		velocity.setAngle(relativeAngle);
+		setRotation(relativeAngle);
 
 		// switch rotation sides so it uses the 'smaller' angle
 		rotateRight = false;
@@ -235,7 +236,7 @@ public final class Aircraft extends Entity {
 	 * next waypoint
 	 * 
 	 * @param waypoint
-	 * @return angle IN DEGREES, NOT RADIANS
+	 * @return angle <b>IN DEGREES, NOT RADIANS</b>
 	 */
 	private float angleCoordsToWaypoint(Vector2 waypoint) {
 		Vector2 way = new Vector2(waypoint.x - getCoords().x, waypoint.y
@@ -443,8 +444,8 @@ public final class Aircraft extends Entity {
 			}
 
 			// for when aircraft is at any other waypoint.
-
 			waypoints.remove(0);
+
 			if (waypoints.isEmpty()) {
 				this.isActive = false;
 			}
@@ -596,6 +597,10 @@ public final class Aircraft extends Entity {
 		return player;
 	}
 
+	/**
+	 * Set all the appropriate variables to make sure the aircraf twhcih is
+	 * taking off functions properly
+	 */
 	public void takingOff() {
 		this.isActive = true;
 		this.landed = false;
