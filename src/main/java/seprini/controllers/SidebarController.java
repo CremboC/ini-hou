@@ -271,10 +271,11 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("leftAircraft" + Integer.toString(i)).setText(" ");
 		}
 
-		for (int i = airportList.get(0).aircraftList.size(); i < airportList
-				.get(0).waitingAircraft.size()
-				+ airportList.get(0).aircraftList.size(); i++) {
-			buttons.get("leftAircraft" + Integer.toString(i)).setText(
+		for (int i = 0; i < airportList.get(0).waitingAircraft.size(); i++) {
+			buttons.get(
+					"leftAircraft"
+							+ Integer.toString(airportList.get(0).aircraftList
+									.size() + i)).setText(
 					"Aircraft boarding: "
 							+ (int) airportList.get(0).countdown[i]);
 		}
@@ -296,10 +297,11 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("rightAircraft" + Integer.toString(i)).setText(" ");
 		}
 
-		for (int i = airportList.get(1).aircraftList.size(); i < airportList
-				.get(1).waitingAircraft.size()
-				+ airportList.get(1).aircraftList.size(); i++) {
-			buttons.get("rightAircraft" + Integer.toString(i)).setText(
+		for (int i = 0; i < airportList.get(1).waitingAircraft.size(); i++) {
+			buttons.get(
+					"rightAircraft"
+							+ Integer.toString(airportList.get(1).aircraftList
+									.size() + i)).setText(
 					"Aircraft boarding: "
 							+ (int) airportList.get(1).countdown[i]);
 		}
