@@ -450,6 +450,10 @@ public class AircraftController extends InputListener {
 
 		}
 
+		if (keycode == Keys.P) {
+			showGameOver();
+		}
+
 		return false;
 	}
 
@@ -485,7 +489,6 @@ public class AircraftController extends InputListener {
 
 	protected void showGameOver() {
 		gameHasEnded = true;
-		// screen.getGame().showEndScreen(timer, this.playerScore.getScore());
 	}
 
 	protected void incrementScore(Aircraft aircraft) {

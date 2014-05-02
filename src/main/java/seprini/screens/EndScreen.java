@@ -36,7 +36,12 @@ public class EndScreen extends AbstractScreen {
 
 		root.setKeyboardFocus(ui);
 
-		Art.getSkin().getFont("default").setScale(1f);
+		Label scoreLabel = new Label("You have earned: " + Math.round(score)
+				+ " Dolla", Art.getSkin(), "bigTextStyle");
+
+		ui.add(scoreLabel).center();
+
+		ui.row();
 
 		Label text = new Label(
 				"You have failed.\n"

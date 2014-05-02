@@ -72,12 +72,12 @@ public class Art {
 		textures.put("mp-airspace", split(combined, 0, 740, 1280, 720));
 		textures.put("sidebar", split(combined, 1080, 0, 200, 720));
 		textures.put("aircraft", split(combined, 1281, 0, 72, 63));
-		textures.put("waypoint", split(combined, 0, 720, 20, 20));
-		textures.put("menuAircraft", split(combined, 1280, 64, 727, 249));
+		textures.put("waypoint", split(combined, 0, 721, 20, 19));
+		textures.put("menuAircraft", split(combined, 1281, 64, 727, 249));
 		textures.put("libgdx", split(combined, 1353, 0, 53, 10));
 		textures.put("entrypoint", split(combined, 20, 720, 20, 20));
 		textures.put("exitpoint", split(combined, 40, 720, 20, 20));
-		textures.put("airport", split(combined, 1280, 312, 164, 124));
+		textures.put("airport", split(combined, 1281, 312, 164, 124));
 		textures.put("pauseOverlay", split(combined, 1280, 436, 720, 1280));
 
 		Texture explosion = loadTexture("data/explosion.png");
@@ -113,6 +113,14 @@ public class Art {
 
 		skin.add("default", font);
 
+		// big font
+		BitmapFont bigFont = new BitmapFont();
+		bigFont.setScale(2f);
+		// bigFont.getRegion().getTexture()
+		// .setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		skin.add("big-font", bigFont);
+
 		// Configure a TextButtonStyle and name it "default". Skin resources are
 		// stored by type, so this doesn't overwrite the font.
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -139,6 +147,11 @@ public class Art {
 		textStyle.font = skin.getFont("default");
 		textStyle.fontColor = Color.BLACK;
 		skin.add("textStyle", textStyle);
+
+		textStyle = new LabelStyle();
+		textStyle.font = skin.getFont("big-font");
+		textStyle.fontColor = Color.BLACK;
+		skin.add("bigTextStyle", textStyle);
 
 	}
 
