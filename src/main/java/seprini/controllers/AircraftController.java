@@ -147,6 +147,7 @@ public class AircraftController extends InputListener {
 				|| timer - lastGenerated > difficulty
 						.getTimeBetweenGenerations() + rand.nextInt(100)) {
 			final Aircraft generatedAircraft = generateAircraft();
+
 			// makes the aircraft clickable. Once clicked it is set as the
 			// selected aircraft.
 			generatedAircraft.addListener(new ClickListener() {
@@ -176,15 +177,6 @@ public class AircraftController extends InputListener {
 
 	}
 
-	/**
-	 * Handles what happens after a collision
-	 * 
-	 * @param a
-	 *            first aircraft that collided
-	 * @param b
-	 *            second aircraft that collided
-	 * @throws InterruptedException
-	 */
 	/**
 	 * Handles what happens after a collision
 	 * 
@@ -226,7 +218,7 @@ public class AircraftController extends InputListener {
 
 		Thread.sleep(3000);
 
-		showGameOver();
+		gameHasEnded = true;
 
 		return true;
 	}
@@ -462,6 +454,14 @@ public class AircraftController extends InputListener {
 		return false;
 	}
 
+	/**
+	 * Makes an aircraft takeoff from the airport. <br>
+	 * Basically adds to airspace, adds the click listener and starts the
+	 * (graphical) takeoff procedure
+	 * 
+	 * @param aircraft
+	 *            aircraft that will takeoff
+	 */
 	public void takeoff(final Aircraft aircraft) {
 
 		if (aircraft == null)
@@ -492,10 +492,6 @@ public class AircraftController extends InputListener {
 		aircraft.takingOff();
 	}
 
-	protected void showGameOver() {
-		gameHasEnded = true;
-	}
-
 	protected void incrementScore(Aircraft aircraft) {
 		playerScore.incrementScore(aircraft.getPoints()
 				* difficulty.getScoreMultiplier());
@@ -513,6 +509,8 @@ public class AircraftController extends InputListener {
 
 			planeI.setBreaching(false);
 
+			// upon entering a full airport the game should end (unless player
+			// still has 2 lives)
 			if (planeI.hasEnteredFullAirport()) {
 				if (collisionHasOccured(planeI, planeI))
 					return;
@@ -555,7 +553,7 @@ public class AircraftController extends InputListener {
 
 			// This should never happen but...
 			if (planeI.getAltitude() < 0) {
-				showGameOver();
+				gameHasEnded = true;
 			}
 		}
 	}
