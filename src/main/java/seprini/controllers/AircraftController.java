@@ -450,10 +450,6 @@ public class AircraftController extends InputListener {
 
 		}
 
-		if (keycode == Keys.P) {
-			showGameOver();
-		}
-
 		return false;
 	}
 
