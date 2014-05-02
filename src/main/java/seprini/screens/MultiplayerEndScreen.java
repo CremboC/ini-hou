@@ -47,13 +47,13 @@ public class MultiplayerEndScreen extends AbstractScreen {
 		Label text;
 		if (scoreOne != scoreTwo) {
 			if (scoreOne > scoreTwo) {
-				winningPlayer = "player One";
-				losingPlayer = "player Two";
+				winningPlayer = "Player One";
+				losingPlayer = "Player Two";
 				winningScore = scoreOne;
 				losingScore = scoreTwo;
 			} else {
-				losingPlayer = "player One";
-				winningPlayer = "player Two";
+				losingPlayer = "Player One";
+				winningPlayer = "Player Two";
 				winningScore = scoreTwo;
 				losingScore = scoreOne;
 			}
