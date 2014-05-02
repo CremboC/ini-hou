@@ -30,6 +30,12 @@ public class OverlayController extends ChangeListener {
 
 	private ArrayList<Airport> airportList = new ArrayList<Airport>();
 
+	/**
+	 * Handler for the overlay present in the multiplayer controller
+	 * 
+	 * @param controller
+	 * @param ui
+	 */
 	public OverlayController(MultiplayerController controller, Table ui) {
 		this.controller = controller;
 		this.ui = ui;
@@ -42,6 +48,7 @@ public class OverlayController extends ChangeListener {
 	 */
 	public void init() {
 
+		// initialise buttons for all aircraft that can land
 		for (int i = 0; i < landedAircraft.length; i++) {
 			landedAircraft[i].setFillParent(true);
 
@@ -57,6 +64,7 @@ public class OverlayController extends ChangeListener {
 			}
 		}
 
+		// set the position of the wrapper for the landed aircraft buttons
 		landedAircraft[LEFT].center().left();
 		landedAircraft[LEFT].toFront();
 
@@ -70,7 +78,6 @@ public class OverlayController extends ChangeListener {
 		createLabel("rightTakeoffCountdown", " 0", landedAircraft[1]).width(40);
 
 		airportList = controller.waypoints.getAirportList();
-
 	}
 
 	/**
@@ -80,6 +87,7 @@ public class OverlayController extends ChangeListener {
 	 */
 	public void update(float delta) {
 
+		// updates timers and text for all of the landed aircraft
 		for (int i = 0; i < controller.waypoints.getAirportList().size(); i++) {
 			Airport airport = controller.waypoints.getAirportList().get(i);
 
@@ -100,12 +108,15 @@ public class OverlayController extends ChangeListener {
 			}
 		}
 
+		// update timer for the left takeoff countdown
 		if (airportList.get(0).countdown[5] == 5) {
 			labels.get("leftTakeoffCountdown").setText(" 0");
 		} else {
 			labels.get("leftTakeoffCountdown").setText(
 					" " + (int) airportList.get(0).countdown[5]);
 		}
+
+		// update timer for the right takeoff countdown
 		if (airportList.get(1).countdown[5] == 5) {
 			labels.get("rightTakeoffCountdown").setText(" 0");
 		} else {
