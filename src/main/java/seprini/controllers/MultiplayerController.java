@@ -21,15 +21,23 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class MultiplayerController extends AircraftController {
 
-	private final Aircraft[] selectedAircraft = {null, null};
 	// One is the left player
+	private final Aircraft[] selectedAircraft = {null, null};
+
 	private final ScoreComponent[] playerScore = {new ScoreComponent(),
 			new ScoreComponent()};
+
 	private final ScoreComponent totalScore = new ScoreComponent();
 
-	private ArrayList<Aircraft> playerOneAircraft = new ArrayList<Aircraft>();
-	private ArrayList<Aircraft> playerTwoAircraft = new ArrayList<Aircraft>();
+	// lists to store the aircraft which belong to each player. This makes it
+	// easier to switch between the aircraft of a player
+	private ArrayList<Aircraft> playerOneAircraft = new ArrayList<Aircraft>(),
+			playerTwoAircraft = new ArrayList<Aircraft>();
 
+	/**
+	 * remember the last index of which aircraft was selected, used with
+	 * {@link #switchAircraft(int)}
+	 */
 	private int[] lastIndex = {0, 0};
 
 	private float scoreTimer;
@@ -40,7 +48,6 @@ public class MultiplayerController extends AircraftController {
 
 	@Override
 	protected void init() {
-
 		this.mode = GameMode.MULTI;
 
 		// add the background
@@ -72,8 +79,8 @@ public class MultiplayerController extends AircraftController {
 				airport.countdown[5] = airport.timeTillFreeRunway;
 		}
 
-		// go over the aircraft list, deselect aircraft in no man's land, hand
-		// over aircraft if they passed the midline
+		// go over the aircraft list, hand over aircraft if they passed the
+		// midline
 		for (Aircraft aircraft : aircraftList) {
 
 			// Handing over control from player one to player two
@@ -83,20 +90,25 @@ public class MultiplayerController extends AircraftController {
 				aircraft.setPlayer(getPlayers()[Player.TWO]);
 			}
 
+			// if the player has changed, do the handover procedure
 			if (aircraft.getPreviousPlayer().getNumber() != aircraft
 					.getPlayer().getNumber()) {
 
-				// remove it from player two's list
+				// remove it from the previous player's list
 				removeFromListByPlayer(aircraft, aircraft.getPreviousPlayer()
 						.getNumber());
 
+				// deselect it for the previous player
 				deselectAircraft(aircraft, aircraft.getPreviousPlayer()
 						.getNumber());
 
+				// change the previous player so the handover procedure is not
+				// done again
 				aircraft.changePreviousPlayer(getPlayers());
+
 				aircraft.returnToPath();
 
-				// add it to player one's list
+				// add it to the new player list
 				addToListByPlayer(aircraft);
 			}
 

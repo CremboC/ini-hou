@@ -77,7 +77,6 @@ public class AircraftController extends InputListener {
 	 * @param airspace
 	 *            the group where all of the waypoints and aircraft will be
 	 *            added
-	 * @param screen
 	 */
 	public AircraftController(GameDifficulty diff, Airspace airspace) {
 		this.difficulty = diff;
@@ -184,6 +183,16 @@ public class AircraftController extends InputListener {
 	 *            first aircraft that collided
 	 * @param b
 	 *            second aircraft that collided
+	 * @throws InterruptedException
+	 */
+	/**
+	 * Handles what happens after a collision
+	 * 
+	 * @param a
+	 * @param b
+	 * @return <b>true</b> if player is out of lives, need to end the game <br>
+	 *         <b>false</b> player still has lives, do nothing beside reduce
+	 *         count of lives
 	 * @throws InterruptedException
 	 */
 	protected boolean collisionHasOccured(Aircraft a, Aircraft b)
@@ -302,7 +311,7 @@ public class AircraftController extends InputListener {
 	 * Removes aircraft from aircraftList at index i.
 	 * 
 	 * @param i
-	 * @return returns the removed aircraft
+	 * @return the removed aircraft
 	 */
 	protected Aircraft removeAircraft(int i) {
 		Aircraft aircraft = aircraftList.get(i);
