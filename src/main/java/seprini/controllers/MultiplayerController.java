@@ -36,7 +36,7 @@ public class MultiplayerController extends AircraftController {
 
 	/**
 	 * remember the last index of which aircraft was selected, used with
-	 * {@link #switchAircraft(int)}
+	 * {@link #switchAircraft(int playerNumber)}
 	 */
 	private int[] lastIndex = {0, 0};
 
@@ -266,11 +266,16 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	/**
-	 * Switch the currently selected aircraft
+	 * Switch the currently selected aircraft.
+	 * 
+	 * In this case this switches depending on the user and uses an 'lastIndex'
+	 * to remember which aircraft was last selected.
 	 */
 	@Override
 	protected void switchAircraft(int playerNumber) {
 
+		// depending on which player is switching, select the appropriate
+		// aircraftList
 		ArrayList<Aircraft> aircraftList;
 
 		switch (playerNumber) {
@@ -285,6 +290,7 @@ public class MultiplayerController extends AircraftController {
 
 		}
 
+		// empty - do nothing
 		if (aircraftList.size() == 0) {
 			return;
 		}
@@ -292,28 +298,38 @@ public class MultiplayerController extends AircraftController {
 		int index;
 		Aircraft aircraft = null;
 
+		// after incrementing the last index by one -
 		index = lastIndex[playerNumber] + 1;
 
+		// try to get the aircraft
+		// with that index from the list
 		try {
 			aircraft = aircraftList.get(index);
 		} catch (IndexOutOfBoundsException e) {
+			// if that index doesn't exist, it means we reached the end of the
+			// list, reset the index to 0
 			index = 0;
 			lastIndex[playerNumber] = 0;
 		}
 
+		// since we may reset the index to 0, we need to get the aircraft again
+		// from the list (as the 'try/catch' failed)
 		if (index == 0) {
 			aircraft = aircraftList.get(index);
 		}
 
 		if (aircraft == null)
-			System.out.println("wtf");
+			throw new IllegalStateException("Something went very wrong");
 
+		// lastly select the aircraft and update the lastIndex so we know which
+		// aircraft was selected previously.
 		selectAircraft(aircraft);
-
 		lastIndex[playerNumber] = index;
 	}
 
 	/**
+	 * General case of adding an aircraft to a specific player's list - uses the
+	 * aircraft's player number
 	 * 
 	 * @param aircraft
 	 */
@@ -322,9 +338,12 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	/**
+	 * Add an aircraft to a specific aircraft list
 	 * 
 	 * @param aircraft
+	 *            aircraft to add
 	 * @param playerNumber
+	 *            to which player's list to add
 	 */
 	private void addToListByPlayer(Aircraft aircraft, int playerNumber) {
 		switch (playerNumber) {
@@ -342,6 +361,8 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	/**
+	 * General case of removing an aircraft to a specific player's list - uses
+	 * the aircraft's player number
 	 * 
 	 * @param aircraft
 	 */
@@ -350,9 +371,12 @@ public class MultiplayerController extends AircraftController {
 	}
 
 	/**
+	 * Remove an aircraft to a specific aircraft list
 	 * 
 	 * @param aircraft
+	 *            aircraft to add
 	 * @param playerNumber
+	 *            to which player's list to add
 	 */
 	private void removeFromListByPlayer(Aircraft aircraft, int playerNumber) {
 		switch (playerNumber) {
@@ -462,7 +486,6 @@ public class MultiplayerController extends AircraftController {
 	 * @param aircraft
 	 */
 	protected void showGameOverMulti(Aircraft aircraft) {
-		// TODO overload gameover constructor to show scores
 
 		if (withinPlayerZone(aircraft, Player.ONE)) {
 			playerScore[Player.TWO].incrementScore(difficulty
@@ -494,7 +517,8 @@ public class MultiplayerController extends AircraftController {
 	 *            the aircraft which needs checking
 	 * @param playerNumber
 	 *            pass Player.ONE or Player.TWO
-	 * @return
+	 * @return <b>true</b> if aircraft is in provided player zone <br>
+	 *         <b>false</b> otherwise
 	 */
 	public static boolean withinPlayerZone(Aircraft aircraft, int playerNumber) {
 		if (playerNumber == Player.ONE) {
@@ -516,7 +540,8 @@ public class MultiplayerController extends AircraftController {
 	 * Check whether an aircraft is in no man's land
 	 * 
 	 * @param aircraft
-	 * @return
+	 * @return <b>true</b> if the aircraft is in NML <br>
+	 *         <b>false</b> otherwise
 	 */
 	public static boolean withinNoMansLand(Aircraft aircraft) {
 		return aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
