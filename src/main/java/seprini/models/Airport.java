@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import seprini.data.Art;
 import seprini.data.Config;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 public class Airport extends Waypoint {
 
 	// Waypoints designating the end of the runway
@@ -24,29 +22,34 @@ public class Airport extends Waypoint {
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
-	public float[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
+	public float[] countdown = {Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
-			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway };
+			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway};
 
-	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
+	public int[] timeElapsed = {0, 0, 0, 0, 0, 0};
 	public boolean takeoffReady = true;
 
 	public ArrayList<Aircraft> waitingAircraft = new ArrayList<Aircraft>();
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
+
 		// Position takeoff and landing waypoints relative to airport position.
 		runwayStart = new Waypoint(x - 77, y - 60, false);
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
 		runwayRight = new Waypoint(x - 77, y - 140, false);
-		this.texture = Art.getTextureRegion("airport");
-		this.size = Config.AIRPORT_SIZE;
+
+		texture = Art.getTextureRegion("airport");
+		size = Config.AIRPORT_SIZE;
 
 	}
 
+	/**
+	 * Updates all of the timers for the airport
+	 */
 	public void act(float delta) {
 		for (int i = 0; i < waitingAircraft.size(); i++) {
 			countdown[i] -= delta;
@@ -73,7 +76,6 @@ public class Airport extends Waypoint {
 		if (timeTillFreeRunway <= 0) {
 			this.timeTillFreeRunway = 0;
 		}
-
 	}
 
 	/**
@@ -118,9 +120,5 @@ public class Airport extends Waypoint {
 		boardingAircraft -= 1;
 
 		return aircraft;
-	}
-
-	@Override
-	protected void additionalDraw(SpriteBatch batch) {
 	}
 }
