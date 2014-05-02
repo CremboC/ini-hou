@@ -8,7 +8,6 @@ import java.util.Random;
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.controllers.components.ScoreComponent;
 import seprini.controllers.components.WaypointComponent;
-import seprini.data.Animator;
 import seprini.data.Art;
 import seprini.data.Config;
 import seprini.data.Debug;
@@ -53,7 +52,6 @@ public class AircraftController extends InputListener {
 
 	// game timer
 	protected float timer = 0;
-	Animator collision = new Animator();
 
 	// game score
 	private ScoreComponent playerScore = new ScoreComponent();
@@ -81,8 +79,6 @@ public class AircraftController extends InputListener {
 	public AircraftController(GameDifficulty diff, Airspace airspace) {
 		this.difficulty = diff;
 		this.airspace = airspace;
-
-		collision.create();
 
 		// initialise aircraft types.
 		aircraftTypeList.add(new AircraftType().setMaxClimbRate(600)

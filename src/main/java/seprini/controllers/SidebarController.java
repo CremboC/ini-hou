@@ -249,7 +249,6 @@ public final class SidebarController extends ChangeListener {
 		labels.get("speed").setText(speedText);
 
 		// resets countdown for boarding times
-
 		for (Airport airport : controller.waypoints.getAirportList()) {
 			for (int i = 0; i <= 4; i++) {
 				if (airport.countdown[i] <= 0)
