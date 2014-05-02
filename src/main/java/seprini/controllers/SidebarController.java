@@ -143,7 +143,6 @@ public final class SidebarController extends ChangeListener {
 		createButton("down", "Down (S)", aircraftControls, false).width(100)
 				.colspan(2);
 
-
 		aircraftControls.row();
 
 		createLabel("", " Lives:", bottomButtons).width(100);
@@ -272,7 +271,9 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("leftAircraft" + Integer.toString(i)).setText(" ");
 		}
 
-		for (int i = 0; i < airportList.get(0).boardingAircraft; i++) {
+		for (int i = airportList.get(0).aircraftList.size(); i < airportList
+				.get(0).waitingAircraft.size()
+				+ airportList.get(0).aircraftList.size(); i++) {
 			buttons.get("leftAircraft" + Integer.toString(i)).setText(
 					"Aircraft boarding: "
 							+ (int) airportList.get(0).countdown[i]);
@@ -295,7 +296,9 @@ public final class SidebarController extends ChangeListener {
 			buttons.get("rightAircraft" + Integer.toString(i)).setText(" ");
 		}
 
-		for (int i = 0; i < airportList.get(1).boardingAircraft; i++) {
+		for (int i = airportList.get(1).aircraftList.size(); i < airportList
+				.get(1).waitingAircraft.size()
+				+ airportList.get(1).aircraftList.size(); i++) {
 			buttons.get("rightAircraft" + Integer.toString(i)).setText(
 					"Aircraft boarding: "
 							+ (int) airportList.get(1).countdown[i]);
