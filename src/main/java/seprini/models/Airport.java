@@ -33,7 +33,7 @@ public class Airport extends Waypoint {
 	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
 	public boolean takeoffReady = true;
 
-	private Aircraft waitingAircraft;
+	public ArrayList<Aircraft> waitingAircraft = new ArrayList<Aircraft>();
 
 	public Airport(float x, float y, boolean visible) {
 		super(x, y, visible);
@@ -48,11 +48,21 @@ public class Airport extends Waypoint {
 	}
 
 	public void act(float delta) {
-		for (int i = 0; i < boardingAircraft; i++) {
+		for (int i = 0; i < waitingAircraft.size(); i++) {
 			countdown[i] -= delta;
 			if (countdown[i] <= 0) {
 				countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
-				aircraftList.add(waitingAircraft);
+
+				System.out.println("BEFORE ADDING TO LIST");
+				System.out.println(waitingAircraft.size());
+				System.out.println(waitingAircraft);
+
+				aircraftList.add(waitingAircraft.get(0));
+				waitingAircraft.remove(0);
+
+				System.out.println("AFTER ADDING TO LIST");
+				System.out.println(waitingAircraft.size());
+				System.out.println(waitingAircraft);
 			}
 		}
 
@@ -90,7 +100,15 @@ public class Airport extends Waypoint {
 		}
 		boardingAircraft += 1;
 
-		waitingAircraft = aircraft;
+		System.out.println("BEFORE ADDING TO WAITING LIST");
+		System.out.println(waitingAircraft.size());
+		System.out.println(waitingAircraft);
+
+		waitingAircraft.add(aircraft);
+
+		System.out.println("AFTER ADDING TO WAITING LIST");
+		System.out.println(waitingAircraft.size());
+		System.out.println(waitingAircraft);
 
 	}
 
