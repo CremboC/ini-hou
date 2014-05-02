@@ -53,16 +53,8 @@ public class Airport extends Waypoint {
 			if (countdown[i] <= 0) {
 				countdown[i] = Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY;
 
-				System.out.println("BEFORE ADDING TO LIST");
-				System.out.println(waitingAircraft.size());
-				System.out.println(waitingAircraft);
-
 				aircraftList.add(waitingAircraft.get(0));
 				waitingAircraft.remove(0);
-
-				System.out.println("AFTER ADDING TO LIST");
-				System.out.println(waitingAircraft.size());
-				System.out.println(waitingAircraft);
 			}
 		}
 
@@ -100,15 +92,7 @@ public class Airport extends Waypoint {
 		}
 		boardingAircraft += 1;
 
-		System.out.println("BEFORE ADDING TO WAITING LIST");
-		System.out.println(waitingAircraft.size());
-		System.out.println(waitingAircraft);
-
 		waitingAircraft.add(aircraft);
-
-		System.out.println("AFTER ADDING TO WAITING LIST");
-		System.out.println(waitingAircraft.size());
-		System.out.println(waitingAircraft);
 
 	}
 
