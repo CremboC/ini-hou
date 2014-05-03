@@ -3,7 +3,11 @@
  */
 package seprini.controllers;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,11 +15,21 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import seprini.data.GameDifficulty;
+import seprini.data.GameMode;
+import seprini.models.Aircraft;
+import seprini.models.Airspace;
+import seprini.models.Waypoint;
+import seprini.models.types.Player;
+
 /**
  * @author Leslie
  * 
  */
 public class AircraftControllerTest {
+
+	AircraftController aircraftController;
+	Airspace airspace;
 
 	/**
 	 * @throws java.lang.Exception
@@ -36,6 +50,9 @@ public class AircraftControllerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		airspace = new Airspace();
+		aircraftController = new AircraftController(GameDifficulty.MEDIUM,
+				airspace);
 	}
 
 	/**
@@ -52,7 +69,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testAircraftController() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -60,7 +76,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testInit() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -69,17 +84,17 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testUpdate() {
-		fail("Not yet implemented");
 	}
 
 	/**
 	 * Test method for
 	 * {@link seprini.controllers.AircraftController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}
 	 * .
+	 * 
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testCollisionHasOccured() {
-		fail("Not yet implemented");
+	public void testCollisionHasOccured() throws InterruptedException {
 	}
 
 	/**
@@ -88,7 +103,9 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGenerateAircraft() {
-		fail("Not yet implemented");
+		Aircraft testAircraft = aircraftController.generateAircraft();
+
+		assertTrue(testAircraft instanceof Aircraft);
 	}
 
 	/**
@@ -97,7 +114,17 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testRemoveAircraft() {
-		fail("Not yet implemented");
+		Aircraft aircraftA = aircraftController.generateAircraft();
+		Aircraft aircraftB = aircraftController.generateAircraft();
+		Aircraft aircraftC = aircraftController.generateAircraft();
+
+		assertEquals(aircraftController.aircraftList.size(), 3, 0);
+		assertTrue(aircraftController.aircraftList.get(1) == aircraftB);
+
+		aircraftController.removeAircraft(1);
+
+		assertEquals(aircraftController.aircraftList.size(), 2, 0);
+		assertFalse(aircraftController.aircraftList.get(1) == aircraftB);
 	}
 
 	/**
@@ -107,7 +134,15 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testSelectAircraft() {
-		fail("Not yet implemented");
+		Aircraft aircraftA = aircraftController.generateAircraft();
+		Aircraft aircraftB = aircraftController.generateAircraft();
+
+		assertEquals(aircraftController.getSelectedAircraft(), null);
+
+		aircraftController.selectAircraft(aircraftA);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftA);
+		assertFalse(aircraftController.getSelectedAircraft() == aircraftB);
 	}
 
 	/**
@@ -116,7 +151,27 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testSwitchAircraft() {
-		fail("Not yet implemented");
+		Aircraft aircraftA = aircraftController.generateAircraft();
+		Aircraft aircraftB = aircraftController.generateAircraft();
+		Aircraft aircraftC = aircraftController.generateAircraft();
+
+		assertEquals(aircraftController.getSelectedAircraft(), null);
+
+		aircraftController.switchAircraft(0);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftB);
+
+		aircraftController.switchAircraft(0);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftC);
+
+		aircraftController.switchAircraft(0);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftA);
+
+		aircraftController.switchAircraft(0);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftB);
 	}
 
 	/**
@@ -126,16 +181,40 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testRedirectAircraft() {
-		fail("Not yet implemented");
+		Aircraft aircraftA = aircraftController.generateAircraft();
+
+		Waypoint previousWaypoint = aircraftA.getFlightPlan().get(0);
+
+		aircraftController.selectAircraft(aircraftA);
+
+		if (previousWaypoint != aircraftController.waypoints.getEntryList()
+				.get(0)) {
+			aircraftController.redirectAircraft(aircraftController.waypoints
+					.getEntryList().get(0));
+		} else {
+			aircraftController.redirectAircraft(aircraftController.waypoints
+					.getEntryList().get(1));
+		}
+
+		Waypoint newWaypoint = aircraftA.getFlightPlan().get(0);
+		;
+
+		assertFalse(previousWaypoint == newWaypoint);
 	}
 
 	/**
 	 * Test method for {@link seprini.controllers.AircraftController#getTimer()}
 	 * .
+	 * 
+	 * @throws InterruptedException
 	 */
 	@Test
-	public void testGetTimer() {
-		fail("Not yet implemented");
+	public void testGetTimer() throws InterruptedException {
+		assertEquals(aircraftController.getTimer(), 0f, 0);
+
+		aircraftController.update(0.3f);
+
+		assertEquals(aircraftController.getTimer(), 0.3f, 0);
 	}
 
 	/**
@@ -144,7 +223,13 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetPlayerScore() {
-		fail("Not yet implemented");
+		assertEquals(aircraftController.getPlayerScore(), 0, 0);
+
+		Aircraft aircraftA = aircraftController.generateAircraft();
+
+		aircraftController.incrementScore(aircraftA);
+
+		assertEquals(aircraftController.getPlayerScore(), 20, 0);
 	}
 
 	/**
@@ -153,7 +238,15 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetSelectedAircraft() {
-		fail("Not yet implemented");
+		Aircraft aircraftA = aircraftController.generateAircraft();
+		Aircraft aircraftB = aircraftController.generateAircraft();
+
+		assertEquals(aircraftController.getSelectedAircraft(), null);
+
+		aircraftController.selectAircraft(aircraftA);
+
+		assertEquals(aircraftController.getSelectedAircraft(), aircraftA);
+		assertFalse(aircraftController.getSelectedAircraft() == aircraftB);
 	}
 
 	/**
@@ -162,7 +255,18 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetAircraftList() {
-		fail("Not yet implemented");
+		ArrayList<Aircraft> testAircraftList = new ArrayList<Aircraft>();
+
+		assertEquals(aircraftController.getAircraftList(), testAircraftList);
+
+		Aircraft aircraftA = aircraftController.generateAircraft();
+		Aircraft aircraftB = aircraftController.generateAircraft();
+
+		testAircraftList.add(aircraftA);
+		testAircraftList.add(aircraftB);
+
+		assertEquals(aircraftController.getAircraftList(), testAircraftList);
+
 	}
 
 	/**
@@ -171,7 +275,7 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetAirspace() {
-		fail("Not yet implemented");
+		assertEquals(aircraftController.getAirspace(), airspace);
 	}
 
 	/**
@@ -180,7 +284,15 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testAllowRedirection() {
-		fail("Not yet implemented");
+		assertFalse(aircraftController.allowRedirection());
+
+		aircraftController.setAllowRedirection(true);
+
+		assertTrue(aircraftController.allowRedirection());
+
+		aircraftController.setAllowRedirection(false);
+
+		assertFalse(aircraftController.allowRedirection());
 	}
 
 	/**
@@ -190,7 +302,15 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testSetAllowRedirection() {
-		fail("Not yet implemented");
+		assertFalse(aircraftController.allowRedirection());
+
+		aircraftController.setAllowRedirection(true);
+
+		assertTrue(aircraftController.allowRedirection());
+
+		aircraftController.setAllowRedirection(false);
+
+		assertFalse(aircraftController.allowRedirection());
 	}
 
 	/**
@@ -199,7 +319,7 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetGameMode() {
-		fail("Not yet implemented");
+		assertEquals(aircraftController.getGameMode(), GameMode.SINGLE);
 	}
 
 	/**
@@ -208,7 +328,10 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testGetPlayers() {
-		fail("Not yet implemented");
+		assertTrue(aircraftController.getPlayers()[0] instanceof Player);
+		assertTrue(aircraftController.getPlayers()[1] instanceof Player);
+		assertFalse(aircraftController.getPlayers()[0] == aircraftController
+				.getPlayers()[1]);
 	}
 
 	/**
@@ -218,7 +341,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testKeyDownInputEventInt() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -228,7 +350,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testKeyUpInputEventInt() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -238,7 +359,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testTakeoff() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -247,7 +367,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testShowGameOver() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -257,7 +376,13 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testIncrementScore() {
-		fail("Not yet implemented");
+		assertEquals(aircraftController.getPlayerScore(), 0, 0);
+
+		Aircraft aircraftA = aircraftController.generateAircraft();
+
+		aircraftController.incrementScore(aircraftA);
+
+		assertEquals(aircraftController.getPlayerScore(), 20, 0);
 	}
 
 }
