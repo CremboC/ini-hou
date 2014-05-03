@@ -3,7 +3,7 @@
  */
 package seprini.controllers.components;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,7 +49,7 @@ public class WaypointComponentTest {
 				GameDifficulty.MEDIUM, airspace);
 		singlePlayerWaypointComponent = new WaypointComponent(
 				aircraftController, GameMode.SINGLE);
-		singlePlayerWaypointComponent = new WaypointComponent(
+		multiPlayerWaypointComponent = new WaypointComponent(
 				aircraftController, GameMode.MULTI);
 
 	}
@@ -77,7 +77,6 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testSingleplayerWaypoints() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -87,7 +86,6 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testMultiplayerWaypoints() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -97,7 +95,17 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testCreateWaypoint() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getPermanentList().size(), 8);
+
+		singlePlayerWaypointComponent.createWaypoint(300, 300, true);
+
+		assertEquals(singlePlayerWaypointComponent.getPermanentList().size(), 9);
+
+		assertEquals(multiPlayerWaypointComponent.getPermanentList().size(), 8);
+
+		multiPlayerWaypointComponent.createWaypoint(300, 300, true);
+
+		assertEquals(multiPlayerWaypointComponent.getPermanentList().size(), 9);
 	}
 
 	/**
@@ -107,7 +115,8 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testGetPermanentList() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getPermanentList().size(), 8);
+		assertEquals(multiPlayerWaypointComponent.getPermanentList().size(), 8);
 	}
 
 	/**
@@ -116,7 +125,8 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testGetEntryList() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getEntryList().size(), 4);
+		assertEquals(multiPlayerWaypointComponent.getEntryList().size(), 4);
 	}
 
 	/**
@@ -125,7 +135,8 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testGetExitList() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getExitList().size(), 6);
+		assertEquals(multiPlayerWaypointComponent.getExitList().size(), 6);
 	}
 
 	/**
@@ -135,7 +146,8 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testGetAirportList() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getAirportList().size(), 2);
+		assertEquals(multiPlayerWaypointComponent.getAirportList().size(), 2);
 	}
 
 	/**
@@ -145,7 +157,8 @@ public class WaypointComponentTest {
 	 */
 	@Test
 	public void testGetSelectedAirport() {
-		fail("Not yet implemented");
+		assertEquals(singlePlayerWaypointComponent.getSelectedAirport(), null);
+		assertEquals(multiPlayerWaypointComponent.getSelectedAirport(), null);
 	}
 
 }
