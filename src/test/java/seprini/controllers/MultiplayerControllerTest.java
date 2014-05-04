@@ -125,42 +125,14 @@ public class MultiplayerControllerTest {
 
 	/**
 	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#keyDown(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
-	 * .
-	 */
-	@Test
-	public void testKeyDownInputEventInt() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#keyUp(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
-	 * .
-	 */
-	@Test
-	public void testKeyUpInputEventInt() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for
 	 * {@link seprini.controllers.MultiplayerController#incrementScore(seprini.models.Aircraft)}
 	 * .
 	 */
 	@Test
 	public void testIncrementScore() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#MultiplayerController(seprini.data.GameDifficulty, seprini.models.Airspace, seprini.screens.ScreenBase)}
-	 * .
-	 */
-	@Test
-	public void testMultiplayerController() {
-		fail("Not yet implemented");
+		multiplayerController.incrementScore(testAircraft);
+		assertEquals(multiplayerController.getPlayerScores()[0],
+				testAircraft.getPoints() / 2, 0);
 	}
 
 	/**
@@ -170,17 +142,8 @@ public class MultiplayerControllerTest {
 	 */
 	@Test
 	public void testDeselectAircraft() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#showGameOverMulti(seprini.models.Aircraft)}
-	 * .
-	 */
-	@Test
-	public void testShowGameOverMulti() {
-		fail("Not yet implemented");
+		multiplayerController.selectAircraft(testAircraft);
+		assertTrue(testAircraft.getPlayer().equals(true));
 	}
 
 	/**
@@ -189,7 +152,13 @@ public class MultiplayerControllerTest {
 	 */
 	@Test
 	public void testGetPlayerScores() {
-		fail("Not yet implemented");
+		assertEquals(multiplayerController.getPlayerScores()[0], 0, 0);
+		assertEquals(multiplayerController.getPlayerScores()[1], 0, 0);
+		testAircraft.setPosition(0, 0);
+		System.out.print(testAircraft.getX());
+		multiplayerController.incrementScore(testAircraft);
+		assertEquals(multiplayerController.getPlayerScores()[0],
+				testAircraft.getPoints() / 2, 0);
 	}
 
 	/**
@@ -209,9 +178,9 @@ public class MultiplayerControllerTest {
 	 */
 	@Test
 	public void testWithinNoMansLand() {
-		testAircraft.setOriginX(Config.NO_MAN_LAND[0]);
+		testAircraft.setX(Config.NO_MAN_LAND[0]);
 		System.out.println(Config.NO_MAN_LAND[0]);
-		System.out.println(testAircraft.getCoords().x);
+		System.out.println(testAircraft.getX());
 		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
 		testAircraft.setPosition(Config.NO_MAN_LAND[2], 0);
 		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
