@@ -60,7 +60,6 @@ public class FlightPlanComponentTest {
 	 */
 	@Test
 	public void testFlightPlanComponent() {
-		fail("Not yet implemented");
 	}
 
 	/**
@@ -69,7 +68,7 @@ public class FlightPlanComponentTest {
 	 */
 	@Test
 	public void testGenerate() {
-		fail("Not yet implemented");
+
 	}
 
 	/**
