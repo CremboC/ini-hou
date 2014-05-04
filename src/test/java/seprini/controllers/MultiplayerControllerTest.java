@@ -3,7 +3,9 @@
  */
 package seprini.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,11 +13,19 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import seprini.data.Config;
+import seprini.data.GameDifficulty;
+import seprini.models.Aircraft;
+import seprini.models.Airspace;
+
 /**
  * @author Leslie
- *
+ * 
  */
 public class MultiplayerControllerTest {
+
+	MultiplayerController multiplayerController;
+	Aircraft testAircraft;
 
 	/**
 	 * @throws java.lang.Exception
@@ -36,6 +46,10 @@ public class MultiplayerControllerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		Airspace airspace = new Airspace();
+		multiplayerController = new MultiplayerController(
+				GameDifficulty.MEDIUM, airspace);
+		testAircraft = multiplayerController.generateAircraft();
 	}
 
 	/**
@@ -54,7 +68,8 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#update(float)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#update(float)}.
 	 */
 	@Test
 	public void testUpdate() {
@@ -62,7 +77,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testCollisionHasOccured() {
@@ -70,7 +87,8 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#generateAircraft()}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#generateAircraft()}.
 	 */
 	@Test
 	public void testGenerateAircraft() {
@@ -78,7 +96,8 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#removeAircraft(int)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#removeAircraft(int)}.
 	 */
 	@Test
 	public void testRemoveAircraft() {
@@ -86,7 +105,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#selectAircraft(seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#selectAircraft(seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testSelectAircraft() {
@@ -94,7 +115,8 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#switchAircraft(int)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#switchAircraft(int)}.
 	 */
 	@Test
 	public void testSwitchAircraft() {
@@ -102,7 +124,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#keyDown(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#keyDown(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
+	 * .
 	 */
 	@Test
 	public void testKeyDownInputEventInt() {
@@ -110,7 +134,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#keyUp(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#keyUp(com.badlogic.gdx.scenes.scene2d.InputEvent, int)}
+	 * .
 	 */
 	@Test
 	public void testKeyUpInputEventInt() {
@@ -118,7 +144,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#incrementScore(seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#incrementScore(seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testIncrementScore() {
@@ -126,7 +154,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#MultiplayerController(seprini.data.GameDifficulty, seprini.models.Airspace, seprini.screens.ScreenBase)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#MultiplayerController(seprini.data.GameDifficulty, seprini.models.Airspace, seprini.screens.ScreenBase)}
+	 * .
 	 */
 	@Test
 	public void testMultiplayerController() {
@@ -134,7 +164,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#deselectAircraft(seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#deselectAircraft(seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testDeselectAircraft() {
@@ -142,7 +174,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#showGameOverMulti(seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#showGameOverMulti(seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testShowGameOverMulti() {
@@ -150,7 +184,8 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#getPlayerScores()}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#getPlayerScores()}.
 	 */
 	@Test
 	public void testGetPlayerScores() {
@@ -158,7 +193,9 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#withinPlayerZone(seprini.models.Aircraft, int)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#withinPlayerZone(seprini.models.Aircraft, int)}
+	 * .
 	 */
 	@Test
 	public void testWithinPlayerZone() {
@@ -166,19 +203,29 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#withinNoMansLand(seprini.models.Aircraft)}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#withinNoMansLand(seprini.models.Aircraft)}
+	 * .
 	 */
 	@Test
 	public void testWithinNoMansLand() {
-		fail("Not yet implemented");
+		testAircraft.setOriginX(Config.NO_MAN_LAND[0]);
+		System.out.println(Config.NO_MAN_LAND[0]);
+		System.out.println(testAircraft.getCoords().x);
+		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
+		testAircraft.setPosition(Config.NO_MAN_LAND[2], 0);
+		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
+		testAircraft.setPosition(Config.NO_MAN_LAND[1], 0);
+		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
 	}
 
 	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#getTotalScore()}.
+	 * Test method for
+	 * {@link seprini.controllers.MultiplayerController#getTotalScore()}.
 	 */
 	@Test
 	public void testGetTotalScore() {
-		fail("Not yet implemented");
+		assertEquals(multiplayerController.getTotalScore(), 0, 0);
 	}
 
 }
