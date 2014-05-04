@@ -3,7 +3,10 @@
  */
 package seprini.controllers.components;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,8 +14,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import seprini.ATC;
+import seprini.controllers.AircraftController;
 import seprini.data.GameDifficulty;
+import seprini.data.GameMode;
+import seprini.models.Airspace;
+import seprini.models.Waypoint;
 
 /**
  * @author Leslie
@@ -21,6 +27,7 @@ import seprini.data.GameDifficulty;
 public class FlightPlanComponentTest {
 
 	FlightPlanComponent flightPlanComponent;
+	WaypointComponent waypointComponent;
 
 	/**
 	 * @throws java.lang.Exception
@@ -41,9 +48,13 @@ public class FlightPlanComponentTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		ATC atc = new ATC();
-		atc.showGameScreen(GameDifficulty.MEDIUM);
-		// WaypointComponent waypointComponent = new WaypointComponent();
+		Airspace airspace = new Airspace();
+		AircraftController aircraftController = new AircraftController(
+				GameDifficulty.MEDIUM, airspace);
+		waypointComponent = new WaypointComponent(aircraftController,
+				GameMode.SINGLE);
+
+		flightPlanComponent = new FlightPlanComponent(waypointComponent);
 	}
 
 	/**
@@ -68,6 +79,12 @@ public class FlightPlanComponentTest {
 	 */
 	@Test
 	public void testGenerate() {
+		ArrayList<Waypoint> flightPlan = flightPlanComponent.generate();
+
+		assertTrue(waypointComponent.getEntryList().contains(flightPlan.get(0)));
+		assertTrue(waypointComponent.getExitList().contains(
+				flightPlan.get(flightPlan.size() - 1)));
+		assertTrue(flightPlan.size() > 2);
 
 	}
 
@@ -78,7 +95,13 @@ public class FlightPlanComponentTest {
 	 */
 	@Test
 	public void testGenerateWaypoint() {
-		fail("Not yet implemented");
+		ArrayList<Waypoint> flightPlan = flightPlanComponent
+				.generate(waypointComponent.getEntryList().get(0));
+
+		assertEquals(waypointComponent.getEntryList().get(0), flightPlan.get(0));
+		assertTrue(waypointComponent.getExitList().contains(
+				flightPlan.get(flightPlan.size() - 1)));
+		assertTrue(flightPlan.size() > 2);
 	}
 
 }
