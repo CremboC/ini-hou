@@ -57,7 +57,7 @@ public class MultiplayerController extends AircraftController {
 		this.waypoints = new WaypointComponent(this, mode);
 
 		// helper for creating the flight plan of an aircraft
-		this.flightplan = new FlightPlanComponent(waypoints);
+		this.flightPlanComponent = new FlightPlanComponent(waypoints);
 
 	}
 

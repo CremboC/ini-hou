@@ -1,8 +1,6 @@
 package seprini.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import seprini.controllers.components.FlightPlanComponent;
@@ -43,7 +41,7 @@ public class AircraftController extends InputListener {
 
 	// helpers for this class
 	public WaypointComponent waypoints;
-	public FlightPlanComponent flightplan;
+	public FlightPlanComponent flightPlanComponent;
 
 	// ui related
 	protected final Airspace airspace;
@@ -65,7 +63,7 @@ public class AircraftController extends InputListener {
 	public boolean paused, exitToMenu, gameHasEnded;
 
 	// lives until the game ends
-	protected int[] lives = {2, 2};
+	protected int[] lives = { 2, 2 };
 
 	/**
 	 * 
@@ -103,7 +101,7 @@ public class AircraftController extends InputListener {
 		this.waypoints = new WaypointComponent(this, GameMode.SINGLE);
 
 		// helper for creating the flight plan of an aircraft
-		this.flightplan = new FlightPlanComponent(waypoints);
+		this.flightPlanComponent = new FlightPlanComponent(waypoints);
 	}
 
 	/**
@@ -260,27 +258,8 @@ public class AircraftController extends InputListener {
 	 */
 	protected Aircraft generateAircraft() {
 
-		// to prevent more than x aircraft in the airspace having the same
-		// destination waypoint; the intent is to prevent the frequent traffic
-		// jams occuring at airports
-		Map<Waypoint, Integer> currentFinalWaypoints = new HashMap<Waypoint, Integer>();
-		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
-
-		for (Aircraft aircraft : aircraftList) {
-			if (currentFinalWaypoints.containsKey(aircraft.getLastWaypoint())) {
-				currentFinalWaypoints
-						.put(aircraft.getLastWaypoint(), currentFinalWaypoints
-								.get(aircraft.getLastWaypoint()) + 1);
-				if (currentFinalWaypoints.get(aircraft.getLastWaypoint()) > Config.MAX_NUMBER_OF_AIRCRAFT_TO_EXIT_WAYPOINT) {
-					excludedWaypoints.add(aircraft.getLastWaypoint());
-				}
-			} else {
-				currentFinalWaypoints.put(aircraft.getLastWaypoint(), 0);
-			}
-		}
-
-		Aircraft newAircraft = new Aircraft(randomAircraftType(), flightplan,
-				excludedWaypoints, aircraftId++, getGameMode());
+		Aircraft newAircraft = new Aircraft(randomAircraftType(),
+				flightPlanComponent, aircraftId++, getGameMode());
 
 		newAircraft.setPlayer(players[Player.ONE]);
 		newAircraft.setScreenBoundaries(-10, -10, -190, 10);
