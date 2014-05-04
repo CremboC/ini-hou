@@ -548,12 +548,36 @@ public class MultiplayerController extends AircraftController {
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
 	}
 
+	/**
+	 * Decrement score.
+	 */
 	private void decrementScores() {
 
 		playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
 		playerScore[Player.TWO].incrementScore(playerTwoAircraft.size());
 		totalScore.incrementScore(playerOneAircraft.size()
 				+ playerTwoAircraft.size());
+	}
+
+	/**
+	 * Multiplayer variant of takeoff - difference is have to add to the
+	 * individual player aircraft list
+	 */
+	@Override
+	public void takeoff(final Aircraft aircraft) {
+		super.takeoff(aircraft);
+
+		if (aircraft == null)
+			return;
+
+		if (withinPlayerZone(aircraft, Player.ONE)) {
+			aircraft.setPlayer(players[Player.ONE]);
+		} else {
+			aircraft.setPlayer(players[Player.TWO]);
+		}
+
+		// add it to the new player list
+		addToListByPlayer(aircraft);
 	}
 
 	/**
@@ -568,6 +592,11 @@ public class MultiplayerController extends AircraftController {
 		return scores;
 	}
 
+	/**
+	 * Total grand score
+	 * 
+	 * @return total score
+	 */
 	public int getTotalScore() {
 		return totalScore.getScore();
 	}
