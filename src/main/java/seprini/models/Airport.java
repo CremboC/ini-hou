@@ -8,14 +8,12 @@ import seprini.data.Config;
 public class Airport extends Waypoint {
 
 	// Waypoints designating the end of the runway
-	public Waypoint runwayStart, runwayEnd, runwayLeft, runwayRight;
+	public Waypoint runwayStart, runwayEnd, runwayLeft, runwayRight,
+			goAroundOne, goAroundTwo;
 
 	// Maximum number of aircraft that can be in the airport at once. If
-	// exceeded, game ends.
+	// exceeded, game ends. This number must never be greater than 5!
 	private final static int MAX_AIRCRAFT_NUMBER = 5;
-
-	// Required altitude for an aircraft to land
-	public final static int MIN_ALTITUDE = 5000;
 
 	// Time remaining before an aircraft can take off.
 	public float timeTillFreeRunway = 5;
@@ -41,6 +39,8 @@ public class Airport extends Waypoint {
 		runwayEnd = new Waypoint(x + 77, y + 60, false);
 		runwayLeft = new Waypoint(x - 157, y - 60, false);
 		runwayRight = new Waypoint(x - 77, y - 140, false);
+		goAroundTwo = new Waypoint(x - 200, y, false);
+		goAroundOne = new Waypoint(x - 100, y + 150, false);
 
 		texture = Art.getTextureRegion("airport");
 		size = Config.AIRPORT_SIZE;
