@@ -65,7 +65,7 @@ public class AircraftController extends InputListener {
 	public boolean paused, exitToMenu, gameHasEnded;
 
 	// lives until the game ends
-	protected int[] lives = {2, 2};
+	protected int[] lives = { 2, 2 };
 
 	/**
 	 * 
@@ -489,7 +489,7 @@ public class AircraftController extends InputListener {
 	}
 
 	protected void incrementScore(Aircraft aircraft) {
-		playerScore.incrementScore(aircraft.getPoints()
+		playerScore.incrementScore(aircraft.getPoints(Player.ONE)
 				* difficulty.getScoreMultiplier());
 	}
 

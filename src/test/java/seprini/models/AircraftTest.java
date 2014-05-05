@@ -56,7 +56,7 @@ public class AircraftTest {
 	@Before
 	public void setUp() throws Exception {
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
-				5);
+				5, 1);
 
 		waypoints.add(new Waypoint(200, 200, true));
 
@@ -118,7 +118,8 @@ public class AircraftTest {
 	 */
 	@Test
 	public void testGetPoints() {
-		assertEquals(aircraft.getPoints(), 20, 0);
+		assertEquals(aircraft.getPoints(Player.ONE), 20, 0);
+		assertEquals(aircraft.getPoints(Player.TWO), 20, 0);
 	}
 
 	/**

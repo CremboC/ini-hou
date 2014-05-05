@@ -41,7 +41,7 @@ public final class Aircraft extends Entity {
 	private float previousAngle = 0;
 
 	// Set and store aircrafts points.
-	private int points;
+	private int[] points = { 0, 0 };
 	private Random rand;
 	private Player player, previousPlayer;
 
@@ -66,13 +66,15 @@ public final class Aircraft extends Entity {
 		rand = new Random();
 
 		// number of points the aircraft enters the airspace with.
-		points = Config.AIRCRAFT_POINTS;
+		points[Player.ONE] = Config.AIRCRAFT_POINTS;
+		points[Player.TWO] = Config.AIRCRAFT_POINTS;
 
 		// initialize aircraft texture
 		texture = aircraftType.getTexture();
 
 		// initialize velocity and altitude
 		velocity = new Vector2(aircraftType.getInitialSpeed(), 0);
+		// choose from between the last 3 of the 6 velocity levels
 		targetAltitudeIndex = rand.nextInt(3) + 3;
 		altitude = Config.ALTITUDES[targetAltitudeIndex];
 		desiredAltitude = altitude;
@@ -351,8 +353,8 @@ public final class Aircraft extends Entity {
 		}
 	}
 
-	public int getPoints() {
-		return this.points;
+	public int getPoints(int playerNo) {
+		return this.points[playerNo];
 	}
 
 	/**
@@ -477,7 +479,12 @@ public final class Aircraft extends Entity {
 				|| getY() > Config.SCREEN_HEIGHT + rightY) {
 
 			isActive = false;
-			this.points = 0;
+			if (seprini.controllers.MultiplayerController.withinPlayerZone(
+					this, Player.ONE)) {
+				points[Player.ONE] = 0;
+			} else {
+				points[Player.TWO] = 0;
+			}
 			return true;
 
 		}
@@ -587,7 +594,12 @@ public final class Aircraft extends Entity {
 	public void checkBreaching() {
 		if (isBreaching()) {
 			if (!breachingLastFrame) {
-				this.points = 0;
+				if (seprini.controllers.MultiplayerController.withinPlayerZone(
+						this, Player.ONE)) {
+					points[Player.ONE] = 0;
+				} else {
+					points[Player.TWO] = 0;
+				}
 			}
 		}
 		breachingLastFrame = isBreaching();
