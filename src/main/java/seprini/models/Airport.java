@@ -50,6 +50,7 @@ public class Airport extends Waypoint {
 	/**
 	 * Updates all of the timers for the airport
 	 */
+	@Override
 	public void act(float delta) {
 		for (int i = 0; i < waitingAircraft.size(); i++) {
 			countdown[i] -= delta;
@@ -88,7 +89,7 @@ public class Airport extends Waypoint {
 	 */
 	public void insertAircraft(final Aircraft aircraft)
 			throws IllegalStateException {
-		if (aircraftList.size() + 1 > MAX_AIRCRAFT_NUMBER) {
+		if (waitingAircraft.size() + 1 > MAX_AIRCRAFT_NUMBER) {
 			throw new IllegalStateException(
 					"Tried landing an aircraft into a full airport.");
 		}

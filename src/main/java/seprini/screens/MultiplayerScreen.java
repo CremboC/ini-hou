@@ -19,13 +19,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class MultiplayerScreen extends AbstractScreen {
 
 	// position of the score texts for both player
-	private final static Vector2[] SCORE_POS = {new Vector2(200, 715),
-			new Vector2(960, 715)};
+	private final static Vector2[] SCORE_POS = {new Vector2(180, 715),
+			new Vector2(940, 715)};
 
 	// position of the score texts for both player
 	private final static Vector2[] LIVES_POS = {
-			new Vector2(SCORE_POS[0].x + 70, SCORE_POS[0].y),
-			new Vector2(SCORE_POS[1].x + 70, SCORE_POS[1].y)};
+			new Vector2(SCORE_POS[0].x + 100, SCORE_POS[0].y),
+			new Vector2(SCORE_POS[1].x + 100, SCORE_POS[1].y)};
 
 	private final MultiplayerController controller;
 	private final PauseOverlay overlay;
