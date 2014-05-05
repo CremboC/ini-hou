@@ -96,6 +96,7 @@ public class Art {
 		sounds.put("crash", loadSound("crash.mp3", false));
 		sounds.put("comeflywithme", loadSound("comeflywithme.mp3", true));
 		sounds.put("ambience", loadSound("ambience.mp3", true));
+		sounds.put("lifedown", loadSound("lifedown.mp3", false));
 	}
 
 	/**
@@ -116,8 +117,6 @@ public class Art {
 		// big font
 		BitmapFont bigFont = new BitmapFont();
 		bigFont.setScale(2f);
-		// bigFont.getRegion().getTexture()
-		// .setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		skin.add("big-font", bigFont);
 

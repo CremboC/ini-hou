@@ -144,10 +144,12 @@ public class MultiplayerController extends AircraftController {
 
 			if (withinPlayerZone(a, Player.ONE) && lives[Player.ONE] - 1 != 0) {
 				lives[Player.ONE]--;
+				Art.getSound("lifedown").play(1f);
 				return false;
 			} else if (withinPlayerZone(a, Player.TWO)
 					&& lives[Player.TWO] - 1 != 0) {
 				lives[Player.TWO]--;
+				Art.getSound("lifedown").play(1f);
 				return false;
 			}
 		}

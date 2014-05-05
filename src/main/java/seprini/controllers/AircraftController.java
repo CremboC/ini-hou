@@ -198,6 +198,7 @@ public class AircraftController extends InputListener {
 
 			if (lives[Player.ONE] - 1 > 0) {
 				lives[Player.ONE]--;
+				Art.getSound("lifedown").play(1f);
 				return false;
 			}
 		}
