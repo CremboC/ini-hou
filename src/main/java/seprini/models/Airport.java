@@ -22,13 +22,13 @@ public class Airport extends Waypoint {
 	public ArrayList<Aircraft> aircraftList = new ArrayList<Aircraft>();
 	public int boardingAircraft = 0;
 
-	public float[] countdown = {Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
+	public float[] countdown = { Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
 			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY,
-			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway};
+			Config.AIRCRAFT_TAKEOFF_AND_LANDING_DELAY, timeTillFreeRunway };
 
-	public int[] timeElapsed = {0, 0, 0, 0, 0, 0};
+	public int[] timeElapsed = { 0, 0, 0, 0, 0, 0 };
 	public boolean takeoffReady = true;
 
 	public ArrayList<Aircraft> waitingAircraft = new ArrayList<Aircraft>();
@@ -107,6 +107,10 @@ public class Airport extends Waypoint {
 	 *             if there are no aircraft in the airport
 	 */
 	public Aircraft takeoff(int i) {
+		if (!takeoffReady) {
+			return null;
+		}
+
 		if (aircraftList.size() == 0)
 			return null;
 
