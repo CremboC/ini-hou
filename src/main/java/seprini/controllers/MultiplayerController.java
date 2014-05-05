@@ -22,10 +22,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 public class MultiplayerController extends AircraftController {
 
 	// One is the left player
-	private final Aircraft[] selectedAircraft = {null, null};
+	private final Aircraft[] selectedAircraft = { null, null };
 
-	private final ScoreComponent[] playerScore = {new ScoreComponent(),
-			new ScoreComponent()};
+	private final ScoreComponent[] playerScore = { new ScoreComponent(),
+			new ScoreComponent() };
 
 	private final ScoreComponent totalScore = new ScoreComponent();
 
@@ -38,7 +38,7 @@ public class MultiplayerController extends AircraftController {
 	 * remember the last index of which aircraft was selected, used with
 	 * {@link #switchAircraft(int playerNumber)}
 	 */
-	private int[] lastIndex = {0, 0};
+	private int[] lastIndex = { 0, 0 };
 
 	private float scoreTimer;
 
@@ -279,14 +279,14 @@ public class MultiplayerController extends AircraftController {
 		ArrayList<Aircraft> aircraftList;
 
 		switch (playerNumber) {
-			default :
-			case Player.ONE :
-				aircraftList = playerOneAircraft;
-				break;
+		default:
+		case Player.ONE:
+			aircraftList = playerOneAircraft;
+			break;
 
-			case Player.TWO :
-				aircraftList = playerTwoAircraft;
-				break;
+		case Player.TWO:
+			aircraftList = playerTwoAircraft;
+			break;
 
 		}
 
@@ -347,16 +347,16 @@ public class MultiplayerController extends AircraftController {
 	 */
 	private void addToListByPlayer(Aircraft aircraft, int playerNumber) {
 		switch (playerNumber) {
-			case Player.ONE :
-				playerOneAircraft.add(aircraft);
-				break;
+		case Player.ONE:
+			playerOneAircraft.add(aircraft);
+			break;
 
-			case Player.TWO :
-				playerTwoAircraft.add(aircraft);
-				break;
+		case Player.TWO:
+			playerTwoAircraft.add(aircraft);
+			break;
 
-			default :
-				break;
+		default:
+			break;
 		}
 	}
 
@@ -380,16 +380,16 @@ public class MultiplayerController extends AircraftController {
 	 */
 	private void removeFromListByPlayer(Aircraft aircraft, int playerNumber) {
 		switch (playerNumber) {
-			case Player.ONE :
-				playerOneAircraft.remove(aircraft);
-				break;
+		case Player.ONE:
+			playerOneAircraft.remove(aircraft);
+			break;
 
-			case Player.TWO :
-				playerTwoAircraft.remove(aircraft);
-				break;
+		case Player.TWO:
+			playerTwoAircraft.remove(aircraft);
+			break;
 
-			default :
-				break;
+		default:
+			break;
 		}
 	}
 
@@ -586,8 +586,8 @@ public class MultiplayerController extends AircraftController {
 	 * @return player scores
 	 */
 	public int[] getPlayerScores() {
-		int[] scores = {playerScore[Player.ONE].getScore(),
-				playerScore[Player.TWO].getScore()};
+		int[] scores = { playerScore[Player.ONE].getScore(),
+				playerScore[Player.TWO].getScore() };
 
 		return scores;
 	}
