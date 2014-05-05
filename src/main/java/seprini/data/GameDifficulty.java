@@ -5,7 +5,7 @@ package seprini.data;
  */
 public class GameDifficulty {
 	// maxAircraft, timeBetweenGenerations, separationRadius, scoreMultiplier
-	public static final GameDifficulty EASY = new GameDifficulty(10, 4, 150,
+	public static final GameDifficulty EASY = new GameDifficulty(10, 4, 100,
 			0.5, 500, 10, 0.7);
 	public static final GameDifficulty MEDIUM = new GameDifficulty(10, 3, 100,
 			1, 500, 5, 1);
@@ -29,6 +29,8 @@ public class GameDifficulty {
 	 *            score multiplier
 	 * @param verticalSeparationRadius
 	 *            vertical separation distance
+	 * @param velocityMultiplier
+	 *            for scaling velocity
 	 */
 	public GameDifficulty(int maxAircraft, int timeBetweenGenerations,
 			int separationRadius, double scoreMultiplier,
@@ -74,7 +76,7 @@ public class GameDifficulty {
 	public int getTimeBetweenScoreDecrement() {
 		return timeBetweenScoreDecrement;
 	}
-	
+
 	public double getVelocityMultiplier() {
 		return velocityMultiplier;
 	}

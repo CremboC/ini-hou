@@ -76,7 +76,8 @@ public class AircraftTest {
 				.setInitialSpeed(60f);
 
 		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
-		aircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.SINGLE);
+		aircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.SINGLE,
+				gameDifficulty);
 
 	}
 

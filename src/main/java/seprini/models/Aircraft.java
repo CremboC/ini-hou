@@ -6,6 +6,7 @@ import java.util.Random;
 import seprini.controllers.components.FlightPlanComponent;
 import seprini.data.Config;
 import seprini.data.Debug;
+import seprini.data.GameDifficulty;
 import seprini.data.GameMode;
 import seprini.models.types.AircraftType;
 import seprini.models.types.Player;
@@ -28,7 +29,7 @@ public final class Aircraft extends Entity {
 	public ArrayList<Waypoint> waypoints, excludedWaypoints;
 
 	private final AircraftType aircraftType;
-
+	private GameDifficulty difficulty;
 	private int desiredAltitude, altitude, targetAltitudeIndex;
 
 	private Vector2 velocity = new Vector2(0, 0);
@@ -55,14 +56,14 @@ public final class Aircraft extends Entity {
 	private FlightPlanComponent flightPlanner;
 
 	public Aircraft(AircraftType aircraftType, FlightPlanComponent flightPlan,
-			int id, GameMode gameMode) {
+			int id, GameMode gameMode, GameDifficulty difficulty) {
 		// allows drawing debug shape of this entity
 		debugShape = true;
 
 		this.id = id;
 		this.aircraftType = aircraftType;
 		this.flightPlanner = flightPlan;
-
+		this.difficulty = difficulty;
 		rand = new Random();
 
 		// number of points the aircraft enters the airspace with.
@@ -208,7 +209,9 @@ public final class Aircraft extends Entity {
 		updateAltitude(delta);
 
 		// finally updating coordinates
-		getCoords().add(velocity.cpy().scl(delta));
+		getCoords().add(
+				velocity.cpy().scl(
+						(float) (delta * difficulty.getVelocityMultiplier())));
 
 		// updating bounds to make sure the aircraft is clickable
 		this.setBounds(getX() - getWidth() / 2, getY() - getWidth() / 2,

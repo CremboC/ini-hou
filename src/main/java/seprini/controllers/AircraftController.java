@@ -259,7 +259,7 @@ public class AircraftController extends InputListener {
 	protected Aircraft generateAircraft() {
 
 		Aircraft newAircraft = new Aircraft(randomAircraftType(),
-				flightPlanComponent, aircraftId++, getGameMode());
+				flightPlanComponent, aircraftId++, getGameMode(), difficulty);
 
 		newAircraft.setPlayer(players[Player.ONE]);
 		newAircraft.setScreenBoundaries(-10, -10, -190, 10);

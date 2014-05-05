@@ -135,7 +135,7 @@ public class MultiplayerControllerTest {
 	public void testIncrementScore() {
 		multiplayerController.incrementScore(testAircraft);
 		assertEquals(multiplayerController.getPlayerScores()[0],
-				testAircraft.getPoints() / 2, 0);
+				testAircraft.getPoints(0) / 2, 0);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class MultiplayerControllerTest {
 		testAircraft.setPosition(0, 0);
 		multiplayerController.incrementScore(testAircraft);
 		assertEquals(multiplayerController.getPlayerScores()[0],
-				testAircraft.getPoints() / 2, 0);
+				testAircraft.getPoints(0) / 2, 0);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public class MultiplayerControllerTest {
 		ArrayList<Entrypoint> entrypoints = new ArrayList<Entrypoint>();
 
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
-				5);
+				5, 1);
 
 		waypoints.add(new Waypoint(200, 200, true));
 		exitpoints.add(new Waypoint(500, 500, true));
@@ -190,7 +190,8 @@ public class MultiplayerControllerTest {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(60f);
 
-		testAircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.MULTI);
+		testAircraft = new Aircraft(aircraftType, flightplan, 0,
+				GameMode.MULTI, gameDifficulty);
 
 		assertTrue(MultiplayerController.withinPlayerZone(testAircraft, 0));
 		assertFalse(MultiplayerController.withinPlayerZone(testAircraft, 1));
@@ -200,7 +201,8 @@ public class MultiplayerControllerTest {
 
 		flightplan = new FlightPlanComponent(waypoints, exitpoints, entrypoints);
 
-		testAircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.MULTI);
+		testAircraft = new Aircraft(aircraftType, flightplan, 0,
+				GameMode.MULTI, gameDifficulty);
 
 		assertTrue(MultiplayerController.withinPlayerZone(testAircraft, 1));
 		assertFalse(MultiplayerController.withinPlayerZone(testAircraft, 0));
@@ -218,7 +220,7 @@ public class MultiplayerControllerTest {
 		ArrayList<Entrypoint> entrypoints = new ArrayList<Entrypoint>();
 
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
-				5);
+				5, 1);
 
 		waypoints.add(new Waypoint(200, 200, true));
 		exitpoints.add(new Waypoint(500, 500, true));
@@ -235,7 +237,8 @@ public class MultiplayerControllerTest {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(60f);
 
-		testAircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.MULTI);
+		testAircraft = new Aircraft(aircraftType, flightplan, 0,
+				GameMode.MULTI, gameDifficulty);
 
 		assertFalse(MultiplayerController.withinNoMansLand(testAircraft));
 
@@ -244,7 +247,8 @@ public class MultiplayerControllerTest {
 
 		flightplan = new FlightPlanComponent(waypoints, exitpoints, entrypoints);
 
-		testAircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.MULTI);
+		testAircraft = new Aircraft(aircraftType, flightplan, 0,
+				GameMode.MULTI, gameDifficulty);
 
 		assertTrue(MultiplayerController.withinNoMansLand(testAircraft));
 	}
