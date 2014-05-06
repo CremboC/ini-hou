@@ -112,7 +112,6 @@ public class MultiplayerController extends AircraftController {
 			}
 
 		}
-
 	}
 
 	/**

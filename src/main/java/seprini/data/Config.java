@@ -41,7 +41,7 @@ public final class Config {
 	// Number of points held by an aircraft when it enters the airspace
 	public static final int AIRCRAFT_POINTS = 20;
 	// lump sum given to player who didn't crash, when a crash occurs.
-	public static final int MULTIPLAYER_CRASH_BONUS = 0;
+	public static final int MULTIPLAYER_CRASH_BONUS = 200;
 	public static final int MIN_DIST_BETWEEN_ENTRY_EXIT_WAYPOINTS = 300;
 
 	// other
