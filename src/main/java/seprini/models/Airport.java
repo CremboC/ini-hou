@@ -89,8 +89,10 @@ public class Airport extends Waypoint {
 	 */
 	public void insertAircraft(final Aircraft aircraft)
 			throws IllegalStateException {
+
 		if (waitingAircraft.size() + aircraftList.size() + 1 > MAX_AIRCRAFT_NUMBER) {
-			return;
+			throw new IllegalStateException(
+					"Tried landing an aircraft into a full airport.");
 		}
 		boardingAircraft += 1;
 

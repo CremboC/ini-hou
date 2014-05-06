@@ -223,6 +223,7 @@ public final class Aircraft extends Entity {
 			// aircraft has entered a full airport, set var to true so the
 			// AircraftController can pick it up
 			enteredFullAirport = true;
+			isActive = false;
 		} catch (InterruptedException e) {
 
 		}
