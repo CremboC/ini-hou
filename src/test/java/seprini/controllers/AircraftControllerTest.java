@@ -9,10 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import seprini.data.GameDifficulty;
@@ -34,67 +31,11 @@ public class AircraftControllerTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		airspace = new Airspace();
 		aircraftController = new AircraftController(GameDifficulty.MEDIUM,
 				airspace);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.AircraftController#AircraftController(seprini.data.GameDifficulty, seprini.models.Airspace, seprini.screens.ScreenBase)}
-	 * .
-	 */
-	@Test
-	public void testAircraftController() {
-	}
-
-	/**
-	 * Test method for {@link seprini.controllers.AircraftController#init()}.
-	 */
-	@Test
-	public void testInit() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.AircraftController#update(float)}.
-	 */
-	@Test
-	public void testUpdate() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.AircraftController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}
-	 * .
-	 * 
-	 * @throws InterruptedException
-	 */
-	@Test
-	public void testCollisionHasOccured() throws InterruptedException {
 	}
 
 	/**
@@ -114,9 +55,7 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testRemoveAircraft() {
-		Aircraft aircraftA = aircraftController.generateAircraft();
 		Aircraft aircraftB = aircraftController.generateAircraft();
-		Aircraft aircraftC = aircraftController.generateAircraft();
 
 		assertEquals(aircraftController.aircraftList.size(), 3, 0);
 		assertTrue(aircraftController.aircraftList.get(1) == aircraftB);
@@ -359,14 +298,6 @@ public class AircraftControllerTest {
 	 */
 	@Test
 	public void testTakeoff() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.AircraftController#showGameOver()}.
-	 */
-	@Test
-	public void testShowGameOver() {
 	}
 
 	/**

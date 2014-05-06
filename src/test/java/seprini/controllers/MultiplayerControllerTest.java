@@ -9,10 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import seprini.controllers.components.FlightPlanComponent;
@@ -37,20 +34,6 @@ public class MultiplayerControllerTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		Airspace airspace = new Airspace();
@@ -60,70 +43,14 @@ public class MultiplayerControllerTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	/**
-	 * Test method for {@link seprini.controllers.MultiplayerController#init()}.
-	 */
-	@Test
-	public void testInit() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#update(float)}.
-	 */
-	@Test
-	public void testUpdate() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#collisionHasOccured(seprini.models.Aircraft, seprini.models.Aircraft)}
-	 * .
-	 */
-	@Test
-	public void testCollisionHasOccured() {
-	}
-
-	/**
 	 * Test method for
 	 * {@link seprini.controllers.MultiplayerController#generateAircraft()}.
 	 */
 	@Test
 	public void testGenerateAircraft() {
-		Aircraft testAircraft = multiplayerController.generateAircraft();
+		Aircraft aTestAircraft = multiplayerController.generateAircraft();
 
-		assertTrue(testAircraft instanceof Aircraft);
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#removeAircraft(int)}.
-	 */
-	@Test
-	public void testRemoveAircraft() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#selectAircraft(seprini.models.Aircraft)}
-	 * .
-	 */
-	@Test
-	public void testSelectAircraft() {
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#switchAircraft(int)}.
-	 */
-	@Test
-	public void testSwitchAircraft() {
+		assertTrue(aTestAircraft instanceof Aircraft);
 	}
 
 	/**
@@ -136,15 +63,6 @@ public class MultiplayerControllerTest {
 		multiplayerController.incrementScore(testAircraft);
 		assertEquals(multiplayerController.getPlayerScores()[0],
 				testAircraft.getPoints(0) / 2, 0);
-	}
-
-	/**
-	 * Test method for
-	 * {@link seprini.controllers.MultiplayerController#deselectAircraft(seprini.models.Aircraft)}
-	 * .
-	 */
-	@Test
-	public void testDeselectAircraft() {
 	}
 
 	/**

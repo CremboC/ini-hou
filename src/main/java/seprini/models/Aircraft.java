@@ -35,7 +35,7 @@ public final class Aircraft extends Entity {
 	private Vector2 velocity = new Vector2(0, 0);
 	private boolean breaching, isActive, ignorePath, selected, landed,
 			turnRight, turnLeft, rotateRight, breachingLastFrame,
-			enteredFullAirport, hasCollided, isGoingAround;
+			enteredFullAirport, hasCollided;
 
 	// used for smooth turning - remember last angle to check if it's increasing
 	// or not.
@@ -141,12 +141,12 @@ public final class Aircraft extends Entity {
 			// Loops through waypoints in flight plan drawing a line between
 			// them
 			for (Waypoint waypoint : waypoints) {
-				Vector2 coords = waypoint.getCoords();
+				Vector2 wCoords = waypoint.getCoords();
 
 				AbstractScreen.drawLine(lineColor, previous.x, previous.y,
-						coords.x, coords.y, null);
+						wCoords.x, wCoords.y, null);
 
-				previous = coords;
+				previous = wCoords;
 			}
 
 			batch.begin();
@@ -192,8 +192,6 @@ public final class Aircraft extends Entity {
 
 	/**
 	 * Update the aircraft rotation & position
-	 * 
-	 * @param
 	 */
 	@Override
 	public void act(float delta) {
@@ -400,7 +398,6 @@ public final class Aircraft extends Entity {
 				// if aircraft altitude is greater than 200ft, it must go around
 				// again.
 				if (this.altitude > 200) {
-					isGoingAround = true;
 					// Reset flightplan and add landing waypoints to
 					// flightplan if the flightplan is empty.
 					setSpeed(400 / Config.AIRCRAFT_SPEED_MULTIPLIER);

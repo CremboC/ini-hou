@@ -10,9 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import seprini.controllers.components.FlightPlanComponent;
@@ -39,20 +37,6 @@ public class AircraftTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		GameDifficulty gameDifficulty = new GameDifficulty(10, 3, 100, 1, 500,
@@ -75,7 +59,6 @@ public class AircraftTest {
 				.setTexture(Art.getTextureRegion("aircraft"))
 				.setInitialSpeed(60f);
 
-		ArrayList<Waypoint> excludedWaypoints = new ArrayList<Waypoint>();
 		aircraft = new Aircraft(aircraftType, flightplan, 0, GameMode.SINGLE,
 				gameDifficulty);
 
@@ -105,16 +88,7 @@ public class AircraftTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link seprini.models.Aircraft#Aircraft(seprini.models.types.AircraftType, java.util.ArrayList, int, seprini.controllers.AircraftController)}
-	 * .
-	 */
-	@Test
-	public void testAircraft() {
-	}
-
-	/**
-	 * Test method for {@link seprini.models.Aircraft#getPoints()}.
+	 * Test method for {@link seprini.models.Aircraft#getPoints(int)}.
 	 */
 	@Test
 	public void testGetPoints() {

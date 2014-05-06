@@ -277,22 +277,22 @@ public class MultiplayerController extends AircraftController {
 
 		// depending on which player is switching, select the appropriate
 		// aircraftList
-		ArrayList<Aircraft> aircraftList;
+		ArrayList<Aircraft> tempAircraftList;
 
 		switch (playerNumber) {
 		default:
 		case Player.ONE:
-			aircraftList = playerOneAircraft;
+			tempAircraftList = playerOneAircraft;
 			break;
 
 		case Player.TWO:
-			aircraftList = playerTwoAircraft;
+			tempAircraftList = playerTwoAircraft;
 			break;
 
 		}
 
 		// empty - do nothing
-		if (aircraftList.size() == 0) {
+		if (tempAircraftList.size() == 0) {
 			return;
 		}
 
@@ -305,7 +305,7 @@ public class MultiplayerController extends AircraftController {
 		// try to get the aircraft
 		// with that index from the list
 		try {
-			aircraft = aircraftList.get(index);
+			aircraft = tempAircraftList.get(index);
 		} catch (IndexOutOfBoundsException e) {
 			// if that index doesn't exist, it means we reached the end of the
 			// list, reset the index to 0
@@ -316,7 +316,7 @@ public class MultiplayerController extends AircraftController {
 		// since we may reset the index to 0, we need to get the aircraft again
 		// from the list (as the 'try/catch' failed)
 		if (index == 0) {
-			aircraft = aircraftList.get(index);
+			aircraft = tempAircraftList.get(index);
 		}
 
 		if (aircraft == null)

@@ -153,7 +153,7 @@ public class FlightPlanComponent {
 	 *            value = diameter of the turning circle of the aircraft.
 	 * @return nextWaypoint
 	 */
-	private Waypoint selectNextWaypoint(Waypoint currentWaypoint,
+	private static Waypoint selectNextWaypoint(Waypoint currentWaypoint,
 			Waypoint lastWaypoint, ArrayList<Waypoint> flightPlan,
 			Vector2 normalVectorFromCurrentToLast,
 			ArrayList<Waypoint> waypointSelectionList, int maxAngle,

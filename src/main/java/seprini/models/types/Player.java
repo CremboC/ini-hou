@@ -66,102 +66,80 @@ public class Player {
 	}
 
 	/**
-	 * Get key for turning left
-	 * 
-	 * @return
+	 * @return key for turning left
 	 */
 	public int getLeft() {
 		return LEFT;
 	}
 
 	/**
-	 * Get key for turning right
-	 * 
-	 * @return
+	 * @return key for turning right
 	 */
 	public int getRight() {
 		return RIGHT;
 	}
 
 	/**
-	 * Get key to increase altitude
-	 * 
-	 * @return
+	 * @return key to increase altitude
 	 */
 	public int getAltIncrease() {
 		return ALT_INC;
 	}
 
 	/**
-	 * Get key to decrease altitude
-	 * 
-	 * @return
+	 * @return key to decrease altitude
 	 */
 	public int getAltDecrease() {
 		return ALT_DEC;
 	}
 
 	/**
-	 * Get key to increase speed
-	 * 
-	 * @return
+	 * @return key to increase speed
 	 */
 	public int getSpeedIncrease() {
 		return SPEED_INC;
 	}
 
 	/**
-	 * Gey key to decrease speed
-	 * 
-	 * @return
+	 * @return key to decrease speed
 	 */
 	public int getSpeedDecrease() {
 		return SPEED_DEC;
 	}
 
 	/**
-	 * Get key to return to path (restore aircraft's route after taking direct
-	 * control)
-	 * 
-	 * @return
+	 * @return key to return to path (restore aircraft's route after taking
+	 *         direct control)
 	 */
 	public int getReturnToPath() {
 		return RETURN_TO_PATH;
 	}
 
 	/**
-	 * Get key to switch between aircraft
-	 * 
-	 * @return
+	 * @return key to switch between aircraft
 	 */
 	public int getSwitchPlane() {
 		return SWITCH_PLANE;
 	}
 
 	/**
-	 * Get the key to make an aircraft takeoff from the appropriate airport in
-	 * MP
-	 * 
-	 * @return
+	 * @return key to make an aircraft takeoff from the appropriate airport in
+	 *         MP
 	 */
 	public int getTakeoff() {
 		return TAKEOFF;
 	}
 
 	/**
-	 * Gets which player this is - one or two
-	 * 
-	 * @return
+	 * @return which player this is - one or two
 	 */
 	public int getNumber() {
 		return number;
 	}
 
 	/**
-	 * The colour for the circle when an aircraft it selected. Depends on which
-	 * player selects.
-	 * 
-	 * @return
+	 * @return colour for the circle when an aircraft it selected. Depends on
+	 *         which player selects.
 	 */
 	public Color getColor() {
 		return circleColor;
