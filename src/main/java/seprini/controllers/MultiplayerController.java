@@ -40,8 +40,6 @@ public class MultiplayerController extends AircraftController {
 	 */
 	private int[] lastIndex = { 0, 0 };
 
-	private float scoreTimer;
-
 	public MultiplayerController(GameDifficulty diff, Airspace airspace) {
 		super(diff, airspace);
 	}
@@ -65,6 +63,7 @@ public class MultiplayerController extends AircraftController {
 	public void update(float delta) throws InterruptedException {
 		super.update(delta);
 
+		// Update the timer values in each airport.
 		for (Airport airport : waypoints.getAirportList()) {
 			// resets countdown for boarding times
 			for (int i = 0; i <= 4; i++) {
@@ -114,14 +113,12 @@ public class MultiplayerController extends AircraftController {
 
 		}
 
-		scoreTimer += delta;
-
-		if (scoreTimer >= 5f) {
-			scoreTimer = 0f;
-			decrementScores();
-		}
 	}
 
+	/**
+	 * Similar to overridden method, but takes account of no mans land, and
+	 * directs the game to the multiplayer end screen.
+	 */
 	@Override
 	protected boolean collisionHasOccured(Aircraft a, Aircraft b)
 			throws InterruptedException {
@@ -258,6 +255,9 @@ public class MultiplayerController extends AircraftController {
 		return aircraft;
 	}
 
+	/**
+	 * removes aircraft from the airspace and a players aircraft list.
+	 */
 	@Override
 	protected Aircraft removeAircraft(int i) {
 		Aircraft aircraft = super.removeAircraft(i);
@@ -549,17 +549,6 @@ public class MultiplayerController extends AircraftController {
 	public static boolean withinNoMansLand(Aircraft aircraft) {
 		return aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
-	}
-
-	/**
-	 * Decrement score.
-	 */
-	private void decrementScores() {
-
-		playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
-		playerScore[Player.TWO].incrementScore(playerTwoAircraft.size());
-		totalScore.incrementScore(playerOneAircraft.size()
-				+ playerTwoAircraft.size());
 	}
 
 	/**
