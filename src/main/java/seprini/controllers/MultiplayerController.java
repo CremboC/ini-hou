@@ -40,8 +40,6 @@ public class MultiplayerController extends AircraftController {
 	 */
 	private int[] lastIndex = { 0, 0 };
 
-	private float scoreTimer;
-
 	public MultiplayerController(GameDifficulty diff, Airspace airspace) {
 		super(diff, airspace);
 	}
@@ -112,13 +110,6 @@ public class MultiplayerController extends AircraftController {
 				addToListByPlayer(aircraft);
 			}
 
-		}
-
-		scoreTimer += delta;
-
-		if (scoreTimer >= 5f) {
-			scoreTimer = 0f;
-			decrementScores();
 		}
 	}
 
@@ -549,17 +540,6 @@ public class MultiplayerController extends AircraftController {
 	public static boolean withinNoMansLand(Aircraft aircraft) {
 		return aircraft.getCoords().x >= Config.NO_MAN_LAND[0]
 				&& aircraft.getCoords().x <= Config.NO_MAN_LAND[2];
-	}
-
-	/**
-	 * Decrement score.
-	 */
-	private void decrementScores() {
-
-		playerScore[Player.ONE].incrementScore(playerOneAircraft.size());
-		playerScore[Player.TWO].incrementScore(playerTwoAircraft.size());
-		totalScore.incrementScore(playerOneAircraft.size()
-				+ playerTwoAircraft.size());
 	}
 
 	/**
