@@ -598,7 +598,9 @@ public final class Aircraft extends Entity {
 	}
 
 	public void checkBreaching() {
-		if (isBreaching()) {
+		if (isBreaching()
+				&& !seprini.controllers.MultiplayerController
+						.withinNoMansLand(this)) {
 			if (!breachingLastFrame) {
 				if (seprini.controllers.MultiplayerController.withinPlayerZone(
 						this, Player.ONE)) {
