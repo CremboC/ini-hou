@@ -134,11 +134,11 @@ public class AircraftController extends InputListener {
 			Art.getSound("warning").play(1.0f);
 		}
 
-		// If the number of aircraft is below the maximum permitted, or the time
-		// elapsed since the last generation is less than
+		// If the number of aircraft is below the maximum permitted and the time
+		// elapsed since the last generation is greater than the preset
 		// time difference between aircraft generated, create a new aircraft
-		if (aircraftList.size() > difficulty.getMaxAircraft()
-				|| timer - lastGenerated > difficulty
+		if (aircraftList.size() < difficulty.getMaxAircraft()
+				&& timer - lastGenerated > difficulty
 						.getTimeBetweenGenerations() + rand.nextInt(100)) {
 			final Aircraft generatedAircraft = generateAircraft();
 
